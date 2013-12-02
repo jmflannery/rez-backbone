@@ -28,7 +28,7 @@ require.config({
 
 require([
   'backbone',
-  'routes/application',
+  'routes/app',
   'views/app'
 ], function (Backbone, AppRouter, AppView) {
   var vent = _.extend({}, Backbone.events);
