@@ -1,7 +1,8 @@
 define([
   'jquery',
   'backbone',
-], function ($, Backbone) {
+  'views/app'
+], function ($, Backbone, AppView) {
   'use strict';
 
   var AppRouter = Backbone.Router.extend({
