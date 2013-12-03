@@ -12,11 +12,17 @@ define([
     },
 
     routes: {
-      '': 'app'
+      '': 'app',
+      'signin': 'signin'
     },
 
     app: function() {
       new AppView(this.vent).render();
+    },
+
+    signin: function() {
+      new AppView(this.vent).render();
+      this.vent.trigger('session:new');
     }
   });
 

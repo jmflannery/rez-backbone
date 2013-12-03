@@ -1,8 +1,9 @@
 define([
   'jquery',
   'underscore',
-  'backbone'
-], function ($, _, Backbone) {
+  'backbone',
+  'views/session'
+], function ($, _, Backbone, SessionView) {
   'use strict';
 
   var ContentView = Backbone.View.extend({
@@ -11,11 +12,16 @@ define([
 
     initialize: function(vent) {
       this.vent = vent;
+      this.vent.on('session:new', this.showSignin, this);
     },
 
     render: function() {
       this.$el.html("Jack Flannery.me");
       return this;
+    },
+
+    showSignin: function() {
+      this.$el.html(new SessionView().render().el);
     }
   });
 
