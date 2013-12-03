@@ -1,7 +1,8 @@
 define([
   'underscore',
-  'backbone'
-], function (_, Backbone) {
+  'backbone',
+  'models/token'
+], function (_, Backbone, Token) {
   'use strict';
 
   var SessionModel = Backbone.Model.extend({
@@ -28,8 +29,8 @@ define([
       });
     },
 
-    authenticating: function() {
-      console.log('success');
+    authenticating: function(response) {
+      this.token = new Token(response.token);
     },
 
     notAthenticated: function() {
