@@ -1,8 +1,9 @@
 define([
   'underscore',
   'backbone',
-  'models/token'
-], function (_, Backbone, Token) {
+  'models/token',
+  'models/user'
+], function (_, Backbone, Token, User) {
   'use strict';
 
   var SessionModel = Backbone.Model.extend({
@@ -12,8 +13,11 @@ define([
       token: {}
     },
 
+    initialize: function() {
+      this.on('session:authenticated', this.authenticated, this);
+    },
+
     authenticate: function() {
-      console.log('Starting the Authentication process');
       $.ajax({
         type: 'POST',
         url: 'http://localhost:8080/toke/sessions',
@@ -31,6 +35,13 @@ define([
 
     authenticating: function(response) {
       this.token = new Token(response.token);
+      new User({ id: this.token.get('user_id') }).fetch().then(function(response) {
+        this.trigger("session:authenticated", response.user);
+      }.bind(this));
+    },
+
+    authenticated: function(user) {
+      this.user = new User(user);
     },
 
     notAthenticated: function() {
