@@ -2,8 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'templates'
-], function ($, _, Backbone, JST) {
+  'templates',
+  'models/session'
+], function ($, _, Backbone, JST, Session) {
   'use strict';
 
   var SessionView = Backbone.View.extend({
@@ -15,13 +16,17 @@ define([
       'submit': 'signin'
     },
 
-    signin: function(e) {
-      e.preventDefault();
-    },
-
     render: function() {
       this.$el.html(this.template());
       return this;
+    },
+
+    signin: function(e) {
+      e.preventDefault();
+      var username = this.$('input#username').val();
+      var password = this.$('input#password').val();
+      this.model = new Session({ username: username, password: password });
+      this.model.authenticate();
     }
   });
 
