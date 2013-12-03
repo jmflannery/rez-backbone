@@ -31,7 +31,7 @@ require([
   'routes/app',
   'views/app'
 ], function (Backbone, AppRouter, AppView) {
-  var vent = _.extend({}, Backbone.events);
+  var vent = _.extend({}, Backbone.Events);
   var appRouter = new AppRouter(vent);
   Backbone.history.start();
 });
