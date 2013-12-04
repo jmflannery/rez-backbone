@@ -1,13 +1,15 @@
 define([
   'jquery',
   'backbone',
-  'views/app'
+  'views/app',
+  'jquery.cookie'
 ], function ($, Backbone, AppView) {
   'use strict';
 
   var AppRouter = Backbone.Router.extend({
 
     initialize: function(vent) {
+      console.log($.cookie('session:token'));
       this.vent = vent;
     },
 

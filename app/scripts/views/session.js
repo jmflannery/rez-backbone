@@ -3,7 +3,8 @@ define([
   'underscore',
   'backbone',
   'templates',
-  'models/session'
+  'models/session',
+  'jquery.cookie'
 ], function ($, _, Backbone, JST, Session) {
   'use strict';
 
@@ -33,6 +34,7 @@ define([
     authenticated: function() {
       this.user = this.model.user;
       this.token = this.model.token;
+      $.cookie('session:token', this.token.get('key'));
     }
   });
 
