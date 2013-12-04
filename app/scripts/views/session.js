@@ -26,7 +26,13 @@ define([
       var username = this.$('input#username').val();
       var password = this.$('input#password').val();
       this.model = new Session({ username: username, password: password });
+      this.model.on('session:authenticated', this.authenticated, this);
       this.model.authenticate();
+    },
+
+    authenticated: function() {
+      this.user = this.model.user;
+      this.token = this.model.token;
     }
   });
 
