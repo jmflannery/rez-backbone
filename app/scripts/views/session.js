@@ -13,6 +13,10 @@ define([
 
     tagName: 'signin',
 
+    initialize: function(vent) {
+      this.vent = vent;
+    },
+
     events: {
       'submit': 'signin'
     },
@@ -34,7 +38,8 @@ define([
     authenticated: function() {
       this.user = this.model.user;
       this.token = this.model.token;
-      $.cookie('session:token', this.token.get('key'));
+      $.cookie('_jf_session_token', this.token.get('key'));
+      this.vent.trigger('session:authenticated', this.user, this.token);
     }
   });
 

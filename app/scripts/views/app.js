@@ -13,12 +13,18 @@ define([
 
     initialize: function(vent) {
       this.vent = vent;
+      this.vent.on('session:authenticated', this.authenticated)
     },
 
     render: function() {
       this.$el.html(new NavView(this.vent).render().el);
       this.$el.append(new ContentView(this.vent).render().el);
       return this;
+    },
+
+    authenticated: function(user, token) {
+      this.user = user;
+      this.token = token;
     }
   });
 

@@ -21,7 +21,7 @@ define([
     },
 
     showSignin: function() {
-      this.$el.html(new SessionView().render().el);
+      this.$el.html(new SessionView(this.vent).render().el);
     }
   });
 
