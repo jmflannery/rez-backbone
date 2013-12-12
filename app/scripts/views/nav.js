@@ -18,6 +18,11 @@ define([
     render: function() {
       this.$el.html(this.template());
       return this;
+    },
+
+    userAuthenticated: function(username) {
+      this.username = username;
+      this.render();
     }
   });
 

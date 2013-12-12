@@ -13,18 +13,23 @@ define([
 
     initialize: function(vent) {
       this.vent = vent;
-      this.vent.on('session:authenticated', this.authenticated)
+      this.vent.on('session:authenticated', this.authenticated.bind(this))
+      this.nav_view = new NavView(this.vent);
+      this.content_view = new ContentView(this.vent);
     },
 
     render: function() {
-      this.$el.html(new NavView(this.vent).render().el);
-      this.$el.append(new ContentView(this.vent).render().el);
+      this.$el.html(this.nav_view.render().el);
+      this.$el.append(this.content_view.render().el);
       return this;
     },
 
     authenticated: function(user, token) {
       this.user = user;
       this.token = token;
+      this.nav_view.userAuthenticated(this.user.get('username'));
+      Backbone.history.navigate('/');
+      this.content_view.showHome();
     }
   });
 

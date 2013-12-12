@@ -22,6 +22,10 @@ define([
 
     showSignin: function() {
       this.$el.html(new SessionView(this.vent).render().el);
+    },
+
+    showHome: function() {
+      this.render();
     }
   });
 
