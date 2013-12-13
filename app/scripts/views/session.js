@@ -39,6 +39,7 @@ define([
       this.user = this.model.user;
       this.token = this.model.token;
       $.cookie('_jf_session_token', this.token.get('key'));
+      $.cookie('_jf_session_user_id', this.user.get('id'));
       this.vent.trigger('session:authenticated', this.user, this.token);
     }
   });

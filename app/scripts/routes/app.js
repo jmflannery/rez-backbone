@@ -9,7 +9,6 @@ define([
   var AppRouter = Backbone.Router.extend({
 
     initialize: function(vent) {
-      console.log($.cookie('_jf_session_token'));
       this.vent = vent;
     },
 

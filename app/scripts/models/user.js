@@ -9,7 +9,7 @@ define([
       username: ''
     },
 
-    urlRoot: 'http://localhost:8080/toke/users',
+    urlRoot: 'http://localhost:3000/toke/users',
 
     toJSON: function() {
       return {

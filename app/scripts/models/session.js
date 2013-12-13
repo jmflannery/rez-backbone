@@ -13,14 +13,10 @@ define([
       token: {}
     },
 
-    initialize: function() {
-      this.on('session:authenticated', this.authenticated, this);
-    },
-
     authenticate: function() {
       $.ajax({
         type: 'POST',
-        url: 'http://localhost:8080/toke/sessions',
+        url: 'http://localhost:3000/toke/sessions',
         dataType: 'json',
         data: {
           session: {
@@ -28,23 +24,19 @@ define([
             password: this.get('password')
           }
         },
-        success: this.authenticating.bind(this),
-        error: this.notAuthenticated
+        success: this.authenticated.bind(this),
+        error: this.not_authenticated
       });
     },
 
-    authenticating: function(response) {
-      this.token = new Token(response.token);
-      new User({ id: this.token.get('user_id') }).fetch().then(function(response) {
-        this.trigger("session:authenticated", response.user);
-      }.bind(this));
+    authenticated: function(response) {
+      this.token = new Token(response.user.token);
+      delete response.user.token;
+      this.user = new User(response.user);
+      this.trigger("session:authenticated");
     },
 
-    authenticated: function(user) {
-      this.user = new User(user);
-    },
-
-    notAthenticated: function() {
+    not_athenticated: function() {
       console.log('failure');
     }
   });
