@@ -37,6 +37,7 @@ define([
         this.token = new Token(response.user.token);
         delete response.user.token;
         this.user = new User(response.user);
+        this.nav_view.userAuthenticated(this.user.get('username'));
       }.bind(this));
     },
 
