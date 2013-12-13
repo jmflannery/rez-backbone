@@ -37,7 +37,7 @@ define([
         this.token = new Token(response.user.token);
         delete response.user.token;
         this.user = new User(response.user);
-      });
+      }.bind(this));
     },
 
     authenticated: function(user, token) {
