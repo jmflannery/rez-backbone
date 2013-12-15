@@ -12,7 +12,7 @@ define([
   var SessionView = Backbone.View.extend({
     template: JST['app/scripts/templates/session.ejs'],
 
-    tagName: 'signin',
+    id: 'signin',
 
     initialize: function(vent) {
       this.vent = vent;
