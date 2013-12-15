@@ -16,6 +16,7 @@ define([
     initialize: function(vent) {
       this.vent = vent;
       this.vent.on('session:authenticated', this.authenticated.bind(this));
+      this.vent.on('session:destroy', this.signout.bind(this));
       this.nav_view = new NavView(this.vent);
       this.content_view = new ContentView(this.vent);
       var user_id = $.cookie('_jf_session_user_id');
@@ -47,6 +48,17 @@ define([
       this.nav_view.userAuthenticated(this.user.get('username'));
       Backbone.history.navigate('/');
       this.content_view.showHome();
+    },
+
+    signout: function() {
+      var header = { headers: {'X-Toke-Key': this.token.get('key') }};
+      this.token.destroy(header).done(function(response) {
+        $.removeCookie('_jf_session_token');
+        $.removeCookie('_jf_session_user_id');
+        this.nav_view.userSignedOut();
+      }.bind(this)).fail(function(response) {
+        console.log(response);
+      });
     }
   });
 

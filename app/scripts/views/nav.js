@@ -15,6 +15,10 @@ define([
       this.vent = vent;
     },
 
+    events: {
+      'click .signout': 'signout'
+    },
+
     render: function() {
       this.$el.html(this.template());
       return this;
@@ -23,6 +27,15 @@ define([
     userAuthenticated: function(username) {
       this.username = username;
       this.render();
+    },
+
+    userSignedOut: function() {
+      delete this.username;
+      this.render();
+    },
+
+    signout: function() {
+      this.vent.trigger('session:destroy');
     }
   });
 

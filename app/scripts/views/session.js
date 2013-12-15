@@ -3,9 +3,10 @@ define([
   'underscore',
   'backbone',
   'templates',
-  'models/session',
+  'models/token',
+  'models/user',
   'jquery.cookie'
-], function ($, _, Backbone, JST, Session) {
+], function ($, _, Backbone, JST, Token, User) {
   'use strict';
 
   var SessionView = Backbone.View.extend({
@@ -28,19 +29,18 @@ define([
 
     signin: function(e) {
       e.preventDefault();
-      var username = this.$('input#username').val();
-      var password = this.$('input#password').val();
-      this.model = new Session({ username: username, password: password });
-      this.model.on('session:authenticated', this.authenticated, this);
-      this.model.authenticate();
-    },
-
-    authenticated: function() {
-      this.user = this.model.user;
-      this.token = this.model.token;
-      $.cookie('_jf_session_token', this.token.get('key'));
-      $.cookie('_jf_session_user_id', this.user.get('id'));
-      this.vent.trigger('session:authenticated', this.user, this.token);
+      var un = this.$('input#username').val();
+      var pw = this.$('input#password').val();
+      new Token({ username: un, password: pw }).save().done(function(response) {
+        this.model = new Token(response.user.token);
+        delete response.user.token;
+        this.user = new User(response.user);
+        $.cookie('_jf_session_token', this.model.get('key'));
+        $.cookie('_jf_session_user_id', this.user.get('id'));
+        this.vent.trigger('session:authenticated', this.user, this.model);
+      }.bind(this)).fail(function(response) {
+        console.log(response);
+      });
     }
   });
 

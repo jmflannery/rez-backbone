@@ -5,10 +5,7 @@ define([
   'use strict';
 
   var TokenModel = Backbone.Model.extend({
-    defaults: {
-      key: '',
-      expires_at: ''
-    }
+    urlRoot: 'http://localhost:3000/toke/sessions'
   });
 
   return TokenModel;
