@@ -14,7 +14,8 @@ define([
 
     routes: {
       '': 'app',
-      'signin': 'signin'
+      'signin': 'signin',
+      'resume': 'resume'
     },
 
     app: function() {
@@ -24,6 +25,12 @@ define([
     signin: function() {
       new AppView(this.vent).render();
       this.vent.trigger('session:new');
+    },
+
+    resume: function() {
+      console.log('resume route');
+      new AppView(this.vent).render();
+      this.vent.trigger('show:resume');
     }
   });
 

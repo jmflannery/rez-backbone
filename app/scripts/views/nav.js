@@ -16,12 +16,22 @@ define([
     },
 
     events: {
+      'click .home': 'showHome',
+      'click .resume': 'showResume',
       'click .signout': 'signout'
     },
 
     render: function() {
       this.$el.html(this.template());
       return this;
+    },
+
+    showHome: function() {
+      this.vent.trigger('show:home');
+    },
+
+    showResume: function() {
+      this.vent.trigger('show:resume');
     },
 
     userAuthenticated: function(username) {

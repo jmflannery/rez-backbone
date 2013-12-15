@@ -83,7 +83,8 @@ module.exports = function (grunt) {
                     https: false,
                     changeOrigin: false,
                     rewrite: {
-                        '^/signin$': ''
+                        '^/signin$': '',
+                        '^/resume$': ''
                     }
                 }
             ],

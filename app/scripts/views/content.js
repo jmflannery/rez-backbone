@@ -2,8 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'views/session'
-], function ($, _, Backbone, SessionView) {
+  'views/session',
+  'views/resume'
+], function ($, _, Backbone, SessionView, ResumeView) {
   'use strict';
 
   var ContentView = Backbone.View.extend({
@@ -13,6 +14,8 @@ define([
     initialize: function(vent) {
       this.vent = vent;
       this.vent.on('session:new', this.showSignin, this);
+      this.vent.on('show:home', this.showHome.bind(this));
+      this.vent.on('show:resume', this.showResume.bind(this));
     },
 
     render: function() {
@@ -25,7 +28,13 @@ define([
     },
 
     showHome: function() {
+      Backbone.history.navigate("");
       this.render();
+    },
+
+    showResume: function() {
+      Backbone.history.navigate("resume");
+      this.$el.html(new ResumeView(this.vent).render().el);
     }
   });
 
