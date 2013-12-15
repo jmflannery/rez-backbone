@@ -39,6 +39,7 @@ define([
         delete response.user.token;
         this.user = new User(response.user);
         this.nav_view.userAuthenticated(this.user.get('username'));
+        this.content_view.set_current_user(this.user);
       }.bind(this));
     },
 
@@ -46,6 +47,7 @@ define([
       this.user = user;
       this.token = token;
       this.nav_view.userAuthenticated(this.user.get('username'));
+      this.content_view.set_current_user(this.user);
       Backbone.history.navigate('/');
       this.content_view.showHome();
     },

@@ -23,6 +23,10 @@ define([
       return this;
     },
 
+    set_current_user: function(user) {
+      this.current_user = user;
+    },
+
     showSignin: function() {
       this.$el.html(new SessionView(this.vent).render().el);
     },
