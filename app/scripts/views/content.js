@@ -23,8 +23,8 @@ define([
       return this;
     },
 
-    set_current_user: function(user) {
-      this.current_user = user;
+    set_auth: function(auth) {
+      this.auth = auth;
     },
 
     showSignin: function() {
@@ -38,7 +38,7 @@ define([
 
     showResume: function() {
       Backbone.history.navigate("resume");
-      this.$el.html(new ResumeView(this.vent).render().el);
+      this.$el.html(new ResumeView(this.vent, this.auth).render().el);
     }
   });
 

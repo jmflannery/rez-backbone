@@ -1,1 +1,4 @@
-<p>Resume</p>
+<h2>Resume</h2>
+<% if (this.auth && this.auth.current_user) { %>
+  <a href='#' class='new_resume'>New Resume</a>
+<% } %>

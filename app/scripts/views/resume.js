@@ -2,8 +2,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'templates'
-], function ($, _, Backbone, JST) {
+  'templates',
+  'models/resume',
+  'collections/resume'
+], function ($, _, Backbone, JST, Resume, ResumeCollection) {
   'use strict';
 
   var ResumeView = Backbone.View.extend({
@@ -11,8 +13,14 @@ define([
 
     id: 'resume',
 
-    initialize: function(vent) {
+    initialize: function(vent, auth) {
       this.vent = vent;
+      this.auth = auth;
+      this.resumes = new ResumeCollection();
+      if (this.auth) {
+        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+        this.resumes.fetch(header);
+      }
     },
 
     render: function() {

@@ -13,24 +13,22 @@ define([
     },
 
     routes: {
-      '': 'app',
+      '': 'home',
       'signin': 'signin',
       'resume': 'resume'
     },
 
-    app: function() {
-      new AppView(this.vent).render();
+    home: function() {
+      new AppView(this.vent, "home");
     },
 
     signin: function() {
-      new AppView(this.vent).render();
+      new AppView(this.vent);
       this.vent.trigger('session:new');
     },
 
     resume: function() {
-      console.log('resume route');
-      new AppView(this.vent).render();
-      this.vent.trigger('show:resume');
+      new AppView(this.vent, "resume");
     }
   });
 
