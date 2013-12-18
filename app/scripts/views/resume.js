@@ -26,6 +26,10 @@ define([
     render: function() {
       this.$el.html(this.template());
       return this;
+    },
+
+    resumeCount: function() {
+      return this.resumes.length === 0 ? 'No' : this.resumes.length.toString();
     }
   });
 
