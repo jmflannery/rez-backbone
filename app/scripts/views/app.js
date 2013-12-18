@@ -24,7 +24,7 @@ define([
       var user_id = $.cookie('_jf_session_user_id');
       var key = $.cookie('_jf_session_token');
       if (user_id && key) {
-        this.authenticate(user_id, key, current_page);
+        this.authenticate(user_id, key);
       } else {
         if (current_page) {
           this.vent.trigger('show:' + current_page);
