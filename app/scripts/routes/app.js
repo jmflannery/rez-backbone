@@ -19,16 +19,15 @@ define([
     },
 
     home: function() {
-      new AppView(this.vent, "home");
+      new AppView(this.vent, 'home');
     },
 
     signin: function() {
-      new AppView(this.vent);
-      this.vent.trigger('session:new');
+      new AppView(this.vent, 'signin');
     },
 
     resume: function() {
-      new AppView(this.vent, "resume");
+      new AppView(this.vent, 'resume');
     }
   });
 

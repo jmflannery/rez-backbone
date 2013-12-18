@@ -14,9 +14,9 @@ define([
     initialize: function(vent, current_page) {
       this.vent = vent;
       this.current_page = current_page;
-      this.vent.on('session:new', this.showSignin, this);
+      this.vent.on('show:signin', this.show_signin, this);
       this.vent.on('show:home', this.show_home.bind(this));
-      this.vent.on('show:resume', this.showResume.bind(this));
+      this.vent.on('show:resume', this.show_resume.bind(this));
     },
 
     render: function() {
@@ -32,7 +32,7 @@ define([
       delete this.auth;
     },
 
-    showSignin: function() {
+    show_signin: function() {
       this.$el.html(new SessionView(this.vent).render().el);
     },
 
@@ -41,7 +41,7 @@ define([
       this.$el.html("Jack Flannery.me");
     },
 
-    showResume: function() {
+    show_resume: function() {
       Backbone.history.navigate("resume");
       this.$el.html(new ResumeView(this.vent, this.auth).render().el);
     }
