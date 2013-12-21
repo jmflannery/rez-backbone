@@ -19,8 +19,6 @@ define([
       this.vent.on('show:signin', this.showSignin, this);
       this.vent.on('show:home', this.showHome.bind(this));
       this.vent.on('show:resume', this.showResume.bind(this));
-
-      this.fetchFirstResume();
     },
 
     render: function() {
@@ -56,7 +54,7 @@ define([
 
     showResume: function() {
       Backbone.history.navigate("resume");
-      this.$el.html(new ResumeView({ model: this.resume, vent: this.vent, auth: this.auth }).render().el);
+      this.$el.html(new ResumeView({ model: this.resume, auth: this.auth }).render().el);
     }
   });
 

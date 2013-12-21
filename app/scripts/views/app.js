@@ -25,13 +25,15 @@ define([
 
       this.listenTo(this.contentView, 'content:loaded', this.loadPage);
 
-      this.render();
-
       var userId = $.cookie('_jf_session_userId');
       var key = $.cookie('_jf_session_token');
 
+      this.render();
+
       if (userId && key) {
         this.authenticate(userId, key);
+      } else {
+        this.contentView.fetchFirstResume();
       }
     },
 
@@ -61,8 +63,9 @@ define([
 
       if (options.page) {
         this.currentPage = options.page;
-        this.loadPage();
       }
+
+      this.contentView.fetchFirstResume();
     },
 
     signout: function() {
@@ -81,7 +84,6 @@ define([
       console.log('triggering page load: ' + this.currentPage);
       this.vent.trigger('show:' + this.currentPage);
     }
-
   });
 
   return AppView;

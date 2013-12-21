@@ -1,0 +1,8 @@
+<h2>Resume</h2>
+<a href='#' class='new_resume'>New Resume</a>
+<a href='#' class='all_resume'>All Resumes</a>
+<% if (this.model) { %>
+  <p><%= this.model.get('name') %></p>
+<% } else { %>
+  <p>No Resume</p>
+<% } %>

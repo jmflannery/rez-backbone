@@ -9,16 +9,21 @@ define([
 
   var ResumeView = Backbone.View.extend({
     template: JST['app/scripts/templates/resume.ejs'],
+    authenticatedTemplate: JST['app/scripts/templates/authenticated_resume.ejs'],
 
     id: 'resume',
 
     initialize: function(options) {
-      this.vent = options.vent;
       this.auth = options.auth;
     },
 
     render: function() {
-      this.$el.html(this.template());
+      if (this.auth) {
+        this.$el.html(this.authenticatedTemplate());
+      } else {
+        this.$el.html(this.template());
+      }
+
       return this;
     }
   });
