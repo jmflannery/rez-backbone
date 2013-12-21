@@ -4,8 +4,7 @@ define([
   'backbone',
   'templates',
   'models/resume',
-  'collections/resume'
-], function ($, _, Backbone, JST, Resume, ResumeCollection) {
+], function ($, _, Backbone, JST, Resume) {
   'use strict';
 
   var ResumeView = Backbone.View.extend({
@@ -13,23 +12,14 @@ define([
 
     id: 'resume',
 
-    initialize: function(vent, auth) {
-      this.vent = vent;
-      this.auth = auth;
-      this.resumes = new ResumeCollection();
-      if (this.auth) {
-        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
-        this.resumes.fetch(header);
-      }
+    initialize: function(options) {
+      this.vent = options.vent;
+      this.auth = options.auth;
     },
 
     render: function() {
       this.$el.html(this.template());
       return this;
-    },
-
-    resumeCount: function() {
-      return this.resumes.length === 0 ? 'No' : this.resumes.length.toString();
     }
   });
 

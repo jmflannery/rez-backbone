@@ -6,7 +6,11 @@ define([
 
   var ResumeModel = Backbone.Model.extend({
 
-    urlRoot: 'http://localhost:3000/rez/resumes'
+    urlRoot: 'http://localhost:3000/rez/resumes',
+
+    parse: function(response) {
+      return response.resume;
+    }
   });
 
   return ResumeModel;

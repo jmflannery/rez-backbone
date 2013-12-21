@@ -3,8 +3,10 @@ define([
   'underscore',
   'backbone',
   'views/session',
-  'views/resume'
-], function ($, _, Backbone, SessionView, ResumeView) {
+  'views/resume',
+  'models/resume',
+  'collections/resume'
+], function ($, _, Backbone, SessionView, ResumeView, Resume, ResumeCollection) {
   'use strict';
 
   var ContentView = Backbone.View.extend({
@@ -14,36 +16,47 @@ define([
     initialize: function(vent, current_page) {
       this.vent = vent;
       this.current_page = current_page;
-      this.vent.on('show:signin', this.show_signin, this);
-      this.vent.on('show:home', this.show_home.bind(this));
-      this.vent.on('show:resume', this.show_resume.bind(this));
+      this.vent.on('show:signin', this.showSignin, this);
+      this.vent.on('show:home', this.showHome.bind(this));
+      this.vent.on('show:resume', this.showResume.bind(this));
+
+      this.fetchFirstResume();
     },
 
     render: function() {
-      this.vent.trigger('show:' + this.current_page);
       return this;
     },
 
-    set_auth: function(auth) {
+    setAuth: function(auth) {
       this.auth = auth;
     },
 
-    destroy_auth: function() {
+    destroyAuth: function() {
       delete this.auth;
     },
 
-    show_signin: function() {
+    fetchFirstResume: function() {
+      this.resume = new Resume({id: 1});
+      this.listenTo(this.resume, 'sync', this.resumeFetched);
+      this.resume.fetch();
+    },
+
+    resumeFetched: function() {
+      this.trigger('content:loaded');
+    },
+
+    showSignin: function() {
       this.$el.html(new SessionView(this.vent).render().el);
     },
 
-    show_home: function() {
+    showHome: function() {
       Backbone.history.navigate("");
       this.$el.html("Jack Flannery.me");
     },
 
-    show_resume: function() {
+    showResume: function() {
       Backbone.history.navigate("resume");
-      this.$el.html(new ResumeView(this.vent, this.auth).render().el);
+      this.$el.html(new ResumeView({ model: this.resume, vent: this.vent, auth: this.auth }).render().el);
     }
   });
 

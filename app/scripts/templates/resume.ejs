@@ -1,5 +1,6 @@
 <h2>Resume</h2>
-<p><%= this.resumeCount() %> Resumes</p>
-<% if (this.auth && this.auth.current_user) { %>
-  <a href='#' class='new_resume'>New Resume</a>
+<% if (this.model) { %>
+  <p><%= this.model.get('name') %></p>
+<% } else { %>
+  <p>No Resume</p>
 <% } %>

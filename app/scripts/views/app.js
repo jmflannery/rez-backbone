@@ -13,60 +13,75 @@ define([
 
     el: '#page',
 
-    initialize: function(vent, current_page) {
+    initialize: function(vent, currentPage) {
       this.vent = vent;
-      this.current_page = current_page;
+      this.currentPage = currentPage;
+
       this.vent.on('session:authenticated', this.authenticated.bind(this));
       this.vent.on('session:destroy', this.signout.bind(this));
-      this.nav_view = new NavView(this.vent);
-      this.content_view = new ContentView(this.vent, current_page);
+
+      this.navView = new NavView(this.vent);
+      this.contentView = new ContentView(this.vent, currentPage);
+
+      this.listenTo(this.contentView, 'content:loaded', this.loadPage);
+
       this.render();
-      var user_id = $.cookie('_jf_session_user_id');
+
+      var userId = $.cookie('_jf_session_userId');
       var key = $.cookie('_jf_session_token');
-      if (user_id && key) {
-        this.authenticate(user_id, key);
-      } else {
-        if (current_page) {
-          this.vent.trigger('show:' + current_page);
-        }
+
+      if (userId && key) {
+        this.authenticate(userId, key);
       }
     },
 
     render: function() {
-      this.$el.html(this.nav_view.render().el);
-      this.$el.append(this.content_view.render().el);
+      this.$el.html(this.navView.render().el);
+      this.$el.append(this.contentView.render().el);
       return this;
     },
 
-    authenticate: function(user_id, key) {
+    authenticate: function(userId, key) {
       var header = { headers: { 'X-Toke-Key': key }};
-      new User({ id: user_id }).fetch(header).then(function(response) {
-        this.vent.trigger('session:authenticated', response, this.current_page);
+      new User({ id: userId }).fetch(header).then(function(response) {
+        this.authenticated({ response: response });
       }.bind(this));
     },
 
-    authenticated: function(obj, current_page) {
-      this.token = new Token(obj.user.token);
-      delete obj.user.token;
-      this.user = new User(obj.user);
+    authenticated: function(options) {
+      this.token = new Token(options.response.user.token);
+      delete options.response.user.token;
+      this.currentUser = new User(options.response.user);
+
       $.cookie('_jf_session_token', this.token.get('key'));
-      $.cookie('_jf_session_user_id', this.user.get('id'));
-      this.nav_view.userAuthenticated(this.user.get('username'));
-      this.content_view.set_auth({ current_user: this.user, token: this.token });
-      this.vent.trigger('show:' + current_page);
+      $.cookie('_jf_session_userId', this.currentUser.get('id'));
+
+      this.navView.userAuthenticated(this.currentUser.get('username'));
+      this.contentView.setAuth({ currentUser: this.currentUser, token: this.token });
+
+      if (options.page) {
+        this.currentPage = options.page;
+        this.loadPage();
+      }
     },
 
     signout: function() {
       var header = { headers: {'X-Toke-Key': this.token.get('key') }};
       this.token.destroy(header).done(function(response) {
         $.removeCookie('_jf_session_token');
-        $.removeCookie('_jf_session_user_id');
-        this.nav_view.userSignedOut();
-        this.content_view.destroy_auth();
+        $.removeCookie('_jf_session_userId');
+        this.navView.userSignedOut();
+        this.contentView.destroyAuth();
       }.bind(this)).fail(function(response) {
         console.log(response);
       });
+    },
+
+    loadPage: function() {
+      console.log('triggering page load: ' + this.currentPage);
+      this.vent.trigger('show:' + this.currentPage);
     }
+
   });
 
   return AppView;

@@ -32,7 +32,7 @@ define([
       var un = this.$('input#username').val();
       var pw = this.$('input#password').val();
       new Token({ username: un, password: pw }).save().done(function(response) {
-        this.vent.trigger('session:authenticated', response, "home");
+        this.vent.trigger('session:authenticated', { response: response, page: "home" });
       }.bind(this)).fail(function(response) {
         console.log(response);
       });
