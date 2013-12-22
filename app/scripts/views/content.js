@@ -3,12 +3,12 @@ define([
   'underscore',
   'backbone',
   'views/session',
-  'views/resume',
+  'views/detail_resume',
   'views/new_resume',
   'views/resumes',
   'models/resume',
   'collections/resume'
-], function ($, _, Backbone, SessionView, ResumeView, NewResumeView, ResumesView, Resume, ResumeCollection) {
+], function ($, _, Backbone, SessionView, DetailResumeView, NewResumeView, ResumesView, Resume, ResumeCollection) {
   'use strict';
 
   var ContentView = Backbone.View.extend({
@@ -60,7 +60,7 @@ define([
     showResume: function() {
       Backbone.history.navigate("resume");
       var resume = this.resumes.get(1);
-      var resumeView = new ResumeView({ model: resume, auth: this.auth });
+      var resumeView = new DetailResumeView({ model: resume, auth: this.auth });
       this.listenTo(resumeView, 'show:new_resume', this.showNewResume);
       this.listenTo(resumeView, 'show:resumes', this.showResumes);
       this.$el.html(resumeView.render().el);

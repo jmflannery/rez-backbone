@@ -7,8 +7,8 @@ define([
 ], function ($, _, Backbone, JST, Resume) {
   'use strict';
 
-  var ResumeView = Backbone.View.extend({
-    template: JST['app/scripts/templates/resume.ejs'],
+  var DetailResumeView = Backbone.View.extend({
+    template: JST['app/scripts/templates/detail_resume.ejs'],
     authenticatedTemplate: JST['app/scripts/templates/authenticated_resume.ejs'],
 
     id: 'resume',
@@ -43,5 +43,5 @@ define([
     }
   });
 
-  return ResumeView;
+  return DetailResumeView;
 });
