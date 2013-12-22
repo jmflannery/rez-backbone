@@ -8,7 +8,11 @@ define([
   var ResumeCollection = Backbone.Collection.extend({
     model: Resume,
 
-    url: 'http://localhost:3000/rez/resumes'
+    url: 'http://localhost:3000/rez/resumes',
+
+    parse: function(response) {
+      return response.resumes;
+    }
   });
 
   return ResumeCollection;

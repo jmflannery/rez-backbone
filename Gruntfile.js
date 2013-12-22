@@ -84,7 +84,8 @@ module.exports = function (grunt) {
                     changeOrigin: false,
                     rewrite: {
                         '^/signin$': '',
-                        '^/resume$': ''
+                        '^/resume$': '',
+                        '^/new_resume$': ''
                     }
                 }
             ],

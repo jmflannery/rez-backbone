@@ -17,6 +17,10 @@ define([
       this.auth = options.auth;
     },
 
+    events: {
+      'click .new_resume': 'showNewResume'
+    },
+
     render: function() {
       if (this.auth) {
         this.$el.html(this.authenticatedTemplate());
@@ -25,6 +29,10 @@ define([
       }
 
       return this;
+    },
+
+    showNewResume: function() {
+      this.trigger('show:new_resume');
     }
   });
 

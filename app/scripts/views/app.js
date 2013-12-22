@@ -23,7 +23,7 @@ define([
       this.navView = new NavView(this.vent);
       this.contentView = new ContentView(this.vent, currentPage);
 
-      this.listenTo(this.contentView, 'content:loaded', this.loadPage);
+      this.listenTo(this.contentView, 'content:loaded', this.showPage);
 
       var userId = $.cookie('_jf_session_userId');
       var key = $.cookie('_jf_session_token');
@@ -33,7 +33,7 @@ define([
       if (userId && key) {
         this.authenticate(userId, key);
       } else {
-        this.contentView.fetchFirstResume();
+        this.contentView.fetchResumes();
       }
     },
 
@@ -65,7 +65,7 @@ define([
         this.currentPage = options.page;
       }
 
-      this.contentView.fetchFirstResume();
+      this.contentView.fetchResumes();
     },
 
     signout: function() {
@@ -80,8 +80,7 @@ define([
       });
     },
 
-    loadPage: function() {
-      console.log('triggering page load: ' + this.currentPage);
+    showPage: function() {
       this.vent.trigger('show:' + this.currentPage);
     }
   });

@@ -15,7 +15,8 @@ define([
     routes: {
       '': 'home',
       'signin': 'signin',
-      'resume': 'resume'
+      'resume': 'resume',
+      'new_resume': 'new_resume'
     },
 
     home: function() {
@@ -28,6 +29,11 @@ define([
 
     resume: function() {
       new AppView(this.vent, 'resume');
+    },
+
+    new_resume: function() {
+      console.log('new resume');
+      new AppView(this.vent, 'new_resume');
     }
   });
 
