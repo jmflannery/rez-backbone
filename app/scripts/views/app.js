@@ -42,18 +42,25 @@ define([
       this.$el.append(this.contentView.render().el);
       return this;
     },
+      
+    showPage: function() {
+      this.vent.trigger('show:' + this.currentPage);
+    },
 
     authenticate: function(userId, key) {
       var header = { headers: { 'X-Toke-Key': key }};
-      new User({ id: userId }).fetch(header).then(function(response) {
-        this.authenticated({ response: response });
-      }.bind(this));
+      var user = new User({ id: userId });
+      this.listenTo(user, 'sync', this.authenticated);
+      this.listenTo(user, 'error', this.notAuthenticated);
+      user.fetch(header);
     },
+      
+    authenticated: function(model, response, xhr, page) {
+      this.token = new Token(response.user.token);
+      delete response.user.token;
+      this.currentUser = new User(response.user);
 
-    authenticated: function(options) {
-      this.token = new Token(options.response.user.token);
-      delete options.response.user.token;
-      this.currentUser = new User(options.response.user);
+      this.listenTo(this.token, 'destroy', this.signedOut);
 
       $.cookie('_jf_session_token', this.token.get('key'));
       $.cookie('_jf_session_userId', this.currentUser.get('id'));
@@ -61,27 +68,30 @@ define([
       this.navView.userAuthenticated(this.currentUser.get('username'));
       this.contentView.setAuth({ currentUser: this.currentUser, token: this.token });
 
-      if (options.page) {
-        this.currentPage = options.page;
+      if (page) {
+        this.currentPage = page;
       }
 
       this.contentView.fetchResumes();
     },
 
-    signout: function() {
-      var header = { headers: {'X-Toke-Key': this.token.get('key') }};
-      this.token.destroy(header).done(function(response) {
-        $.removeCookie('_jf_session_token');
-        $.removeCookie('_jf_session_userId');
-        this.navView.userSignedOut();
-        this.contentView.destroyAuth();
-      }.bind(this)).fail(function(response) {
-        console.log(response);
-      });
+    notAuthenticated: function(response) {
+      console.log(response);
+      $.removeCookie('_jf_session_token');
+      $.removeCookie('_jf_session_userId');
+      this.contentView.fetchResumes();
     },
 
-    showPage: function() {
-      this.vent.trigger('show:' + this.currentPage);
+    signout: function() {
+      var header = { headers: {'X-Toke-Key': this.token.get('key') }};
+      this.token.destroy(header);
+    },
+
+    signedOut: function() {
+      $.removeCookie('_jf_session_token');
+      $.removeCookie('_jf_session_userId');
+      this.navView.userSignedOut();
+      this.contentView.destroyAuth();
     }
   });
 

@@ -31,11 +31,18 @@ define([
       e.preventDefault();
       var un = this.$('input#username').val();
       var pw = this.$('input#password').val();
-      new Token({ username: un, password: pw }).save().done(function(response) {
-        this.vent.trigger('session:authenticated', { response: response, page: "home" });
-      }.bind(this)).fail(function(response) {
-        console.log(response);
-      });
+      var token = new Token({ username: un, password: pw });
+      this.listenTo(token, 'sync', this.signinSuccess);
+      this.listenTo(token, 'error', this.signinFailure);
+      token.save();
+    },
+
+    signinSuccess: function(model, response, xhr) {
+      this.vent.trigger('session:authenticated', model, response, xhr, 'home');
+    },
+
+    signinFailure: function(model, response, xhr) {
+      console.log('Signin Failure');
     }
   });
 
