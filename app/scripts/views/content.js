@@ -5,9 +5,10 @@ define([
   'views/session',
   'views/resume',
   'views/new_resume',
+  'views/resumes',
   'models/resume',
   'collections/resume'
-], function ($, _, Backbone, SessionView, ResumeView, NewResumeView, Resume, ResumeCollection) {
+], function ($, _, Backbone, SessionView, ResumeView, NewResumeView, ResumesView, Resume, ResumeCollection) {
   'use strict';
 
   var ContentView = Backbone.View.extend({
@@ -21,6 +22,7 @@ define([
       this.vent.on('show:home', this.showHome.bind(this));
       this.vent.on('show:resume', this.showResume.bind(this));
       this.vent.on('show:new_resume', this.showNewResume.bind(this));
+      this.vent.on('show:resumes', this.showResumes.bind(this));
 
       this.resumes = new ResumeCollection();
       this.listenTo(this.resumes, 'reset', this.resumesFetched);
@@ -60,12 +62,18 @@ define([
       var resume = this.resumes.get(1);
       var resumeView = new ResumeView({ model: resume, auth: this.auth });
       this.listenTo(resumeView, 'show:new_resume', this.showNewResume);
+      this.listenTo(resumeView, 'show:resumes', this.showResumes);
       this.$el.html(resumeView.render().el);
     },
 
     showNewResume: function() {
       Backbone.history.navigate("new_resume");
       this.$el.html(new NewResumeView(this.resumes).render().el);
+    },
+
+    showResumes: function() {
+      Backbone.history.navigate("resumes");
+      this.$el.html(new ResumesView({ collection: this.resumes }).render().el);
     }
   });
 

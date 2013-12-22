@@ -18,7 +18,8 @@ define([
     },
 
     events: {
-      'click .new_resume': 'showNewResume'
+      'click .new_resume': 'showNewResume',
+      'click .resumes': 'showResumes'
     },
 
     render: function() {
@@ -31,8 +32,14 @@ define([
       return this;
     },
 
-    showNewResume: function() {
+    showNewResume: function(e) {
+      e.preventDefault();
       this.trigger('show:new_resume');
+    },
+
+    showResumes: function(e) {
+      e.preventDefault();
+      this.trigger('show:resumes');
     }
   });
 

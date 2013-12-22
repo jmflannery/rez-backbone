@@ -16,6 +16,7 @@ define([
       '': 'home',
       'signin': 'signin',
       'resume': 'resume',
+      'resumes': 'resumes',
       'new_resume': 'new_resume'
     },
 
@@ -29,6 +30,10 @@ define([
 
     resume: function() {
       new AppView(this.vent, 'resume');
+    },
+
+    resumes: function() {
+      new AppView(this.vent, 'resumes');
     },
 
     new_resume: function() {
