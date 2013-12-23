@@ -326,7 +326,6 @@ module.exports = function (grunt) {
             'createDefaultTemplate',
             'jst',
             'compass:server',
-            'configureProxies',
             'connect:livereload',
             'open',
             'watch'
