@@ -26,12 +26,19 @@ define([
       return this;
     },
 
-    showHome: function() {
+    showHome: function(e) {
+      e.preventDefault();
       this.vent.trigger('show:home');
     },
 
-    showResume: function() {
+    showResume: function(e) {
+      e.preventDefault();
       this.vent.trigger('show:resume');
+    },
+
+    signout: function(e) {
+      e.preventDefault();
+      this.vent.trigger('session:destroy');
     },
 
     userAuthenticated: function(username) {
@@ -42,10 +49,6 @@ define([
     userSignedOut: function() {
       delete this.username;
       this.render();
-    },
-
-    signout: function() {
-      this.vent.trigger('session:destroy');
     }
   });
 
