@@ -66,9 +66,19 @@ define([
       this.$el.html(resumeView.render().el);
     },
 
+    showDetailResume: function(resume) {
+      Backbone.history.navigate("resumes/" + resume.id);
+      var resumeView = new DetailResumeView({ model: resume, auth: this.auth });
+      this.listenTo(resumeView, 'show:new_resume', this.showNewResume);
+      this.listenTo(resumeView, 'show:resumes', this.showResumes);
+      this.$el.html(resumeView.render().el);
+    },
+
     showNewResume: function() {
       Backbone.history.navigate("new_resume");
-      this.$el.html(new NewResumeView(this.resumes).render().el);
+      var newResumeView = new NewResumeView(this.resumes, this.auth);
+      this.listenTo(newResumeView, 'show:detail_resume', this.showDetailResume);
+      this.$el.html(newResumeView.render().el);
     },
 
     showResumes: function() {

@@ -15,11 +15,13 @@ define([
     id: 'new_resume',
 
     events: {
-      'submit': 'add_resume'
+      'submit': 'addResume'
     },
 
-    initialize: function(resumes) {
+    initialize: function(resumes, auth) {
       this.resumes = resumes; 
+      this.auth = auth;
+      this.listenTo(this.resumes, 'add', this.resumeAdded);
     },
 
     render: function() {
@@ -27,14 +29,25 @@ define([
       return this;
     },
 
-    add_resume: function() {
-      console.log(this.new_attrs());
-      this.resumes.create(this.new_attrs());
+    addResume: function(e) {
+      e.preventDefault();
+      var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+      this.resumes.create(this.newAttributes(), header);
     },
 
-    new_attrs: function() {
+    resumeAdded: function(model, collection, options) {
+      this.listenToOnce(model, 'sync', this.resumeSynced);
+    },
+
+    resumeSynced: function(model, response, options) {
+      this.trigger('show:detail_resume', model);
+    },
+
+    newAttributes: function() {
       return {
-        name: this.$('#new_resume_name').val()
+        resume: {
+          name: this.$('#new_resume_name').val()
+        }
       };
     }
   });
