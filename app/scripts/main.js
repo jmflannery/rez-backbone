@@ -34,5 +34,5 @@ require([
 ], function (Backbone, AppRouter, AppView) {
   var vent = _.extend({}, Backbone.Events);
   var appRouter = new AppRouter(vent);
-  Backbone.history.start({ pushState: true });
+  Backbone.history.start();
 });
