@@ -55,7 +55,7 @@ define([
       user.fetch(header);
     },
       
-    authenticated: function(model, response, xhr, page) {
+    authenticated: function(model, response, options, page) {
       this.token = new Token(response.user.token);
       delete response.user.token;
       this.currentUser = new User(response.user);
