@@ -37,8 +37,8 @@ define([
       token.save();
     },
 
-    signinSuccess: function(model, response, xhr) {
-      this.vent.trigger('session:authenticated', model, response, xhr, 'home');
+    signinSuccess: function(model, response, options) {
+      this.vent.trigger('session:authenticated', model, response, options, 'home');
     },
 
     signinFailure: function(model, response, xhr) {

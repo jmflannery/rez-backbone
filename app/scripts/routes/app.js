@@ -15,8 +15,9 @@ define([
     routes: {
       '': 'home',
       'signin': 'signin',
-      'resume': 'resume',
+      'resume': 'activeResume',
       'resumes': 'resumes',
+      'resumes/:id': 'resume',
       'new_resume': 'new_resume'
     },
 
@@ -28,8 +29,13 @@ define([
       new AppView(this.vent, 'signin');
     },
 
-    resume: function() {
-      new AppView(this.vent, 'resume');
+    activeResume: function() {
+      new AppView(this.vent, 'active_resume');
+    },
+
+    resume: function(resumeId) {
+      console.log('showing detailed resume: ' + resumeId);
+      new AppView(this.vent, 'resume', resumeId);
     },
 
     resumes: function() {

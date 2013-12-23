@@ -40,7 +40,7 @@ define([
     },
 
     resumeSynced: function(model, response, options) {
-      this.trigger('show:detail_resume', model);
+      this.trigger('show:resume', model.id);
     },
 
     newAttributes: function() {

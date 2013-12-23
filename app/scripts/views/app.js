@@ -13,9 +13,10 @@ define([
 
     el: '#page',
 
-    initialize: function(vent, currentPage) {
+    initialize: function(vent, currentPage, resumeId) {
       this.vent = vent;
       this.currentPage = currentPage;
+      this.resumeId = resumeId;
 
       this.vent.on('session:authenticated', this.authenticated.bind(this));
       this.vent.on('session:destroy', this.signout.bind(this));
@@ -44,7 +45,7 @@ define([
     },
       
     showPage: function() {
-      this.vent.trigger('show:' + this.currentPage);
+      this.vent.trigger('show:' + this.currentPage, this.resumeId);
     },
 
     authenticate: function(userId, key) {
@@ -76,7 +77,6 @@ define([
     },
 
     notAuthenticated: function(response) {
-      console.log(response);
       $.removeCookie('_jf_session_token');
       $.removeCookie('_jf_session_userId');
       this.contentView.fetchResumes();

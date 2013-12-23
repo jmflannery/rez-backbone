@@ -33,7 +33,7 @@ define([
 
     showResume: function(e) {
       e.preventDefault();
-      this.vent.trigger('show:resume');
+      this.vent.trigger('show:active_resume');
     },
 
     signout: function(e) {
