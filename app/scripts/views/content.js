@@ -15,9 +15,8 @@ define([
 
     id: 'content',
 
-    initialize: function(vent, currentPage) {
+    initialize: function(vent) {
       this.vent = vent;
-      this.currentPage = currentPage;
       this.vent.on('show:signin', this.showSignin, this);
       this.vent.on('show:home', this.showHome.bind(this));
       this.vent.on('show:active_resume', this.showActiveResume.bind(this));
@@ -26,7 +25,7 @@ define([
       this.vent.on('show:resumes', this.showResumes.bind(this));
 
       this.resumes = new ResumeCollection();
-      this.listenTo(this.resumes, 'reset', this.resumesFetched);
+      this.listenTo(this.resumes, 'sync', this.contentLoaded);
     },
 
     render: function() {
@@ -41,11 +40,11 @@ define([
       delete this.auth;
     },
 
-    fetchResumes: function() {
-      this.resumes.fetch({ reset: true });
+    loadContent: function() {
+      this.resumes.fetch();
     },
 
-    resumesFetched: function() {
+    contentLoaded: function() {
       this.trigger('content:loaded');
     },
 

@@ -13,28 +13,26 @@ define([
 
     el: '#page',
 
-    initialize: function(vent, currentPage, resumeId) {
+    initialize: function(vent) {
       this.vent = vent;
-      this.currentPage = currentPage;
-      this.resumeId = resumeId;
 
       this.vent.on('session:authenticated', this.authenticated.bind(this));
-      this.vent.on('session:destroy', this.signout.bind(this));
+      this.vent.on('session:destroy', this.signOut.bind(this));
 
       this.navView = new NavView(this.vent);
-      this.contentView = new ContentView(this.vent, currentPage);
+      this.contentView = new ContentView(this.vent);
 
-      this.listenTo(this.contentView, 'content:loaded', this.showPage);
+      this.listenTo(this.contentView, 'content:loaded', this.contentLoaded);
+
+      this.render();
 
       var userId = $.cookie('_jf_session_userId');
       var key = $.cookie('_jf_session_token');
 
-      this.render();
-
       if (userId && key) {
         this.authenticate(userId, key);
       } else {
-        this.contentView.fetchResumes();
+        this.contentView.loadContent();
       }
     },
 
@@ -44,8 +42,8 @@ define([
       return this;
     },
       
-    showPage: function() {
-      this.vent.trigger('show:' + this.currentPage, this.resumeId);
+    contentLoaded: function() {
+      this.trigger('content:loaded');
     },
 
     authenticate: function(userId, key) {
@@ -56,7 +54,7 @@ define([
       user.fetch(header);
     },
       
-    authenticated: function(model, response, options, page) {
+    authenticated: function(model, response, options) {
       this.token = new Token(response.user.token);
       delete response.user.token;
       this.currentUser = new User(response.user);
@@ -69,20 +67,16 @@ define([
       this.navView.userAuthenticated(this.currentUser.get('username'));
       this.contentView.setAuth({ currentUser: this.currentUser, token: this.token });
 
-      if (page) {
-        this.currentPage = page;
-      }
-
-      this.contentView.fetchResumes();
+      this.contentView.loadContent();
     },
 
     notAuthenticated: function(response) {
       $.removeCookie('_jf_session_token');
       $.removeCookie('_jf_session_userId');
-      this.contentView.fetchResumes();
+      this.contentView.loadContent();
     },
 
-    signout: function() {
+    signOut: function() {
       var header = { headers: {'X-Toke-Key': this.token.get('key') }};
       this.token.destroy(header);
     },

@@ -1,9 +1,6 @@
 define([
-  'jquery',
-  'backbone',
-  'views/app',
-  'jquery.cookie'
-], function ($, Backbone, AppView) {
+  'backbone'
+], function (Backbone) {
   'use strict';
 
   var AppRouter = Backbone.Router.extend({
@@ -18,33 +15,31 @@ define([
       'resume': 'activeResume',
       'resumes': 'resumes',
       'resumes/:id': 'resume',
-      'new_resume': 'new_resume'
+      'new_resume': 'newResume'
     },
 
     home: function() {
-      new AppView(this.vent, 'home');
+      this.vent.trigger('show:home');
     },
 
     signin: function() {
-      new AppView(this.vent, 'signin');
+      this.vent.trigger('show:signin');
     },
 
     activeResume: function() {
-      new AppView(this.vent, 'active_resume');
+      this.vent.trigger('show:active_resume');
     },
 
     resume: function(resumeId) {
-      console.log('showing detailed resume: ' + resumeId);
-      new AppView(this.vent, 'resume', resumeId);
+      this.vent.trigger('show:resume', resumeId);
     },
 
     resumes: function() {
-      new AppView(this.vent, 'resumes');
+      this.vent.trigger('show:resumes');
     },
 
-    new_resume: function() {
-      console.log('new resume');
-      new AppView(this.vent, 'new_resume');
+    newResume: function() {
+      this.vent.trigger('show:new_resume');
     }
   });
 
