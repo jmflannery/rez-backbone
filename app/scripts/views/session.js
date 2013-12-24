@@ -38,7 +38,8 @@ define([
     },
 
     signinSuccess: function(model, response, options) {
-      this.vent.trigger('session:authenticated', model, response, options, 'home');
+      options.nextPage = 'home';
+      this.vent.trigger('session:authenticated', model, response, options);
     },
 
     signinFailure: function(model, response, xhr) {
