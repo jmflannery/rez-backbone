@@ -14,8 +14,8 @@ define([
       'signin': 'signin',
       'resume': 'activeResume',
       'resumes': 'resumes',
-      'resumes/:id': 'resume',
-      'new_resume': 'newResume'
+      'resumes/new': 'newResume',
+      'resumes/:id': 'resume'
     },
 
     home: function() {

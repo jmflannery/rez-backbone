@@ -76,7 +76,7 @@ define([
     },
 
     showNewResume: function() {
-      Backbone.history.navigate("new_resume");
+      Backbone.history.navigate("resumes/new");
       var newResumeView = new NewResumeView(this.resumes, this.auth);
       this.listenTo(newResumeView, 'show:resume', this.showResume);
       this.$el.html(newResumeView.render().el);
