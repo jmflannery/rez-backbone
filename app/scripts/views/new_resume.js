@@ -31,8 +31,12 @@ define([
 
     addResume: function(e) {
       e.preventDefault();
-      var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
-      this.resumes.create(this.newAttributes(), header);
+      if (this.auth) { 
+        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+        this.resumes.create(this.newAttributes(), header);
+      } else {
+        console.log('Not Authorized');
+      }
     },
 
     resumeAdded: function(model, collection, options) {
