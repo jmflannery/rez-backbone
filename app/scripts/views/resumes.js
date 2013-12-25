@@ -12,9 +12,15 @@ define([
 
     id: 'resumes',
 
+    initialize: function(options) {
+      this.auth = options.auth;
+      this.listenTo(this.collection, 'remove', this.render);
+    },
+
     render: function() {
+      this.$el.empty();
       this.collection.each(function(resume) {
-        this.$el.append(new ResumeView({ model: resume }).render().el);
+        this.$el.append(new ResumeView({ model: resume, auth: this.auth }).render().el);
       }, this);
 
       return this;
