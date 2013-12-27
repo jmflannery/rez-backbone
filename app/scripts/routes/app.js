@@ -15,7 +15,8 @@ define([
       'resume': 'activeResume',
       'resumes': 'resumes',
       'resumes/new': 'newResume',
-      'resumes/:id': 'resume'
+      'resumes/:id': 'resume',
+      'resumes/:id/edit': 'editResume'
     },
 
     home: function() {
@@ -40,6 +41,10 @@ define([
 
     newResume: function() {
       this.vent.trigger('show:new_resume');
+    },
+
+    editResume: function(resumeId) {
+      this.vent.trigger('show:edit_resume', resumeId);
     }
   });
 

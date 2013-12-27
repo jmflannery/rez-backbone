@@ -1,3 +1,8 @@
+<% if (this.auth) { %>
+  <a href='#' class='new_resume'>New</a>
+  <a href='#' class='resumes'>All</a>
+  <a href='#' class='edit_resume'>Edit</a>
+<% } %>
 <% if (this.model) { %>
   <p><%= this.model.get('name') %></p>
 <% } else { %>

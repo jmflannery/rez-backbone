@@ -1,0 +1,14 @@
+<a href='#' class='done_editing'>Done</a>
+<% if (this.model) { %>
+  <div>
+    <label for="resume_name">Resume name: </label>
+    <input type="text" id="resume_name" value="<%= this.model.get('name') %>">
+  </div>
+  <h3>Profile</h3>
+  <a href='#' class='new_profile'>New Profile</a>
+  <h3>Address</h3>
+  <a href='#' class='new_address'>New Address</a>
+<% } else { %>
+  <p>No Resume</p>
+<% } %>
+

@@ -9,7 +9,6 @@ define([
 
   var DetailResumeView = Backbone.View.extend({
     template: JST['app/scripts/templates/detail_resume.ejs'],
-    authenticatedTemplate: JST['app/scripts/templates/authenticated_detail_resume.ejs'],
 
     id: 'resume',
 
@@ -19,16 +18,12 @@ define([
 
     events: {
       'click .new_resume': 'showNewResume',
-      'click .resumes': 'showResumes'
+      'click .resumes': 'showResumes',
+      'click .edit_resume': 'showEditResume'
     },
 
     render: function() {
-      if (this.auth) {
-        this.$el.html(this.authenticatedTemplate());
-      } else {
-        this.$el.html(this.template());
-      }
-
+      this.$el.html(this.template());
       return this;
     },
 
@@ -40,6 +35,11 @@ define([
     showResumes: function(e) {
       e.preventDefault();
       this.trigger('show:resumes');
+    },
+
+    showEditResume: function(e) {
+      e.preventDefault();
+      this.trigger('show:edit_resume', this.model.id);
     }
   });
 
