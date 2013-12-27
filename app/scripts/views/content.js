@@ -84,7 +84,11 @@ define([
 
     showResumes: function() {
       Backbone.history.navigate("resumes");
-      this.$el.html(new ResumesView({ collection: this.resumes, auth: this.auth }).render().el);
+      this.$el.html(new ResumesView({
+        collection: this.resumes,
+        auth: this.auth,
+        vent: this.vent
+      }).render().el);
     }
   });
 
