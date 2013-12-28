@@ -19,6 +19,11 @@ define([
       'click .done_editing': 'doneEditing'
     },
 
+    initialize: function(options) {
+      this.auth = options.auth;
+      this.listenTo(this.model, 'sync', this.resumeSaved)
+    },
+
     render: function() {
       this.$el.html(this.template());
       return this;
@@ -26,6 +31,13 @@ define([
 
     doneEditing: function(e) {
       e.preventDefault();
+      var newName = this.$('input#resume_name').val();
+      this.model.set('name', newName);
+      var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+      this.model.save({}, header);
+    },
+
+    resumeSaved: function() {
       this.trigger('show:resume', this.model.id);
     }
   });
