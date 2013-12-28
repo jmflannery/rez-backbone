@@ -1,5 +1,6 @@
-<a href='#' class='done_editing'>Done</a>
 <% if (this.model) { %>
+  <a href='#' class='done_editing'>Done</a>
+  <div id='errors'></div>
   <div>
     <label for="resume_name">Resume name: </label>
     <input type="text" id="resume_name" value="<%= this.model.get('name') %>">

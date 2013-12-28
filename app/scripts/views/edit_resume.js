@@ -21,7 +21,8 @@ define([
 
     initialize: function(options) {
       this.auth = options.auth;
-      this.listenTo(this.model, 'sync', this.resumeSaved)
+      this.listenTo(this.model, 'sync', this.resumeSaved);
+      this.listenTo(this.model, 'error', this.resumeSaveError);
     },
 
     render: function() {
@@ -39,6 +40,31 @@ define([
 
     resumeSaved: function() {
       this.trigger('show:resume', this.model.id);
+    },
+
+    resumeSaveError: function(model, xhr, options) {
+      var errors = this.formatErrors(xhr.responseText);
+      var errorsEl = this.$('#errors').empty();
+      _.each(errors, function(element, index, list) {
+        var er = $('<p>').text(element);
+        errorsEl.append(er);
+      }, this);
+    },
+
+    formatErrors: function(errorText) {
+      var error = JSON.parse(errorText);
+      var errors = [];
+      _.each(error, function(value, key, obj) {
+        _.each(value, function(element, index, list) {
+          var e = this.capitaliseFirst(key) + ' ' + element + '.';
+          errors.push(e);
+        }, this);
+      }, this);
+      return errors;
+    },
+
+    capitaliseFirst: function(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
     }
   });
 
