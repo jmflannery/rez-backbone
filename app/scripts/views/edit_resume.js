@@ -2,8 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'templates'
-], function ($, _, Backbone, JST) {
+  'templates',
+  'views/new_profile'
+], function ($, _, Backbone, JST, NewProfileView) {
   'use strict';
 
   var EditResumeView = Backbone.View.extend({
@@ -16,7 +17,8 @@ define([
     },
 
     events: {
-      'click .done_editing': 'doneEditing'
+      'click .done_editing': 'doneEditing',
+      'click .new_profile': 'newProfile'
     },
 
     initialize: function(options) {
@@ -49,6 +51,11 @@ define([
         var er = $('<p>').text(element);
         errorsEl.append(er);
       }, this);
+    },
+
+    newProfile: function(e) {
+      e.preventDefault();
+      this.$('#profile').html(new NewProfileView().render().el);
     },
 
     formatErrors: function(errorText) {
