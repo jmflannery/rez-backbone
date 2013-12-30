@@ -99,8 +99,8 @@ define([
       Backbone.history.navigate("resumes/" + resumeId + "/edit");
       var resume = this.resumes.get(resumeId);
       this.editResumeView = new EditResumeView({ model: resume, auth: this.auth });
-      this.listenTo(this.editResumeView, 'content:loaded', this.showEditResume);
       this.listenTo(this.editResumeView, 'show:resume', this.showResume);
+      this.listenTo(this.editResumeView, 'ready', this.showEditResume);
     },
 
     showEditResume: function() {

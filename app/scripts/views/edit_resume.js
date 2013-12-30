@@ -34,26 +34,23 @@ define([
 
     render: function() {
       this.$el.html(this.template());
-      var selectProfileView = new SelectProfileView();
-      this.listenTo(selectProfileView, 'show:new:profile', this.showNewProfile, this);
-      this.$('#profile').html(selectProfileView.render().el);
+      this.$('#profile').html(this.selectProfileView.render().el);
       return this;
     },
 
-    profilesLoaded: function(collection, response, options) {
-      this.trigger('content:loaded');
-      this.loadProfileDropDown();
-    },
-
-    loadProfileDropDown: function() {
-      var dropDown = this.$('select#resume_profile');
-      this.profiles.each(function(profile) {
-        dropDown.append($('<option>')).val(profile.id).text(profile.get('firstname'));
-      });
+    profilesLoaded: function() {
+      this.selectProfileView = new SelectProfileView({ collection: this.profiles });
+      this.listenTo(this.selectProfileView, 'show:new:profile', this.showNewProfile);
+      this.trigger('ready');
     },
 
     showNewProfile: function() {
-      var newProfileView = new NewProfileView({ resume: this.model });
+      console.log('show new profile');
+      var newProfileView = new NewProfileView({
+        resume: this.model,
+        collection: this.profiles,
+        auth: this.auth
+      });
       this.listenTo(newProfileView, 'profile:new:cancel', this.cancelNewProfile);
       this.$('#profile').html(newProfileView.render().el);
     },

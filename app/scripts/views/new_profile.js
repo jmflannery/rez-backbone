@@ -13,6 +13,7 @@ define([
 
     initialize: function(options) {
       this.resume = options.resume;
+      this.auth = options.auth;
     },
 
     events: {
@@ -26,15 +27,27 @@ define([
     },
 
     saveProfile: function(e) {
-      e.preventDefault()
-      var firstname = this.$('#new_profile_firstname').val();
-      var middlename = this.$('#new_profile_middlename').val();
-      var lastname = this.$('#new_profile_lastname').val();
-      var nickname = this.$('#new_profile_nickname').val();
-      var prefix = this.$('#new_profile_prefix').val();
-      var suffix = this.$('#new_profile_suffix').val();
-      var title = this.$('#new_profile_title').val();
-      console.log(firstname, middlename, lastname, nickname, prefix, suffix, title);
+      e.preventDefault();
+      if (this.auth) {
+        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+        this.collection.create(this.newAttributes(), header);
+      } else {
+        console.log('Aint Authed');
+      }
+    },
+
+    newAttributes: function() {
+      return {
+        profile: {
+          firstname: this.$('#new_profile_firstname').val(),
+          middlename: this.$('#new_profile_middlename').val(),
+          lastname: this.$('#new_profile_lastname').val(),
+          nickname: this.$('#new_profile_nickname').val(),
+          prefix: this.$('#new_profile_prefix').val(),
+          suffix: this.$('#new_profile_suffix').val(),
+          title: this.$('#new_profile_title').val()
+        }
+      };
     },
 
     cancel: function(e) {

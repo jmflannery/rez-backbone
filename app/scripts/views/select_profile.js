@@ -17,7 +17,15 @@ define([
 
     render: function() {
       this.$el.html(this.template());
+      this.loadProfileDropDown();
       return this;
+    },
+
+    loadProfileDropDown: function() {
+      var dropDown = this.$('select#resume_profile');
+      this.collection.each(function(profile) {
+        dropDown.append($('<option>').val(profile.id).text(profile.get('firstname')));
+      });
     },
 
     newProfile: function(e) {
