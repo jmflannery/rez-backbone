@@ -34,23 +34,31 @@ define([
 
     render: function() {
       this.$el.html(this.template());
-      this.$('#profile').html(this.selectProfileView.render().el);
+      this.renderSelectProfileView();
       return this;
     },
 
     profilesLoaded: function() {
-      this.selectProfileView = new SelectProfileView({ collection: this.profiles });
-      this.listenTo(this.selectProfileView, 'show:new:profile', this.showNewProfile);
+      this.initSelectProfileView();
       this.trigger('ready');
     },
 
+    initSelectProfileView: function() {
+      this.selectProfileView = new SelectProfileView({ collection: this.profiles });
+      this.listenTo(this.selectProfileView, 'show:new:profile', this.showNewProfile);
+    },
+
+    renderSelectProfileView: function() {
+      this.$('#profile').html(this.selectProfileView.render().el);
+    },
+
     showNewProfile: function() {
-      console.log('show new profile');
       var newProfileView = new NewProfileView({
         resume: this.model,
         collection: this.profiles,
         auth: this.auth
       });
+      this.listenTo(newProfileView, 'profile:new:saved', this.newProfileSaved);
       this.listenTo(newProfileView, 'profile:new:cancel', this.cancelNewProfile);
       this.$('#profile').html(newProfileView.render().el);
     },
@@ -76,8 +84,14 @@ define([
       }, this);
     },
 
+    newProfileSaved: function() {
+      this.initSelectProfileView();
+      this.renderSelectProfileView();
+    },
+
     cancelNewProfile: function() {
-      this.render();
+      this.initSelectProfileView();
+      this.renderSelectProfileView();
     },
 
     formatErrors: function(errorText) {

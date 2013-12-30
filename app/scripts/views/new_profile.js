@@ -14,6 +14,7 @@ define([
     initialize: function(options) {
       this.resume = options.resume;
       this.auth = options.auth;
+      this.listenTo(this.collection, 'sync', this.profileSynced);
     },
 
     events: {
@@ -34,6 +35,10 @@ define([
       } else {
         console.log('Aint Authed');
       }
+    },
+
+    profileSynced: function(model, response, options) {
+      this.trigger('profile:new:saved');
     },
 
     newAttributes: function() {

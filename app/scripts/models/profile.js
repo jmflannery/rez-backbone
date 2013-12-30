@@ -13,6 +13,14 @@ define([
       prefix: '',
       suffix: '',
       title: ''
+    },
+
+    parse: function(response) {
+      if (response.profile) {
+        return response.profile;
+      } else {
+        return response;
+      }
     }
   });
 
