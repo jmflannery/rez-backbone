@@ -11,6 +11,10 @@ define([
 
     id: '#new_profile',
 
+    initialize: function(options) {
+      this.resume = options.resume;
+    },
+
     events: {
       'click #save_profile': 'saveProfile',
       'click #cancel': 'cancel'
@@ -35,7 +39,7 @@ define([
 
     cancel: function(e) {
       e.preventDefault();
-      console.log('Canceled.');
+      this.trigger('profile:new:cancel');
     }
   });
 

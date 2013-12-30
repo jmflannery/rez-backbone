@@ -3,8 +3,9 @@ define([
   'underscore',
   'backbone',
   'templates',
+  'views/select_profile',
   'views/new_profile'
-], function ($, _, Backbone, JST, NewProfileView) {
+], function ($, _, Backbone, JST, SelectProfileView, NewProfileView) {
   'use strict';
 
   var EditResumeView = Backbone.View.extend({
@@ -17,8 +18,7 @@ define([
     },
 
     events: {
-      'click .done_editing': 'doneEditing',
-      'click .new_profile': 'newProfile'
+      'click .done_editing': 'doneEditing'
     },
 
     initialize: function(options) {
@@ -29,7 +29,16 @@ define([
 
     render: function() {
       this.$el.html(this.template());
+      var selectProfileView = new SelectProfileView();
+      this.listenTo(selectProfileView, 'show:new:profile', this.showNewProfile, this);
+      this.$('#profile').html(selectProfileView.render().el);
       return this;
+    },
+
+    showNewProfile: function() {
+      var newProfileView = new NewProfileView({ resume: this.model });
+      this.listenTo(newProfileView, 'profile:new:cancel', this.cancelNewProfile);
+      this.$('#profile').html(newProfileView.render().el);
     },
 
     doneEditing: function(e) {
@@ -53,9 +62,8 @@ define([
       }, this);
     },
 
-    newProfile: function(e) {
-      e.preventDefault();
-      this.$('#profile').html(new NewProfileView().render().el);
+    cancelNewProfile: function() {
+      this.render();
     },
 
     formatErrors: function(errorText) {
