@@ -24,7 +24,7 @@ define([
       this.vent.on('show:resume', this.showResume.bind(this));
       this.vent.on('show:new_resume', this.showNewResume.bind(this));
       this.vent.on('show:resumes', this.showResumes.bind(this));
-      this.vent.on('show:edit_resume', this.showEditResume.bind(this));
+      this.vent.on('show:edit_resume', this.loadEditResume.bind(this));
 
       this.resumes = new ResumeCollection();
       this.listenTo(this.resumes, 'sync', this.contentLoaded);
@@ -65,7 +65,7 @@ define([
       var resumeView = new DetailResumeView({ model: resume, auth: this.auth });
       this.listenTo(resumeView, 'show:new_resume', this.showNewResume);
       this.listenTo(resumeView, 'show:resumes', this.showResumes);
-      this.listenToOnce(resumeView, 'show:edit_resume', this.showEditResume);
+      this.listenToOnce(resumeView, 'show:edit_resume', this.loadEditResume);
       this.$el.html(resumeView.render().el);
     },
 
@@ -75,7 +75,7 @@ define([
       var resumeView = new DetailResumeView({ model: resume, auth: this.auth });
       this.listenToOnce(resumeView, 'show:new_resume', this.showNewResume);
       this.listenToOnce(resumeView, 'show:resumes', this.showResumes);
-      this.listenToOnce(resumeView, 'show:edit_resume', this.showEditResume);
+      this.listenToOnce(resumeView, 'show:edit_resume', this.loadEditResume);
       this.$el.html(resumeView.render().el);
     },
 
@@ -95,12 +95,16 @@ define([
       }).render().el);
     },
 
-    showEditResume: function(resumeId) {
+    loadEditResume: function(resumeId) {
       Backbone.history.navigate("resumes/" + resumeId + "/edit");
       var resume = this.resumes.get(resumeId);
-      var editResumeView = new EditResumeView({ model: resume, auth: this.auth });
-      this.listenTo(editResumeView, 'show:resume', this.showResume);
-      this.$el.html(editResumeView.render().el);
+      this.editResumeView = new EditResumeView({ model: resume, auth: this.auth });
+      this.listenTo(this.editResumeView, 'content:loaded', this.showEditResume);
+      this.listenTo(this.editResumeView, 'show:resume', this.showResume);
+    },
+
+    showEditResume: function() {
+      this.$el.html(this.editResumeView.render().el);
     }
   });
 

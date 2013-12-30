@@ -27,9 +27,9 @@ define([
       this.listenTo(this.model, 'sync', this.resumeSaved);
       this.listenTo(this.model, 'error', this.resumeSaveError);
 
-      this.collection = new ProfileCollection();
-      this.listenTo(this.collection, 'sync', this.profilesLoaded);
-      this.collection.fetch();
+      this.profiles = new ProfileCollection();
+      this.listenTo(this.profiles, 'sync', this.profilesLoaded);
+      this.profiles.fetch();
     },
 
     render: function() {
@@ -41,7 +41,15 @@ define([
     },
 
     profilesLoaded: function(collection, response, options) {
-      console.log(this.collection);
+      this.trigger('content:loaded');
+      this.loadProfileDropDown();
+    },
+
+    loadProfileDropDown: function() {
+      var dropDown = this.$('select#resume_profile');
+      this.profiles.each(function(profile) {
+        dropDown.append($('<option>')).val(profile.id).text(profile.get('firstname'));
+      });
     },
 
     showNewProfile: function() {
