@@ -4,8 +4,9 @@ define([
   'backbone',
   'templates',
   'views/select_profile',
-  'views/new_profile'
-], function ($, _, Backbone, JST, SelectProfileView, NewProfileView) {
+  'views/new_profile',
+  'collections/profile'
+], function ($, _, Backbone, JST, SelectProfileView, NewProfileView, ProfileCollection) {
   'use strict';
 
   var EditResumeView = Backbone.View.extend({
@@ -25,6 +26,10 @@ define([
       this.auth = options.auth;
       this.listenTo(this.model, 'sync', this.resumeSaved);
       this.listenTo(this.model, 'error', this.resumeSaveError);
+
+      this.collection = new ProfileCollection();
+      this.listenTo(this.collection, 'sync', this.profilesLoaded);
+      this.collection.fetch();
     },
 
     render: function() {
@@ -33,6 +38,10 @@ define([
       this.listenTo(selectProfileView, 'show:new:profile', this.showNewProfile, this);
       this.$('#profile').html(selectProfileView.render().el);
       return this;
+    },
+
+    profilesLoaded: function(collection, response, options) {
+      console.log(this.collection);
     },
 
     showNewProfile: function() {
