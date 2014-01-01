@@ -38,7 +38,7 @@ define([
     },
 
     profileSynced: function(model, response, options) {
-      this.trigger('profile:new:saved');
+      this.trigger('profile:new:saved', model);
     },
 
     newAttributes: function() {

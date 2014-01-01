@@ -44,8 +44,14 @@ define([
     },
 
     initSelectProfileView: function() {
-      this.selectProfileView = new SelectProfileView({ collection: this.profiles });
+      this.selectProfileView = new SelectProfileView({
+        collection: this.profiles
+      });
       this.listenTo(this.selectProfileView, 'show:new:profile', this.showNewProfile);
+    },
+
+    setSelectedProfile: function(profile) {
+      this.selectProfileView.setSelectedProfile(profile.id);
     },
 
     renderSelectProfileView: function() {
@@ -84,9 +90,10 @@ define([
       }, this);
     },
 
-    newProfileSaved: function() {
+    newProfileSaved: function(profile) {
       this.initSelectProfileView();
       this.renderSelectProfileView();
+      this.setSelectedProfile(profile);
     },
 
     cancelNewProfile: function() {

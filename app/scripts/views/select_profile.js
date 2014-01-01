@@ -28,6 +28,11 @@ define([
       });
     },
 
+    setSelectedProfile: function(profileId) {
+      this.dropDown = this.$('select#resume_profile');
+      this.dropDown.val(profileId);
+    },
+
     newProfile: function(e) {
       e.preventDefault();
       this.trigger('show:new:profile');
