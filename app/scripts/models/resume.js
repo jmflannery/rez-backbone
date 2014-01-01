@@ -13,6 +13,12 @@ define([
       } else {
         return response;
       }
+    },
+
+    toJSON: function() {
+      return {
+        resume: this.attributes
+      };
     }
   });
 

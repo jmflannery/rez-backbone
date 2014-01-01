@@ -33,6 +33,10 @@ define([
       this.dropDown.val(profileId);
     },
 
+    getSelectedProfileId: function() {
+      return this.$('select#resume_profile').val();
+    },
+
     newProfile: function(e) {
       e.preventDefault();
       this.trigger('show:new:profile');
