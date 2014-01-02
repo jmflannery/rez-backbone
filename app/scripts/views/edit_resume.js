@@ -50,8 +50,8 @@ define([
       this.listenTo(this.selectProfileView, 'show:new:profile', this.showNewProfile);
     },
 
-    setSelectedProfile: function(profile) {
-      this.selectProfileView.setSelectedProfile(profile.id);
+    setSelectedProfileId: function(profileId) {
+      this.selectProfileView.setSelectedProfile(profileId);
     },
 
     getSelectedProfileId: function() {
@@ -60,6 +60,10 @@ define([
 
     renderSelectProfileView: function() {
       this.$('#profile').html(this.selectProfileView.render().el);
+      var profileId = this.model.get('profile').id;
+      if (profileId) {
+        this.setSelectedProfileId(profileId);
+      }
     },
 
     showNewProfile: function() {
@@ -102,7 +106,7 @@ define([
     newProfileSaved: function(profile) {
       this.initSelectProfileView();
       this.renderSelectProfileView();
-      this.setSelectedProfile(profile);
+      this.setSelectedProfileId(profile.id);
     },
 
     cancelNewProfile: function() {
