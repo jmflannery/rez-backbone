@@ -76,9 +76,12 @@ define([
     doneEditing: function(e) {
       e.preventDefault();
       var newName = this.$('input#resume_name').val();
-      var profileId = this.getSelectedProfileId();
       this.model.set('name', newName);
-      this.model.set('profile_id', profileId);
+      var profileId = this.getSelectedProfileId();
+      var profile = this.profiles.get(profileId);
+      if (profile) {
+        this.model.set('profile', profile);
+      }
       var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
       this.model.save({}, header);
     },
