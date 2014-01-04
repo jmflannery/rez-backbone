@@ -31,7 +31,7 @@ define([
     },
 
     profileFetched: function(model, response, options) {
-      this.trigger('loaded', this);
+      this.trigger('resume:loaded', this);
     },
 
     parse: function(response) {

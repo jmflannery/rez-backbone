@@ -40,7 +40,7 @@ define([
 
     profilesLoaded: function() {
       this.initSelectProfileView();
-      this.trigger('ready');
+      this.trigger('resume:edit:ready');
     },
 
     initSelectProfileView: function() {
