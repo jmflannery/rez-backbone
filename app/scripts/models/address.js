@@ -9,7 +9,7 @@ define([
 
     defaults: {
       building_number: '',
-      street_address: '',
+      street_name: '',
       secondary_address: '',
       city: '',
       state: '',
