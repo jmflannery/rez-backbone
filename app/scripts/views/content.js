@@ -18,16 +18,16 @@ define([
 
     initialize: function(vent) {
       this.vent = vent;
-      this.vent.on('show:signin', this.showSignin, this);
-      this.vent.on('show:home', this.showHome.bind(this));
-      this.vent.on('show:active_resume', this.showActiveResume.bind(this));
-      this.vent.on('show:resume', this.showResume.bind(this));
-      this.vent.on('show:new_resume', this.showNewResume.bind(this));
-      this.vent.on('show:resumes', this.showResumes.bind(this));
-      this.vent.on('show:edit_resume', this.showEditResume.bind(this));
+      this.listenTo(this.vent, 'show:signin', this.showSignin);
+      this.listenTo(this.vent, 'show:home', this.showHome);
+      this.listenTo(this.vent, 'show:active_resume', this.showActiveResume);
+      this.listenTo(this.vent, 'show:resume', this.showResume);
+      this.listenTo(this.vent, 'show:new_resume', this.showNewResume);
+      this.listenTo(this.vent, 'show:resumes', this.showResumes);
+      this.listenTo(this.vent, 'show:edit_resume', this.showEditResume);
 
       this.resumes = new ResumeCollection();
-      this.listenTo(this.resumes, 'sync', this.contentLoaded);
+      this.listenToOnce(this.resumes, 'sync', this.contentLoaded);
     },
 
     render: function() {
@@ -62,7 +62,7 @@ define([
     showActiveResume: function() {
       Backbone.history.navigate("resume");
       var resume = this.resumes.get(1);
-      this.listenTo(resume, 'resume:loaded', this.renderResume);
+      this.listenToOnce(resume, 'resume:loaded', this.renderResume);
       resume.fetchAssociatedObjects();
     },
 
