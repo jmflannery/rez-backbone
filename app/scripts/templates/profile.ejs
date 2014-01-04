@@ -1,5 +1,6 @@
 <% if (this.model) { %>
-  <p><%= this.model.get('firstname') %></p>
+  <p><%= this.model.fullNickNameWithSuffix() %></p>
+  <p><%= this.model.get('title') %></p>
 <% } else { %>
   <p>No Profile</p>
 <% } %>
