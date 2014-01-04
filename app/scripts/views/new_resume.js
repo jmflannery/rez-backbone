@@ -49,9 +49,7 @@ define([
 
     newAttributes: function() {
       return {
-        resume: {
-          name: this.$('#new_resume_name').val()
-        }
+        name: this.$('#new_resume_name').val()
       };
     }
   });

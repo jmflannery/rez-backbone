@@ -60,9 +60,8 @@ define([
 
     renderSelectProfileView: function() {
       this.$('#profile').html(this.selectProfileView.render().el);
-      var profileId = this.model.get('profile').id;
-      if (profileId) {
-        this.setSelectedProfileId(profileId);
+      if (this.model.get('profile')) {
+        this.setSelectedProfileId(this.model.get('profile').id);
       }
     },
 

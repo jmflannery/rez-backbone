@@ -5,6 +5,8 @@ define([
   'use strict';
 
   var ProfileModel = Backbone.Model.extend({
+    urlRoot: 'http://localhost:3000/rez/profiles',
+
     defaults: {
       firstname: '',
       middlename: '',
@@ -21,6 +23,10 @@ define([
       } else {
         return response;
       }
+    },
+
+    fullName: function() {
+      return this.get('firstname') + ' ' + this.get('middlename') + ' ' + this.get('lastname');
     }
   });
 
