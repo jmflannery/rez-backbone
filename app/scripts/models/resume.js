@@ -1,8 +1,9 @@
 define([
   'underscore',
   'backbone',
-  'models/profile'
-], function (_, Backbone, Profile) {
+  'models/profile',
+  'models/address'
+], function (_, Backbone, Profile, Address) {
   'use strict';
 
   var ResumeModel = Backbone.Model.extend({
@@ -13,25 +14,19 @@ define([
     },
 
     activeAttributes: ['name'],
-    activeAssociations: ['profile'],
+    activeAssociations: ['profile', 'address'],
 
     fetchAssociatedObjects: function() {
-      this.fetchProfile();
-    },
-
-    fetchProfile: function() {
-      if (this.get('profile_id')) {
-        var profile = new Profile({ id: this.get('profile_id') }); 
+      var profile = new Profile({ id: this.get('profile_id') }); 
+      var address = new Address({ id: this.get('address_id') }); 
+      $.when(
+        profile.fetch(),
+        address.fetch()
+      ).done(function() {
         this.set('profile', profile);
-        this.listenTo(profile, 'sync', this.profileFetched);
-        profile.fetch();
-      } else {
-        this.profileFetched();
-      }
-    },
-
-    profileFetched: function(model, response, options) {
-      this.trigger('resume:loaded', this);
+        this.set('address', address);
+        this.trigger('resume:loaded', this);
+      }.bind(this));
     },
 
     parse: function(response) {
