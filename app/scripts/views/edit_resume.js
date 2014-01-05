@@ -4,10 +4,11 @@ define([
   'backbone',
   'templates',
   'views/select_profile',
+  'views/select_address',
   'views/new_profile',
   'collections/profile',
   'collections/address'
-], function ($, _, Backbone, JST, SelectProfileView, NewProfileView, ProfileCollection, AddressCollection) {
+], function ($, _, Backbone, JST, SelectProfileView, SelectAddressView, NewProfileView, ProfileCollection, AddressCollection) {
   'use strict';
 
   var EditResumeView = Backbone.View.extend({
@@ -39,12 +40,14 @@ define([
 
     resumeLoaded: function() {
       this.initSelectProfileView();
+      this.initSelectAddressView();
       this.trigger('resume:edit:ready');
     },
 
     render: function() {
       this.$el.html(this.template());
       this.renderSelectProfileView();
+      this.renderSelectAddressView();
       return this;
     },
 
@@ -53,6 +56,13 @@ define([
         collection: this.profiles
       });
       this.listenTo(this.selectProfileView, 'show:new:profile', this.showNewProfile);
+    },
+
+    initSelectAddressView: function() {
+      this.selectAddressView = new SelectAddressView({
+        collection: this.addresses
+      });
+      this.listenTo(this.selectAddressView, 'show:new:address', this.showNewAdress);
     },
 
     setSelectedProfileId: function(profileId) {
@@ -68,6 +78,10 @@ define([
       if (this.model.get('profile')) {
         this.setSelectedProfileId(this.model.get('profile').id);
       }
+    },
+
+    renderSelectAddressView: function() {
+      this.$('#address').html(this.selectAddressView.render().el);
     },
 
     showNewProfile: function() {
