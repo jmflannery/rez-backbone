@@ -69,19 +69,30 @@ define([
       this.selectProfileView.setSelectedProfile(profileId);
     },
 
+    setSelectedAddressId: function(addressId) {
+      this.selectAddressView.setSelectedAddress(addressId);
+    },
+
     getSelectedProfileId: function() {
       return this.selectProfileView.getSelectedProfileId();
     },
 
+    getSelectedAddressId: function() {
+      return this.selectAddressView.getSelectedAddressId();
+    },
+
     renderSelectProfileView: function() {
       this.$('#profile').html(this.selectProfileView.render().el);
-      if (this.model.get('profile')) {
-        this.setSelectedProfileId(this.model.get('profile').id);
+      if (this.model.get('profile_id')) {
+        this.setSelectedProfileId(this.model.get('profile_id'));
       }
     },
 
     renderSelectAddressView: function() {
       this.$('#address').html(this.selectAddressView.render().el);
+      if (this.model.get('address_id')) {
+        this.setSelectedAddressId(this.model.get('address_id'));
+      }
     },
 
     showNewProfile: function() {
@@ -97,14 +108,24 @@ define([
 
     doneEditing: function(e) {
       e.preventDefault();
+      // name
       var newName = this.$('input#resume_name').val();
       this.model.set('name', newName);
+      // profile
       var profileId = this.getSelectedProfileId();
       var profile = this.profiles.get(profileId);
       if (profile) {
         this.model.set('profile', profile);
       }
+      // address
+      var addressId = this.getSelectedAddressId();
+      var address = this.addresses.get(addressId);
+      if (address) {
+        this.model.set('address', address);
+      }
+      // header
       var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+
       this.model.save({}, header);
     },
 
