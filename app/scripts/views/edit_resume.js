@@ -6,9 +6,10 @@ define([
   'views/select_profile',
   'views/select_address',
   'views/new_profile',
+  'views/new_address',
   'collections/profile',
   'collections/address'
-], function ($, _, Backbone, JST, SelectProfileView, SelectAddressView, NewProfileView, ProfileCollection, AddressCollection) {
+], function ($, _, Backbone, JST, SelectProfileView, SelectAddressView, NewProfileView, NewAddressView, ProfileCollection, AddressCollection) {
   'use strict';
 
   var EditResumeView = Backbone.View.extend({
@@ -62,7 +63,7 @@ define([
       this.selectAddressView = new SelectAddressView({
         collection: this.addresses
       });
-      this.listenTo(this.selectAddressView, 'show:new:address', this.showNewAdress);
+      this.listenTo(this.selectAddressView, 'show:new:address', this.showNewAddress);
     },
 
     setSelectedProfileId: function(profileId) {
@@ -104,6 +105,17 @@ define([
       this.listenTo(newProfileView, 'profile:new:saved', this.newProfileSaved);
       this.listenTo(newProfileView, 'profile:new:cancel', this.cancelNewProfile);
       this.$('#profile').html(newProfileView.render().el);
+    },
+
+    showNewAddress: function() {
+      var newAddressView = new NewAddressView({
+        resume: this.model,
+        collection: this.addresses,
+        auth: this.auth
+      });
+      this.listenTo(newAddressView, 'address:new:saved', this.newAddressSaved);
+      this.listenTo(newAddressView, 'address:new:cancel', this.cancelNewAddress);
+      this.$('#address').html(newAddressView.render().el);
     },
 
     doneEditing: function(e) {
@@ -151,6 +163,17 @@ define([
     cancelNewProfile: function() {
       this.initSelectProfileView();
       this.renderSelectProfileView();
+    },
+
+    newAddressSaved: function(address) {
+      this.initSelectAddressView();
+      this.renderSelectAddressView();
+      this.setSelectedAddressId(address.id);
+    },
+
+    cancelNewAddress: function() {
+      this.initSelectAddressView();
+      this.renderSelectAddressView();
     },
 
     formatErrors: function(errorText) {

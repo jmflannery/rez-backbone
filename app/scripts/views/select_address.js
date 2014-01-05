@@ -11,6 +11,10 @@ define([
 
     id: 'select_address',
 
+    events: {
+      'click #new_address': 'newAddress'
+    },
+
     render: function() {
       this.$el.html(this.template());
       this.loadAddressDropDown();
@@ -32,6 +36,11 @@ define([
     setSelectedAddress: function(addressId) {
       this.dropDown = this.$('select#resume_address');
       this.dropDown.val(addressId);
+    },
+
+    newAddress: function(e) {
+      e.preventDefault();
+      this.trigger('show:new:address');
     }
   });
 

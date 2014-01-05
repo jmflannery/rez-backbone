@@ -24,6 +24,12 @@ define([
       } else {
         return response;
       }
+    },
+
+    toJSON: function() {
+      return {
+        address: this.attributes
+      };
     }
   });
 
