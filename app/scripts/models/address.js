@@ -47,7 +47,9 @@ define([
     },
 
     formattedPhoneNumber: function() {
-      return this.get('area_code') + '.' + this.get('phone_number').insert(3, '.');
+      if (this.get('area_code') && this.get('phone_number')) {
+        return this.get('area_code') + '.' + this.get('phone_number').insert(3, '.');
+      }
     }
   });
 
