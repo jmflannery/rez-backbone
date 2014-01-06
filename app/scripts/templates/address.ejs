@@ -1,5 +1,5 @@
 <% if (this.model) { %>
-  <p><%= this.model.get('building_number') + ' ' + this.model.get('street_name') %></p>
+  <p><%= this.model.lineOne() + ' | ' + this.model.lineTwo() + ' | ' + this.model.lineThree() %></p>
 <% } else { %>
   <p>No Address</p>
 <% } %>

@@ -32,6 +32,18 @@ define([
       return {
         address: this.attributes
       };
+    },
+
+    lineOne: function() {
+      return this.get('building_number') + ' ' + this.get('street_name');
+    },
+  
+    lineTwo: function() {
+      return this.get('city') + ', ' + this.get('state') + ' ' + this.get('zip_code');
+    },
+
+    lineThree: function() {
+      return this.get('area_code') + '.' + this.get('phone_number');
     }
   });
 
