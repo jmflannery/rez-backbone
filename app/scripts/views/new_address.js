@@ -46,7 +46,9 @@ define([
         state: this.$('#new_address_state').val(),
         zip_code: this.$('#new_address_zip_code').val(),
         county: this.$('#new_address_county').val(),
-        country: this.$('#new_address_country').val()
+        country: this.$('#new_address_country').val(),
+        area_code: this.$('#new_address_area_code').val(),
+        phone_number: this.$('#new_address_phone_number').val()
       };
     },
 

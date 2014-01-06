@@ -15,7 +15,9 @@ define([
       state: '',
       zip_code: '',
       county: '',
-      country: ''
+      country: '',
+      area_code: '',
+      phone_number: ''
     },
 
     parse: function(response) {
