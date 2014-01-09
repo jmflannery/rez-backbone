@@ -5,11 +5,13 @@ define([
   'templates',
   'views/select_profile',
   'views/select_address',
+  'views/select_items',
   'views/new_profile',
   'views/new_address',
   'collections/profile',
-  'collections/address'
-], function ($, _, Backbone, JST, SelectProfileView, SelectAddressView, NewProfileView, NewAddressView, ProfileCollection, AddressCollection) {
+  'collections/address',
+  'collections/item'
+], function ($, _, Backbone, JST, SelectProfileView, SelectAddressView, SelectItemsView, NewProfileView, NewAddressView, ProfileCollection, AddressCollection, ItemCollection) {
   'use strict';
 
   var EditResumeView = Backbone.View.extend({
@@ -32,16 +34,19 @@ define([
 
       this.profiles = new ProfileCollection();
       this.addresses = new AddressCollection();
+      this.items = new ItemCollection();
 
       $.when(
         this.profiles.fetch(),
-        this.addresses.fetch()
+        this.addresses.fetch(),
+        this.items.fetch()
       ).then(this.resumeLoaded.bind(this));
     },
 
     resumeLoaded: function() {
       this.initSelectProfileView();
       this.initSelectAddressView();
+      this.initSelectItemView();
       this.trigger('resume:edit:ready');
     },
 
@@ -49,6 +54,7 @@ define([
       this.$el.html(this.template());
       this.renderSelectProfileView();
       this.renderSelectAddressView();
+      this.renderSelectItemsView();
       return this;
     },
 
@@ -64,6 +70,13 @@ define([
         collection: this.addresses
       });
       this.listenTo(this.selectAddressView, 'show:new:address', this.showNewAddress);
+    },
+
+    initSelectItemView: function() {
+      this.selectItemsView = new SelectItemsView({
+        collection: this.items
+      });
+      this.listenTo(this.selectItemsView, 'show:new:item', this.showNewItem);
     },
 
     setSelectedProfileId: function(profileId) {
@@ -94,6 +107,10 @@ define([
       if (this.model.get('address_id')) {
         this.setSelectedAddressId(this.model.get('address_id'));
       }
+    },
+
+    renderSelectItemsView: function() {
+      this.$('#items').html(this.selectItemsView.render().el);
     },
 
     showNewProfile: function() {
