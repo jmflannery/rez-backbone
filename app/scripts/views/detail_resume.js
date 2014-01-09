@@ -39,11 +39,11 @@ define([
     },
 
     renderProfileView: function() {
-      this.$('section#profile').html(this.profileView.render().el);
+      this.$el.append(this.profileView.render().el);
     },
 
     renderAddressView: function() {
-      this.$('section#address').html(this.addressView.render().el);
+      this.$el.append(this.addressView.render().el);
     },
 
     showNewResume: function(e) {

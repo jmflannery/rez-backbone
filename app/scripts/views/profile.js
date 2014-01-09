@@ -8,6 +8,8 @@ define([
 
   var ProfileView = Backbone.View.extend({
     template: JST['app/scripts/templates/profile.ejs'],
+    tagName: 'section',
+    id: 'profile',
 
     render: function() {
       this.$el.html(this.template());
