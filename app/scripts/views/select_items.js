@@ -2,8 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'templates'
-], function ($, _, Backbone, JST) {
+  'templates',
+  'views/items'
+], function ($, _, Backbone, JST, ItemsView) {
   'use strict';
 
   var SelectItemsView = Backbone.View.extend({
@@ -11,6 +12,7 @@ define([
 
     render: function() {
       this.$el.html(this.template());
+      this.$el.append(new ItemsView({ collection: this.collection }).render().el);
       return this;
     }
   });

@@ -7,7 +7,7 @@ define([
   var ItemModel = Backbone.Model.extend({
     defaults: {
       name: '',
-      title: ''
+      title: '',
       heading: ''
     }
   });
