@@ -8,10 +8,11 @@ define([
   'views/select_items',
   'views/new_profile',
   'views/new_address',
+  'views/new_item',
   'collections/profile',
   'collections/address',
   'collections/item'
-], function ($, _, Backbone, JST, SelectProfileView, SelectAddressView, SelectItemsView, NewProfileView, NewAddressView, ProfileCollection, AddressCollection, ItemCollection) {
+], function ($, _, Backbone, JST, SelectProfileView, SelectAddressView, SelectItemsView, NewProfileView, NewAddressView, NewItemView, ProfileCollection, AddressCollection, ItemCollection) {
   'use strict';
 
   var EditResumeView = Backbone.View.extend({
@@ -133,6 +134,15 @@ define([
       this.listenTo(newAddressView, 'address:new:saved', this.newAddressSaved);
       this.listenTo(newAddressView, 'address:new:cancel', this.cancelNewAddress);
       this.$('#address').html(newAddressView.render().el);
+    },
+
+    showNewItem: function() {
+      var newItemView = new NewItemView({
+        resume: this.model,
+        collection: this.items,
+        auth: this.auth
+      });
+      this.$('#items').html(newItemView.render().el);
     },
 
     doneEditing: function(e) {
