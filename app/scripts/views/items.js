@@ -10,7 +10,9 @@ define([
   var ItemsView = Backbone.View.extend({
     template: JST['app/scripts/templates/items.ejs'],
 
-    tagName: 'table',
+    tagName: 'section',
+
+    id: 'items',
 
     render: function() {
       this.$el.html(this.template());
