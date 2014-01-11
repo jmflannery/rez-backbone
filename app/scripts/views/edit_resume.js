@@ -47,7 +47,7 @@ define([
     resumeLoaded: function() {
       this.initSelectProfileView();
       this.initSelectAddressView();
-      this.initSelectItemView();
+      this.initSelectItemsView();
       this.trigger('resume:edit:ready');
     },
 
@@ -73,7 +73,7 @@ define([
       this.listenTo(this.selectAddressView, 'show:new:address', this.showNewAddress);
     },
 
-    initSelectItemView: function() {
+    initSelectItemsView: function() {
       this.selectItemsView = new SelectItemsView({
         collection: this.items
       });
@@ -142,6 +142,8 @@ define([
         collection: this.items,
         auth: this.auth
       });
+      this.listenTo(newItemView, 'item:new:saved', this.newItemSaved);
+      this.listenTo(newItemView, 'item:new:cancel', this.cancelNewItem);
       this.$('#items').html(newItemView.render().el);
     },
 
@@ -201,6 +203,16 @@ define([
     cancelNewAddress: function() {
       this.initSelectAddressView();
       this.renderSelectAddressView();
+    },
+
+    newItemSaved: function(address) {
+      this.initSelectItemsView();
+      this.renderSelectItemsView();
+    },
+
+    cancelNewItem: function() {
+      this.initSelectItemsView();
+      this.renderSelectItemsView();
     },
 
     formatErrors: function(errorText) {
