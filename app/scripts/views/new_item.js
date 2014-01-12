@@ -46,9 +46,7 @@ define([
       return {
         name: this.$('#new_item_name').val(),
         title: this.$('#new_item_title').val(),
-        heading: this.$('#new_item_heading').val(),
-        rank: this.$('#new_item_rank').val(),
-        visible: this.$('#new_item_visible').is(':checked')
+        heading: this.$('#new_item_heading').val()
       };
     },
 

@@ -14,6 +14,14 @@ define([
     render: function() {
       this.$el.html(this.template());
       return this;
+    },
+
+    isSelected: function() {
+      return this.$('input[type=checkbox]').is(':checked');
+    },
+
+    itemId: function() {
+      return this.model.id;
     }
   });
 

@@ -40,7 +40,7 @@ define([
       $.when(
         this.profiles.fetch(),
         this.addresses.fetch(),
-        this.items.fetch({ data: { resume_id: this.model.id }})
+        this.items.fetch()
       ).then(this.resumeLoaded.bind(this));
     },
 
@@ -94,6 +94,10 @@ define([
 
     getSelectedAddressId: function() {
       return this.selectAddressView.getSelectedAddressId();
+    },
+
+    getSelectedItemIds: function() {
+      return this.selectItemsView.getSelectedItemIds();
     },
 
     renderSelectProfileView: function() {
@@ -164,6 +168,11 @@ define([
       if (address) {
         this.model.set('address', address);
       }
+      // items
+      var item_ids = this.getSelectedItemIds();
+      console.log(item_ids);
+      this.model.set('item_ids', item_ids);
+      
       // header
       var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
 

@@ -16,8 +16,13 @@ define([
 
     render: function() {
       this.$el.html(this.template());
-      this.$el.append(new ItemsView({ collection: this.collection }).render().el);
+      this.itemsView = new ItemsView({ collection: this.collection }); 
+      this.$el.append(this.itemsView.render().el);
       return this;
+    },
+
+    getSelectedItemIds: function() {
+      return this.itemsView.getSelectedItemIds();
     },
 
     newItem: function(e) {

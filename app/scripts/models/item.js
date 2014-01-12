@@ -10,9 +10,7 @@ define([
     defaults: {
       name: '',
       title: '',
-      heading: '',
-      rank: 0,
-      visible: false
+      heading: ''
     },
 
     parse: function(response) {
