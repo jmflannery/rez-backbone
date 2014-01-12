@@ -40,7 +40,7 @@ define([
       $.when(
         this.profiles.fetch(),
         this.addresses.fetch(),
-        this.items.fetch()
+        this.items.fetch({ data: { resume_id: this.model.id }})
       ).then(this.resumeLoaded.bind(this));
     },
 
