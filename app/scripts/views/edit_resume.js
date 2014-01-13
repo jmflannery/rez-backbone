@@ -75,7 +75,8 @@ define([
 
     initSelectItemsView: function() {
       this.selectItemsView = new SelectItemsView({
-        collection: this.items
+        collection: this.items,
+        selectedItemIds: this.model.get('item_ids')
       });
       this.listenTo(this.selectItemsView, 'show:new:item', this.showNewItem);
     },

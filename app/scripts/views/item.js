@@ -11,6 +11,10 @@ define([
 
     tagName: 'tr',
 
+    id: function() {
+      return 'item_' + this.model.id;
+    },
+
     render: function() {
       this.$el.html(this.template());
       return this;

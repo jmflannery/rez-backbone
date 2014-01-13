@@ -14,6 +14,10 @@ define([
 
     id: 'items',
 
+    initialize: function(options) {
+      this.selected = options.selected;
+    },
+
     render: function() {
       this.$el.html(this.template());
       var $tbody = this.$('tbody');
@@ -23,6 +27,7 @@ define([
         this.itemViews.push(itemView);
         $tbody.append(itemView.render().el);
       }, this);
+      this.setItemsSelected();
       return this;
     },
 
@@ -34,6 +39,12 @@ define([
         }
       });
       return item_ids;
+    },
+
+    setItemsSelected: function() {
+      _.each(this.selected, function(item_id) {
+        this.$('tr#item_' + item_id + ' input[type=checkbox]').prop('checked', true);
+      }, this);
     }
   });
 

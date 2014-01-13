@@ -10,13 +10,17 @@ define([
   var SelectItemsView = Backbone.View.extend({
     template: JST['app/scripts/templates/select_items.ejs'],
 
+    initialize: function(options) {
+      this.selectedItemIds = options.selectedItemIds;
+    },
+
     events: {
       'click .new_item': 'newItem'
     },
 
     render: function() {
       this.$el.html(this.template());
-      this.itemsView = new ItemsView({ collection: this.collection }); 
+      this.itemsView = new ItemsView({ collection: this.collection, selected: this.selectedItemIds });
       this.$el.append(this.itemsView.render().el);
       return this;
     },
