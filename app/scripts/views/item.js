@@ -15,9 +15,24 @@ define([
       return 'item_' + this.model.id;
     },
 
+    events: {
+      'click #edit_item': 'editItem',
+      'click #delete_item': 'destroyItem'
+    },
+
     render: function() {
       this.$el.html(this.template());
       return this;
+    },
+
+    editItem: function(e) {
+      e.preventDefault();
+      console.log('edit item '+ this.model.id);
+    },
+
+    destroyItem: function(e) {
+      e.preventDefault();
+      console.log('destroy item ' + this.model.id);
     },
 
     isSelected: function() {
