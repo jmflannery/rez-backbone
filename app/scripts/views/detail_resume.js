@@ -6,8 +6,9 @@ define([
   'models/resume',
   'views/profile',
   'views/address',
-  'views/detailed_items'
-], function ($, _, Backbone, JST, Resume, ProfileView, AddressView, DetailedItemsView) {
+  'views/detailed_items',
+  'collections/item'
+], function ($, _, Backbone, JST, Resume, ProfileView, AddressView, DetailedItemsView, ItemCollection) {
   'use strict';
 
   var DetailResumeView = Backbone.View.extend({
@@ -15,23 +16,32 @@ define([
 
     id: 'resume',
 
+    events: {
+      'click .new_resume': 'showNewResume',
+      'click .resumes': 'showResumes',
+      'click .edit_resume': 'showEditResume'
+    },
+
     initialize: function(options) {
       this.auth = options.auth;
+      this.itemCollection = new ItemCollection();
+
+      $.when(
+        this.itemCollection.fetch({ data: { resume_id: this.model.id }})
+      ).then(this.initSubViews.bind(this));
+    },
+
+    initSubViews: function() {
       if (this.model) {
         this.profileView = new ProfileView({ model: this.model.get('profile') });
         this.addressView = new AddressView({ model: this.model.get('address') });
-        this.itemsView = new DetailedItemsView({ collection: this.model.get('item_ids') });
+        this.itemsView = new DetailedItemsView({ collection: this.itemCollection });
       } else {
         this.profileView = new ProfileView({ model: null });
         this.addressView = new AddressView({ model: null });
         this.itemsView = new DetailedItemsView({ collection: null });
       }
-    },
-
-    events: {
-      'click .new_resume': 'showNewResume',
-      'click .resumes': 'showResumes',
-      'click .edit_resume': 'showEditResume'
+      this.trigger('resume:ready');
     },
 
     render: function() {

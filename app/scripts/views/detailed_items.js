@@ -2,8 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'templates'
-], function ($, _, Backbone, JST) {
+  'templates',
+  'views/detailed_item'
+], function ($, _, Backbone, JST, DetailedItemView) {
   'use strict';
 
   var DetailedItemsView = Backbone.View.extend({
@@ -14,7 +15,13 @@ define([
     id: 'items',
 
     render: function() {
-      this.$el.html(this.template());
+      this.$el.empty();
+      if (this.collection) {
+        this.collection.each(function(item) {
+          var div = new DetailedItemView({ model: item });
+          this.$el.append(div.render().el);
+        }, this);
+      }
       return this;
     }
   });
