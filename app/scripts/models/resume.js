@@ -15,6 +15,7 @@ define([
 
     activeAttributes: ['name'],
     activeAssociations: ['profile', 'address'],
+    activeManyAssociations: ['item'],
 
     fetchAssociatedObjects: function() {
       var profile = new Profile({ id: this.get('profile_id') }); 
@@ -46,6 +47,9 @@ define([
         if (this.get(assoc)) {
           json[assoc + '_id'] = this.get(assoc).id;
         }
+      }, this);
+      _.each(this.activeManyAssociations, function(assoc) {
+        json[assoc + '_ids'] = this.get(assoc + '_ids');
       }, this);
       return { resume: json };
     }
