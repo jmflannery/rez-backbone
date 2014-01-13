@@ -22,11 +22,16 @@ define([
       this.$el.html(this.template());
       var $tbody = this.$('tbody');
       this.itemViews = [];
+
       this.collection.each(function(item) {
         var itemView = new ItemView({ model: item });
+        this.listenToOnce(itemView, 'item:edit', function(item) {
+          this.trigger('edit:item', item);
+        });
         this.itemViews.push(itemView);
         $tbody.append(itemView.render().el);
       }, this);
+
       this.setItemsSelected();
       return this;
     },

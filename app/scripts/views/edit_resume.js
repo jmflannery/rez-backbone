@@ -9,10 +9,11 @@ define([
   'views/new_profile',
   'views/new_address',
   'views/new_item',
+  'views/edit_item',
   'collections/profile',
   'collections/address',
   'collections/item'
-], function ($, _, Backbone, JST, SelectProfileView, SelectAddressView, SelectItemsView, NewProfileView, NewAddressView, NewItemView, ProfileCollection, AddressCollection, ItemCollection) {
+], function ($, _, Backbone, JST, SelectProfileView, SelectAddressView, SelectItemsView, NewProfileView, NewAddressView, NewItemView, EditItemView, ProfileCollection, AddressCollection, ItemCollection) {
   'use strict';
 
   var EditResumeView = Backbone.View.extend({
@@ -79,6 +80,7 @@ define([
         selectedItemIds: this.model.get('item_ids')
       });
       this.listenTo(this.selectItemsView, 'show:new:item', this.showNewItem);
+      this.listenTo(this.selectItemsView, 'edit:item:show', this.showEditItem);
     },
 
     setSelectedProfileId: function(profileId) {
@@ -148,8 +150,14 @@ define([
         auth: this.auth
       });
       this.listenTo(newItemView, 'item:new:saved', this.newItemSaved);
-      this.listenTo(newItemView, 'item:new:cancel', this.cancelNewItem);
+      this.listenTo(newItemView, 'item:new:cancel', this.cancelItem);
       this.$('#items').html(newItemView.render().el);
+    },
+
+    showEditItem: function(item) {
+      var editItemView = new EditItemView({ model: item });
+      this.listenTo(editItemView, 'item:edit:cancel', this.cancelItem);
+      this.$('#items').html(editItemView.render().el);
     },
 
     doneEditing: function(e) {
@@ -171,7 +179,6 @@ define([
       }
       // items
       var item_ids = this.getSelectedItemIds();
-      console.log(item_ids);
       this.model.set('item_ids', item_ids);
       
       // header
@@ -220,7 +227,7 @@ define([
       this.renderSelectItemsView();
     },
 
-    cancelNewItem: function() {
+    cancelItem: function() {
       this.initSelectItemsView();
       this.renderSelectItemsView();
     },

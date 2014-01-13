@@ -27,7 +27,7 @@ define([
 
     editItem: function(e) {
       e.preventDefault();
-      console.log('edit item '+ this.model.id);
+      this.trigger('item:edit', this.model);
     },
 
     destroyItem: function(e) {

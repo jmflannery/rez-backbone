@@ -21,6 +21,9 @@ define([
     render: function() {
       this.$el.html(this.template());
       this.itemsView = new ItemsView({ collection: this.collection, selected: this.selectedItemIds });
+      this.listenTo(this.itemsView, 'edit:item', function(item) {
+        this.trigger('edit:item:show', item)
+      });
       this.$el.append(this.itemsView.render().el);
       return this;
     },
