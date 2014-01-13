@@ -15,7 +15,9 @@ define([
     id: 'items',
 
     initialize: function(options) {
+      this.auth = options.auth;
       this.selected = options.selected;
+      this.listenTo(this.collection, 'remove', this.render);
     },
 
     render: function() {
@@ -24,7 +26,7 @@ define([
       this.itemViews = [];
 
       this.collection.each(function(item) {
-        var itemView = new ItemView({ model: item });
+        var itemView = new ItemView({ model: item, auth: this.auth });
         this.listenToOnce(itemView, 'item:edit', function(item) {
           this.trigger('edit:item', item);
         });

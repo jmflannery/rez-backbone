@@ -16,8 +16,12 @@ define([
     },
 
     events: {
-      'click #edit_item': 'editItem',
-      'click #delete_item': 'destroyItem'
+      'click #edit_item': 'edit',
+      'click #delete_item': 'destroy'
+    },
+
+    initialize: function(options) {
+      this.auth = options.auth;
     },
 
     render: function() {
@@ -25,14 +29,19 @@ define([
       return this;
     },
 
-    editItem: function(e) {
+    edit: function(e) {
       e.preventDefault();
       this.trigger('item:edit', this.model);
     },
 
-    destroyItem: function(e) {
+    destroy: function(e) {
       e.preventDefault();
-      console.log('destroy item ' + this.model.id);
+      if (this.auth) {
+        var header = { headers: {'X-Toke-Key': this.auth.token.get('key') }};
+        this.model.destroy(header);
+      } else {
+        console.log('Not Authorized');
+      }
     },
 
     isSelected: function() {
