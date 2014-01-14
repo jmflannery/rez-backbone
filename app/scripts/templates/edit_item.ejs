@@ -1,5 +1,17 @@
 <h3>Edit Item</h3>
 <div>
+  <label for="new_item_name">Name:</label>
+  <input type="text" id="new_item_name" value="<%= this.model.get('name') %>">
+</div>
+<div>
+  <label for="new_item_title">Title:</label>
+  <input type="text" id="new_item_title" value="<%= this.model.get('title') %>">
+</div>
+<div>
+  <label for="new_item_heading">Heading:</label>
+  <input type="text" id="new_item_heading" value="<%= this.model.get('heading') %>">
+</div>
+<div>
   <ul>
     <li><a href='#' id='save_item'>Save</a></li>
     <li><a href='#' id='cancel'>Cancel</a></li>

@@ -156,8 +156,9 @@ define([
     },
 
     showEditItem: function(item) {
-      var editItemView = new EditItemView({ model: item });
+      var editItemView = new EditItemView({ model: item, auth: this.auth });
       this.listenTo(editItemView, 'item:edit:cancel', this.cancelItem);
+      this.listenTo(editItemView, 'item:updated', this.itemUpdated);
       this.$('#items').html(editItemView.render().el);
     },
 
@@ -186,6 +187,10 @@ define([
       var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
 
       this.model.save({}, header);
+    },
+
+    itemUpdated: function() {
+      this.cancelItem();
     },
 
     resumeSaved: function() {
