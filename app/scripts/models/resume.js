@@ -18,8 +18,8 @@ define([
     activeManyAssociations: ['item'],
 
     fetchAssociatedObjects: function() {
-      var profile = new Profile({ id: this.get('profile_id') }); 
-      var address = new Address({ id: this.get('address_id') }); 
+      var profile = new Profile({ parent: this });
+      var address = new Address({ parent: this });
       $.when(
         profile.fetch(),
         address.fetch()

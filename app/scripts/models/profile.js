@@ -5,7 +5,14 @@ define([
   'use strict';
 
   var ProfileModel = Backbone.Model.extend({
-    urlRoot: 'http://localhost:3000/rez/profiles',
+
+    initialize: function(options) {
+      this.resume = options.parent;
+    },
+
+    url: function() {
+      return 'http://localhost:3000/rez/resumes/' + this.resume.id + '/profile';
+    },
 
     defaults: {
       firstname: '',
