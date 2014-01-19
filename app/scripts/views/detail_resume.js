@@ -24,18 +24,14 @@ define([
 
     initialize: function(options) {
       this.auth = options.auth;
-      this.itemCollection = new ItemCollection();
-
-      $.when(
-        this.itemCollection.fetch({ data: { resume_id: this.model.id }})
-      ).then(this.initSubViews.bind(this));
+      this.initSubViews();
     },
 
     initSubViews: function() {
       if (this.model) {
         this.profileView = new ProfileView({ model: this.model.get('profile') });
         this.addressView = new AddressView({ model: this.model.get('address') });
-        this.itemsView = new DetailedItemsView({ collection: this.itemCollection });
+        this.itemsView = new DetailedItemsView({ collection: this.model.get('items') });
       } else {
         this.profileView = new ProfileView({ model: null });
         this.addressView = new AddressView({ model: null });

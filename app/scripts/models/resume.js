@@ -2,8 +2,9 @@ define([
   'underscore',
   'backbone',
   'models/profile',
-  'models/address'
-], function (_, Backbone, Profile, Address) {
+  'models/address',
+  'collections/item'
+], function (_, Backbone, Profile, Address, ItemCollection) {
   'use strict';
 
   var ResumeModel = Backbone.Model.extend({
@@ -14,18 +15,21 @@ define([
     },
 
     activeAttributes: ['name'],
-    activeAssociations: ['profile', 'address'],
-    activeManyAssociations: ['item'],
+    hasOne: ['profile', 'address'],
+    hasMany: ['item'],
 
     fetchAssociatedObjects: function() {
       var profile = new Profile({ parent: this });
       var address = new Address({ parent: this });
+      var items = new ItemCollection({ parent: this });
       $.when(
         profile.fetch(),
-        address.fetch()
+        address.fetch(),
+        items.fetch()
       ).done(function() {
         this.set('profile', profile);
         this.set('address', address);
+        this.set('items', items);
         this.trigger('resume:loaded', this);
       }.bind(this));
     },
@@ -43,12 +47,12 @@ define([
       _.each(this.activeAttributes, function(attr) {
         json[attr] = this.get(attr);
       }, this);
-      _.each(this.activeAssociations, function(assoc) {
+      _.each(this.hasOne, function(assoc) {
         if (this.get(assoc)) {
           json[assoc + '_id'] = this.get(assoc).id;
         }
       }, this);
-      _.each(this.activeManyAssociations, function(assoc) {
+      _.each(this.hasMany, function(assoc) {
         json[assoc + '_ids'] = this.get(assoc + '_ids');
       }, this);
       return { resume: json };

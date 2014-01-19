@@ -75,13 +75,9 @@ define([
 
     renderResume: function(resume) {
       this.resumeView = new DetailResumeView({ model: resume, auth: this.auth });
-      this.listenToOnce(this.resumeView, 'resume:ready', this.renderDetailedResume);
       this.listenToOnce(this.resumeView, 'show:new_resume', this.showNewResume);
       this.listenToOnce(this.resumeView, 'show:resumes', this.showResumes);
       this.listenToOnce(this.resumeView, 'show:edit_resume', this.showEditResume);
-    },
-
-    renderDetailedResume: function() {
       this.$el.html(this.resumeView.render().el);
     },
 
