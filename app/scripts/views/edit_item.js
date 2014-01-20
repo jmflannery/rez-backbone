@@ -74,11 +74,16 @@ define([
 
     showNewBullet: function() {
       var nbv = new NewBulletView({
-        collection: this.collection,
+        collection: this.model.bullets,
         model: this.model,
         auth: this.auth
       });
+      this.listenTo(nbv, 'bullet:new:cancel', this.cancelBullet);
       this.$('section#bullets').html(nbv.render().el);
+    },
+
+    cancelBullet: function() {
+      this.render();
     }
   });
 

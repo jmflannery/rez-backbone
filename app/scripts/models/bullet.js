@@ -7,6 +7,12 @@ define([
   var BulletModel = Backbone.Model.extend({
     defaults: {
       text: ''
+    },
+
+    toJSON: function() {
+      return {
+        point: this.attributes
+      };
     }
   });
 
