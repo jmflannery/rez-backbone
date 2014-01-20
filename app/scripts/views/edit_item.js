@@ -4,8 +4,9 @@ define([
   'backbone',
   'templates',
   'collections/bullet',
-  'views/select_bullets'
-], function ($, _, Backbone, JST, BulletCollection, SelectBulletsView) {
+  'views/select_bullets',
+  'views/new_bullet'
+], function ($, _, Backbone, JST, BulletCollection, SelectBulletsView, NewBulletView) {
   'use strict';
 
   var EditItemView = Backbone.View.extend({
@@ -69,6 +70,15 @@ define([
     cancel: function(e) {
       e.preventDefault();
       this.trigger('item:edit:cancel');
+    },
+
+    showNewBullet: function() {
+      var nbv = new NewBulletView({
+        collection: this.collection,
+        model: this.model,
+        auth: this.auth
+      });
+      this.$('section#bullets').html(nbv.render().el);
     }
   });
 

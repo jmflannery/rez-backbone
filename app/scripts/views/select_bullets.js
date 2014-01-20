@@ -9,10 +9,18 @@ define([
   var SelectBulletsView = Backbone.View.extend({
     template: JST['app/scripts/templates/select_bullets.ejs'],
 
+    events: {
+      'click #new_bullet': 'newBullet'
+    },
+
     render: function() {
-      console.log(this.el);
       this.$el.html(this.template());
       return this;
+    },
+
+    newBullet: function(e) {
+      e.preventDefault();
+      this.trigger('show:new:bullet');
     }
   });
 
