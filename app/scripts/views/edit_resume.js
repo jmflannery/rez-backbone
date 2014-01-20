@@ -156,10 +156,16 @@ define([
     },
 
     showEditItem: function(item) {
-      var editItemView = new EditItemView({ model: item, auth: this.auth });
-      this.listenTo(editItemView, 'item:edit:cancel', this.cancelItem);
-      this.listenTo(editItemView, 'item:updated', this.itemUpdated);
-      this.$('#items').html(editItemView.render().el);
+      item.load();
+      this.listenToOnce(item, 'item:loaded', function() {
+        console.log(item);
+        var editItemView = new EditItemView({ model: item, auth: this.auth });
+        this.listenTo(editItemView, 'item:edit:cancel', this.cancelItem);
+        this.listenTo(editItemView, 'item:updated', this.itemUpdated);
+        this.listenToOnce(editItemView, 'item:edit:ready', function() {
+          this.$('#items').html(editItemView.render().el);
+        });
+      });
     },
 
     doneEditing: function(e) {

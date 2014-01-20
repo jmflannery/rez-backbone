@@ -2,8 +2,10 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'templates'
-], function ($, _, Backbone, JST) {
+  'templates',
+  'collections/bullet',
+  'views/select_bullets'
+], function ($, _, Backbone, JST, BulletCollection, SelectBulletsView) {
   'use strict';
 
   var EditItemView = Backbone.View.extend({
@@ -17,11 +19,32 @@ define([
     initialize: function(options) {
       this.auth = options.auth;
       this.listenTo(this.model, 'sync', this.itemSynced);
+
+      this.bullets = new BulletCollection();
+      this.listenTo(this.bullets, 'sync', this.contentLoaded);
+      this.bullets.fetch();
+    },
+
+    contentLoaded: function() {
+      this.initSelectBulletsView();
+      this.trigger('item:edit:ready');
+    },
+
+    initSelectBulletsView: function() {
+      this.selectBulletsView = new SelectBulletsView({
+        collection: this.bullets
+      });
+      this.listenTo(this.selectBulletsView, 'show:new:bullet', this.showNewBullet);
     },
 
     render: function() {
       this.$el.html(this.template());
+      this.renderSelectBulletsView();
       return this;
+    },
+
+    renderSelectBulletsView: function() {
+      this.$('section#bullets').html(this.selectBulletsView.render().el);
     },
 
     save: function(e) {

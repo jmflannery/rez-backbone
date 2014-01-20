@@ -1,16 +1,28 @@
 define([
   'underscore',
-  'backbone'
-], function (_, Backbone) {
+  'backbone',
+  'jquery',
+  'collections/bullet'
+], function (_, Backbone, $, BulletCollection) {
   'use strict';
 
   var ItemModel = Backbone.Model.extend({
-    urlRoot: 'http://localhost:3000/rez/items',
-
     defaults: {
       name: '',
       title: '',
       heading: ''
+    },
+
+    initialize: function() {
+      this.bullets = new BulletCollection({ parent: this });
+    },
+
+    load: function() {
+      $.when(
+        this.bullets.fetch()
+      ).then(function() {
+        this.trigger('item:loaded');
+      }.bind(this));
     },
 
     parse: function(response) {

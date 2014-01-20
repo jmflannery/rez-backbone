@@ -8,7 +8,19 @@ define([
   var ItemCollection = Backbone.Collection.extend({
     model: ItemModel,
 
-    url: 'http://localhost:3000/rez/items',
+    initialize: function(options) {
+      if (options) {
+        this.resume = options.parent;
+      }
+    },
+
+    url: function() {
+      if (this.resume) {
+        return 'http://localhost:3000/rez/resumes/' + this.resume.id + '/items';
+      } else {
+        return 'http://localhost:3000/rez/items';
+      }
+    },
 
     parse: function(response) {
       return response.items;

@@ -6,9 +6,8 @@ define([
   'models/resume',
   'views/profile',
   'views/address',
-  'views/detailed_items',
-  'collections/item'
-], function ($, _, Backbone, JST, Resume, ProfileView, AddressView, DetailedItemsView, ItemCollection) {
+  'views/detailed_items'
+], function ($, _, Backbone, JST, Resume, ProfileView, AddressView, DetailedItemsView) {
   'use strict';
 
   var DetailResumeView = Backbone.View.extend({
