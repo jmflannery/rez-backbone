@@ -2,11 +2,17 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'templates'
-], function ($, _, Backbone, JST) {
+  'templates',
+  'views/bullets'
+], function ($, _, Backbone, JST, BulletsView) {
   'use strict';
 
   var SelectBulletsView = Backbone.View.extend({
+
+    initialize: function(options) {
+      this.auth = options.auth;
+    },
+
     template: JST['app/scripts/templates/select_bullets.ejs'],
 
     events: {
@@ -15,6 +21,11 @@ define([
 
     render: function() {
       this.$el.html(this.template());
+      this.bulletsView = new BulletsView({
+        collection: this.collection,
+        auth: this.auth
+      });
+      this.$el.append(this.bulletsView.render().el);
       return this;
     },
 

@@ -190,9 +190,13 @@ define([
       this.model.set('item_ids', item_ids);
       
       // header
-      var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+      if (this.auth) {
+        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
 
-      this.model.save({}, header);
+        this.model.save({}, header);
+      } else {
+        console.log('Not Authorized');
+      }
     },
 
     itemUpdated: function() {

@@ -33,7 +33,8 @@ define([
 
     initSelectBulletsView: function() {
       this.selectBulletsView = new SelectBulletsView({
-        collection: this.bullets
+        collection: this.bullets,
+        auth: this.auth
       });
       this.listenTo(this.selectBulletsView, 'show:new:bullet', this.showNewBullet);
     },
@@ -51,8 +52,12 @@ define([
     save: function(e) {
       e.preventDefault();
       this.model.set(this.newAttributes());
-      var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
-      this.model.save({}, header);
+      if (this.auth) {
+        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+        this.model.save({}, header);
+      } else {
+        console.log('Not Authorized');
+      }
     },
 
     newAttributes: function() {
@@ -78,8 +83,14 @@ define([
         model: this.model,
         auth: this.auth
       });
+      this.listenTo(nbv, 'bullet:new:saved', this.newBulletSaved);
       this.listenTo(nbv, 'bullet:new:cancel', this.cancelBullet);
       this.$('section#bullets').html(nbv.render().el);
+    },
+
+    newBulletSaved: function(bullet) {
+      this.bullets.add(bullet);
+      this.renderSelectBulletsView();
     },
 
     cancelBullet: function() {

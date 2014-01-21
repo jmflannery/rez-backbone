@@ -24,7 +24,7 @@ define([
     },
 
     parse: function(response) {
-      return response.bullets;
+      return response.points;
     }
   });
 

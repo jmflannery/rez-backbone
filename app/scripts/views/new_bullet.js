@@ -10,6 +10,7 @@ define([
 
     initialize: function(options) {
       this.auth = options.auth;
+      this.listenTo(this.collection, 'sync', this.bulletSynced);
     },
 
     template: JST['app/scripts/templates/new_bullet.ejs'],
@@ -39,6 +40,10 @@ define([
       return {
         text: this.$('#new_bullet_text').val()
       };
+    },
+
+    bulletSynced: function(model, response, options) {
+      this.trigger('bullet:new:saved', model);
     },
 
     cancel: function(e) {
