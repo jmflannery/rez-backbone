@@ -13,6 +13,14 @@ define([
       return {
         point: this.attributes
       };
+    },
+
+    parse: function(response) {
+      if (response.point) {
+        return response.point;
+      } else {
+        return response;
+      }
     }
   });
 
