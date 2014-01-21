@@ -11,10 +11,6 @@ define([
 
     tagName: 'li',
 
-    id: function() {
-      return 'bullet_' + this.model.id;
-    },
-
     render: function() {
       this.$el.html(this.template());
       return this;
