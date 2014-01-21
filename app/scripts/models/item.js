@@ -15,6 +15,14 @@ define([
 
     initialize: function() {
       this.bullets = new BulletCollection({ parent: this });
+      this.listenTo(this.bullets, 'sync', this.bulletsSynced);
+    },
+
+    bulletsSynced: function(collection, response, options) {
+      var bullet_ids = this.bullets.map(function(bullet) {
+        return bullet.id;
+      });
+      this.set('bullet_ids', bullet_ids);
     },
 
     load: function() {
