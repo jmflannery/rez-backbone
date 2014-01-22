@@ -9,8 +9,8 @@ define([
 
   var BulletsView = Backbone.View.extend({
 
-    initialize: function() {
-      console.log(this.collection);
+    initialize: function(options) {
+      this.selected = options.selected;
     },
 
     tagName: 'ul',
@@ -20,7 +20,8 @@ define([
     render: function() {
       this.$el.empty();
       this.collection.each(function(bullet) {
-        var bv = new BulletView({ model: bullet });
+        var selected = $.inArray(bullet.id, this.selected) > -1;
+        var bv = new BulletView({ model: bullet, selected: selected });
         this.$el.append(bv.render().el);
       }, this);
       return this;

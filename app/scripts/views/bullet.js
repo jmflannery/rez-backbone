@@ -11,6 +11,10 @@ define([
 
     tagName: 'li',
 
+    initialize: function(options) {
+      this.selected = options.selected;
+    },
+
     render: function() {
       this.$el.html(this.template());
       return this;

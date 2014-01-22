@@ -34,7 +34,8 @@ define([
     initSelectBulletsView: function() {
       this.selectBulletsView = new SelectBulletsView({
         collection: this.bullets,
-        auth: this.auth
+        auth: this.auth,
+        selectedBullets: this.model.get('bullet_ids')
       });
       this.listenTo(this.selectBulletsView, 'show:new:bullet', this.showNewBullet);
     },
@@ -90,6 +91,7 @@ define([
 
     newBulletSaved: function(bullet) {
       this.bullets.add(bullet);
+      this.selectBulletsView.setSelectedBullets(this.model.get('bullet_ids'));
       this.renderSelectBulletsView();
     },
 

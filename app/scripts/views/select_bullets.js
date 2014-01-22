@@ -11,6 +11,11 @@ define([
 
     initialize: function(options) {
       this.auth = options.auth;
+      this.selectedBullets = options.selectedBullets;
+    },
+
+    setSelectedBullets: function(selectedBullets) {
+      this.selectedBullets = selectedBullets;
     },
 
     template: JST['app/scripts/templates/select_bullets.ejs'],
@@ -23,7 +28,8 @@ define([
       this.$el.html(this.template());
       this.bulletsView = new BulletsView({
         collection: this.collection,
-        auth: this.auth
+        auth: this.auth,
+        selected: this.selectedBullets
       });
       this.$el.append(this.bulletsView.render().el);
       return this;

@@ -158,7 +158,6 @@ define([
     showEditItem: function(item) {
       item.load();
       this.listenToOnce(item, 'item:loaded', function() {
-        console.log(item);
         var editItemView = new EditItemView({ model: item, auth: this.auth });
         this.listenTo(editItemView, 'item:edit:cancel', this.cancelItem);
         this.listenTo(editItemView, 'item:updated', this.itemUpdated);
