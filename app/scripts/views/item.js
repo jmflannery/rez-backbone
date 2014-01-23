@@ -21,7 +21,9 @@ define([
     },
 
     initialize: function(options) {
+      this.resume = options.resume;
       this.auth = options.auth;
+      this.vent = options.vent;
     },
 
     render: function() {
@@ -31,7 +33,7 @@ define([
 
     edit: function(e) {
       e.preventDefault();
-      this.trigger('item:edit', this.model);
+      this.vent.trigger('show:edit_resume_item', this.resume.id, this.model.id);
     },
 
     destroy: function(e) {

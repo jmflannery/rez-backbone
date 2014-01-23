@@ -25,6 +25,7 @@ define([
       this.listenTo(this.vent, 'show:new_resume', this.showNewResume);
       this.listenTo(this.vent, 'show:resumes', this.showResumes);
       this.listenTo(this.vent, 'show:edit_resume', this.showEditResume);
+      this.listenTo(this.vent, 'show:edit_resume_item', this.showEditResume);
 
       this.resumes = new ResumeCollection();
       this.listenToOnce(this.resumes, 'sync', this.contentLoaded);
@@ -63,14 +64,14 @@ define([
       Backbone.history.navigate("resume");
       var resume = this.resumes.get(1);
       this.listenToOnce(resume, 'resume:loaded', this.renderResume);
-      resume.fetchAssociatedObjects();
+      resume.load();
     },
 
     showResume: function(resumeId) {
       Backbone.history.navigate("resumes/" + resumeId);
       var resume = this.resumes.get(resumeId);
       this.listenToOnce(resume, 'resume:loaded', this.renderResume);
-      resume.fetchAssociatedObjects();
+      resume.load();
     },
 
     renderResume: function(resume) {
@@ -97,15 +98,22 @@ define([
       }).render().el);
     },
 
-    showEditResume: function(resumeId) {
-      Backbone.history.navigate("resumes/" + resumeId + "/edit");
+    showEditResume: function(resumeId, itemId) {
+      this.itemId = itemId;
       var resume = this.resumes.get(resumeId);
       this.listenToOnce(resume, 'resume:loaded', this.loadEditResume);
-      resume.fetchAssociatedObjects();
+      resume.load();
     },
 
     loadEditResume: function(resume) {
-      this.editResumeView = new EditResumeView({ model: resume, auth: this.auth });
+      if (this.itemId) {
+        var item = resume.get('items').get(this.itemId);
+        Backbone.history.navigate("resumes/" + resume.id + "/items/" + this.itemId + "/edit");
+      } else {
+        Backbone.history.navigate("resumes/" + resume.id + "/edit");
+      }
+
+      this.editResumeView = new EditResumeView({ model: resume, auth: this.auth, vent: this.vent, item: item });
       this.listenToOnce(this.editResumeView, 'show:resume', this.showResume);
       this.listenToOnce(this.editResumeView, 'resume:edit:ready', this.renderEditResume);
     },

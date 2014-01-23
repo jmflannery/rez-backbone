@@ -15,8 +15,9 @@ define([
     id: 'items',
 
     initialize: function(options) {
+      this.resume = options.resume;
       this.auth = options.auth;
-      this.selected = options.selected;
+      this.vent = options.vent;
       this.listenTo(this.collection, 'remove', this.render);
     },
 
@@ -26,7 +27,12 @@ define([
       this.itemViews = [];
 
       this.collection.each(function(item) {
-        var itemView = new ItemView({ model: item, auth: this.auth });
+        var itemView = new ItemView({
+          model: item,
+          resume: this.resume,
+          auth: this.auth,
+          vent: this.vent
+        });
         this.listenToOnce(itemView, 'item:edit', function(item) {
           this.trigger('edit:item', item);
         });
@@ -49,7 +55,7 @@ define([
     },
 
     setItemsSelected: function() {
-      _.each(this.selected, function(item_id) {
+      _.each(this.resume.get('item_ids'), function(item_id) {
         this.$('tr#item_' + item_id + ' input[type=checkbox]').prop('checked', true);
       }, this);
     }

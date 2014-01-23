@@ -18,7 +18,9 @@ define([
     },
 
     initialize: function(options) {
+      this.resume = options.resume;
       this.auth = options.auth;
+      this.vent = options.vent;
       this.listenTo(this.model, 'sync', this.itemSynced);
 
       this.bullets = new BulletCollection();
@@ -75,7 +77,7 @@ define([
 
     cancel: function(e) {
       e.preventDefault();
-      this.trigger('item:edit:cancel');
+      this.vent.trigger('show:edit_resume', this.resume.id);
     },
 
     showNewBullet: function() {

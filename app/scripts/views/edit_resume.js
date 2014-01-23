@@ -31,6 +31,10 @@ define([
 
     initialize: function(options) {
       this.auth = options.auth;
+      this.vent = options.vent;
+
+      if (options.item) { this.item = options.item; }
+
       this.listenTo(this.model, 'sync', this.resumeSaved);
       this.listenTo(this.model, 'error', this.resumeSaveError);
 
@@ -56,7 +60,12 @@ define([
       this.$el.html(this.template());
       this.renderSelectProfileView();
       this.renderSelectAddressView();
-      this.renderSelectItemsView();
+      if (this.item) {
+        this.showEditItem(this.item);
+      } else {
+        this.renderSelectItemsView();
+      }
+
       return this;
     },
 
@@ -77,8 +86,9 @@ define([
     initSelectItemsView: function() {
       this.selectItemsView = new SelectItemsView({
         collection: this.items,
+        resume: this.model,
         auth: this.auth,
-        selectedItemIds: this.model.get('item_ids')
+        vent: this.vent
       });
       this.listenTo(this.selectItemsView, 'show:new:item', this.showNewItem);
       this.listenTo(this.selectItemsView, 'edit:item:show', this.showEditItem);
@@ -156,15 +166,21 @@ define([
     },
 
     showEditItem: function(item) {
-      item.load();
+      Backbone.history.navigate('resumes/' + this.model.id + '/items/' + item.id + '/edit');
       this.listenToOnce(item, 'item:loaded', function() {
-        var editItemView = new EditItemView({ model: item, auth: this.auth });
+        var editItemView = new EditItemView({
+          model: item,
+          resume: this.model,
+          vent: this.vent,
+          auth: this.auth
+        });
         this.listenTo(editItemView, 'item:edit:cancel', this.cancelItem);
         this.listenTo(editItemView, 'item:updated', this.itemUpdated);
         this.listenToOnce(editItemView, 'item:edit:ready', function() {
           this.$('#items').html(editItemView.render().el);
         });
       });
+      item.load();
     },
 
     doneEditing: function(e) {

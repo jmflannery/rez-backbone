@@ -11,8 +11,9 @@ define([
     template: JST['app/scripts/templates/select_items.ejs'],
 
     initialize: function(options) {
+      this.resume = options.resume;
       this.auth = options.auth;
-      this.selectedItemIds = options.selectedItemIds;
+      this.vent = options.vent;
     },
 
     events: {
@@ -22,9 +23,10 @@ define([
     render: function() {
       this.$el.html(this.template());
       this.itemsView = new ItemsView({
+        resume: this.resume,
         auth: this.auth,
-        collection: this.collection,
-        selected: this.selectedItemIds,
+        vent: this.vent,
+        collection: this.collection
       });
       this.listenTo(this.itemsView, 'edit:item', function(item) {
         this.trigger('edit:item:show', item)

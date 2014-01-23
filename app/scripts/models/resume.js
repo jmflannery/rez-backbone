@@ -18,7 +18,7 @@ define([
     hasOne: ['profile', 'address'],
     hasMany: ['item'],
 
-    fetchAssociatedObjects: function() {
+    load: function() {
       var profile = new Profile({ parent: this });
       var address = new Address({ parent: this });
       var items = new ItemCollection({ parent: this });
