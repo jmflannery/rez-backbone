@@ -48,7 +48,7 @@ define([
     },
 
     contentLoaded: function() {
-      this.trigger('content:loaded');
+      this.vent.trigger('content:loaded');
     },
 
     showSignin: function() {

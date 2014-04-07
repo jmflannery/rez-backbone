@@ -22,8 +22,6 @@ define([
       this.navView = new NavView(this.vent);
       this.contentView = new ContentView(this.vent);
 
-      this.listenTo(this.contentView, 'content:loaded', this.contentLoaded);
-
       this.render();
 
       var userId = $.cookie('_jf_session_userId');
@@ -40,10 +38,6 @@ define([
       this.$el.html(this.navView.render().el);
       this.$el.append(this.contentView.render().el);
       return this;
-    },
-      
-    contentLoaded: function() {
-      this.trigger('content:loaded');
     },
 
     authenticate: function(userId, key) {
