@@ -8,7 +8,7 @@ define([
   'use strict';
 
   var ResumeModel = Backbone.Model.extend({
-    urlRoot: 'http://localhost:3000/rez/resumes',
+    //urlRoot: 'http://localhost:3000/rez/resumes',
 
     defaults: {
       name: ''
@@ -18,26 +18,13 @@ define([
     hasOne: ['profile', 'address'],
     hasMany: ['item'],
 
-    load: function() {
-      var profile = new Profile({ parent: this });
-      var address = new Address({ parent: this });
-      var items = new ItemCollection({ parent: this });
-      $.when(
-        profile.fetch(),
-        address.fetch(),
-        items.fetch()
-      ).done(function() {
-        this.set('profile', profile);
-        this.set('address', address);
-        this.set('items', items);
-        this.trigger('resume:loaded', this);
-      }.bind(this));
-    },
-
     parse: function(response) {
       if (response.resume) {
         return response.resume;
       } else {
+        //response.profile.parentId = response.address.parentId = response.id;
+        response.address = new Address(response.address, { resumeId: response.id });
+        response.profile = new Profile(response.profile, { resumeId: response.id });
         return response;
       }
     },

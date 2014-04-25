@@ -2,8 +2,9 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'templates'
-], function ($, _, Backbone, JST) {
+  'templates',
+  'models/profile'
+], function ($, _, Backbone, JST, Profile) {
   'use strict';
 
   var NewProfileView = Backbone.View.extend({
@@ -31,7 +32,9 @@ define([
       e.preventDefault();
       if (this.auth) {
         var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
-        this.collection.create(this.newAttributes(), header);
+        var profile = new Profile(this.newAttributes());
+        profile.parentId = this.resume.id;
+        this.collection.create(profile, header);
       } else {
         console.log('Aint Authed');
       }

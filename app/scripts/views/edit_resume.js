@@ -10,10 +10,11 @@ define([
   'views/new_address',
   'views/new_item',
   'views/edit_item',
+  'models/profile',
   'collections/profile',
   'collections/address',
   'collections/item'
-], function ($, _, Backbone, JST, SelectProfileView, SelectAddressView, SelectItemsView, NewProfileView, NewAddressView, NewItemView, EditItemView, ProfileCollection, AddressCollection, ItemCollection) {
+], function ($, _, Backbone, JST, SelectProfileView, SelectAddressView, SelectItemsView, NewProfileView, NewAddressView, NewItemView, EditItemView, Profile, ProfileCollection, AddressCollection, ItemCollection) {
   'use strict';
 
   var EditResumeView = Backbone.View.extend({
@@ -44,8 +45,8 @@ define([
 
       $.when(
         this.profiles.fetch(),
-        this.addresses.fetch(),
-        this.items.fetch()
+        this.addresses.fetch()
+        //this.items.fetch()
       ).then(this.resumeLoaded.bind(this));
     },
 
@@ -116,15 +117,15 @@ define([
 
     renderSelectProfileView: function() {
       this.$('#profile').html(this.selectProfileView.render().el);
-      if (this.model.get('profile_id')) {
-        this.setSelectedProfileId(this.model.get('profile_id'));
+      if (this.model.get('profile')) {
+        this.setSelectedProfileId(this.model.get('profile').id);
       }
     },
 
     renderSelectAddressView: function() {
       this.$('#address').html(this.selectAddressView.render().el);
-      if (this.model.get('address_id')) {
-        this.setSelectedAddressId(this.model.get('address_id'));
+      if (this.model.get('address')) {
+        this.setSelectedAddressId(this.model.get('address').id);
       }
     },
 
@@ -203,7 +204,7 @@ define([
       // items
       var item_ids = this.getSelectedItemIds();
       this.model.set('item_ids', item_ids);
-      
+
       // header
       if (this.auth) {
         var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};

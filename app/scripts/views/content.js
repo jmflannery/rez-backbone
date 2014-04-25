@@ -63,15 +63,13 @@ define([
     showActiveResume: function() {
       Backbone.history.navigate("resume");
       var resume = this.resumes.get(1);
-      this.listenToOnce(resume, 'resume:loaded', this.renderResume);
-      resume.load();
+      this.renderResume(resume);
     },
 
     showResume: function(resumeId) {
       Backbone.history.navigate("resumes/" + resumeId);
       var resume = this.resumes.get(resumeId);
-      this.listenToOnce(resume, 'resume:loaded', this.renderResume);
-      resume.load();
+      this.renderResume(resume);
     },
 
     renderResume: function(resume) {
@@ -101,11 +99,7 @@ define([
     showEditResume: function(resumeId, itemId) {
       this.itemId = itemId;
       var resume = this.resumes.get(resumeId);
-      this.listenToOnce(resume, 'resume:loaded', this.loadEditResume);
-      resume.load();
-    },
 
-    loadEditResume: function(resume) {
       if (this.itemId) {
         var item = resume.get('items').get(this.itemId);
         Backbone.history.navigate("resumes/" + resume.id + "/items/" + this.itemId + "/edit");
@@ -113,7 +107,13 @@ define([
         Backbone.history.navigate("resumes/" + resume.id + "/edit");
       }
 
-      this.editResumeView = new EditResumeView({ model: resume, auth: this.auth, vent: this.vent, item: item });
+      this.editResumeView = new EditResumeView({
+        model: resume,
+        auth: this.auth,
+        vent: this.vent,
+        item: item
+      });
+
       this.listenToOnce(this.editResumeView, 'show:resume', this.showResume);
       this.listenToOnce(this.editResumeView, 'resume:edit:ready', this.renderEditResume);
     },

@@ -7,11 +7,7 @@ define([
   var AddressModel = Backbone.Model.extend({
 
     initialize: function(options) {
-      this.resume = options.parent;
-    },
-
-    url: function() {
-      return 'http://localhost:3000/rez/resumes/' + this.resume.id + '/address';
+      this.resumeId = options.resumeId;
     },
 
     defaults: {
@@ -44,7 +40,7 @@ define([
     lineOne: function() {
       return this.get('building_number') + ' ' + this.get('street_name');
     },
-  
+
     lineTwo: function() {
       return this.get('city') + ', ' + this.get('state') + ' ' + this.get('zip_code');
     },

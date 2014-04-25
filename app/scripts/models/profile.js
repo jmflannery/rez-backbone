@@ -1,17 +1,13 @@
 define([
   'underscore',
   'backbone'
-], function(_, Backbone) {
+], function (_, Backbone) {
   'use strict';
 
   var ProfileModel = Backbone.Model.extend({
 
     initialize: function(options) {
-      this.resume = options.parent;
-    },
-
-    url: function() {
-      return 'http://localhost:3000/rez/resumes/' + this.resume.id + '/profile';
+      this.resumeId = options.resumeId;
     },
 
     defaults: {

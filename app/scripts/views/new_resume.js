@@ -19,7 +19,7 @@ define([
     },
 
     initialize: function(resumes, auth) {
-      this.resumes = resumes; 
+      this.resumes = resumes;
       this.auth = auth;
       this.listenTo(this.resumes, 'add', this.resumeAdded);
     },
@@ -31,7 +31,7 @@ define([
 
     addResume: function(e) {
       e.preventDefault();
-      if (this.auth) { 
+      if (this.auth) {
         var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
         this.resumes.create(this.newAttributes(), header);
       } else {

@@ -17,7 +17,7 @@ define([
     render: function() {
       this.$el.empty();
       if (this.collection) {
-        this.collection.each(function(item) {
+        this.collection.forEach(function(item) {
           var div = new DetailedItemView({ model: item });
           this.$el.append(div.render().el);
         }, this);
