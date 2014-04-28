@@ -6,7 +6,7 @@ define([
 
   var AddressModel = Backbone.Model.extend({
 
-    initialize: function(options) {
+    initialize: function(attributes, options) {
       this.resumeId = options.resumeId;
     },
 

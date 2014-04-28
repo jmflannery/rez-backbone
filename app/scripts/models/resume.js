@@ -8,7 +8,6 @@ define([
   'use strict';
 
   var ResumeModel = Backbone.Model.extend({
-    //urlRoot: 'http://localhost:3000/rez/resumes',
 
     defaults: {
       name: ''
@@ -19,14 +18,17 @@ define([
     hasMany: ['item'],
 
     parse: function(response) {
+      var r;
       if (response.resume) {
-        return response.resume;
+        r = response.resume;
       } else {
-        //response.profile.parentId = response.address.parentId = response.id;
-        response.address = new Address(response.address, { resumeId: response.id });
-        response.profile = new Profile(response.profile, { resumeId: response.id });
-        return response;
+        r = response;
       }
+      var options = { resumeId: this.id };
+      r.address = new Address(r.address, options);
+      r.profile = new Profile(r.profile, options);
+
+      return r;
     },
 
     toJSON: function() {
