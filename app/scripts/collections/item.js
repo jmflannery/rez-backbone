@@ -10,13 +10,13 @@ define([
 
     initialize: function(options) {
       if (options) {
-        this.resume = options.parent;
+        this.resumeId = options.resumeId;
       }
     },
 
     url: function() {
-      if (this.resume) {
-        return 'http://localhost:3000/rez/resumes/' + this.resume.id + '/items';
+      if (this.resumeId) {
+        return 'http://localhost:3000/rez/resumes/' + this.resumeId + '/items';
       } else {
         return 'http://localhost:3000/rez/items';
       }

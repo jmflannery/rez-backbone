@@ -47,7 +47,7 @@ define([
       this.listenTo(user, 'error', this.notAuthenticated);
       user.fetch(header);
     },
-      
+
     authenticated: function(model, response, options) {
       this.token = new Token(response.user.token);
       delete response.user.token;
