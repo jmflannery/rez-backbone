@@ -13,7 +13,6 @@ define([
       name: ''
     },
 
-    activeAttributes: ['name'],
     hasOne: ['profile', 'address'],
     hasMany: ['item'],
 
@@ -27,24 +26,31 @@ define([
       var options = { resumeId: this.id };
       r.address = new Address(r.address, options);
       r.profile = new Profile(r.profile, options);
+      r.items = new ItemCollection(r.items, options);
 
       return r;
     },
 
     toJSON: function() {
-      var json = {};
-      _.each(this.activeAttributes, function(attr) {
-        json[attr] = this.get(attr);
-      }, this);
+      var json = JSON.parse(JSON.stringify(this.attributes));
+
+      // has one associations
       _.each(this.hasOne, function(assoc) {
-        if (this.get(assoc)) {
-          json[assoc + '_id'] = this.get(assoc).id;
-        }
+        json[assoc + '_id'] = this.get(assoc).id;
+        delete json[assoc];
       }, this);
+
+      // has many associations
       _.each(this.hasMany, function(assoc) {
-        json[assoc + '_ids'] = this.get(assoc + '_ids');
+        json[assoc + '_ids'] = this.get(assoc + 's').map(function(item) {
+          return item.id;
+        });
+        delete json[assoc + 's'];
       }, this);
-      return { resume: json };
+
+      return {
+        resume: json
+      };
     }
   });
 
