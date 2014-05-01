@@ -45,8 +45,8 @@ define([
 
       $.when(
         this.profiles.fetch(),
-        this.addresses.fetch()
-        //this.items.fetch()
+        this.addresses.fetch(),
+        this.items.fetch()
       ).then(this.resumeLoaded.bind(this));
     },
 
