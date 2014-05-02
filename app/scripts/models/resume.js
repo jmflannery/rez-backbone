@@ -14,7 +14,7 @@ define([
     },
 
     hasOne: ['profile', 'address'],
-    hasMany: ['item'],
+    hasMany: ['items'],
 
     parse: function(response) {
       var r;
@@ -42,10 +42,11 @@ define([
 
       // has many associations
       _.each(this.hasMany, function(assoc) {
-        json[assoc + '_ids'] = this.get(assoc + 's').map(function(item) {
+        var singular = assoc.substring(0, assoc.length - 1);
+        json[singular + '_ids'] = this.get(assoc).map(function(item) {
           return item.id;
         });
-        delete json[assoc + 's'];
+        delete json[assoc];
       }, this);
 
       return {
