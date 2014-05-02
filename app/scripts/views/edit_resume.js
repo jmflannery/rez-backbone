@@ -202,13 +202,15 @@ define([
         this.model.set('address', address);
       }
       // items
-      var item_ids = this.getSelectedItemIds();
-      this.model.set('item_ids', item_ids);
+      var itemIds = this.getSelectedItemIds();
+      var items = _.map(itemIds, function(itemId) {
+        return this.items.get(itemId);
+      }, this);
+      this.model.set('items', items);
 
       // header
       if (this.auth) {
         var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
-
         this.model.save({}, header);
       } else {
         console.log('Not Authorized');
