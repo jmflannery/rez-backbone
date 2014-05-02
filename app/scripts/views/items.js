@@ -55,8 +55,8 @@ define([
     },
 
     setItemsSelected: function() {
-      _.each(this.resume.get('item_ids'), function(item_id) {
-        this.$('tr#item_' + item_id + ' input[type=checkbox]').prop('checked', true);
+      this.resume.get('items').each(function(item) {
+        this.$('tr#item_' + item.id + ' input[type=checkbox]').prop('checked', true);
       }, this);
     }
   });
