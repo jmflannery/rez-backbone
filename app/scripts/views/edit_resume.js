@@ -47,10 +47,10 @@ define([
         this.profiles.fetch(),
         this.addresses.fetch(),
         this.items.fetch()
-      ).then(this.resumeLoaded.bind(this));
+      ).then(this.loaded.bind(this));
     },
 
-    resumeLoaded: function() {
+    loaded: function() {
       this.initSelectProfileView();
       this.initSelectAddressView();
       this.initSelectItemsView();
