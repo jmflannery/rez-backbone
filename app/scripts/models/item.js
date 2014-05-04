@@ -13,24 +13,10 @@ define([
       heading: ''
     },
 
-    initialize: function() {
-      this.bullets = new BulletCollection({ parent: this });
-      this.listenTo(this.bullets, 'sync', this.bulletsSynced);
-    },
-
-    bulletsSynced: function(collection, response, options) {
-      var bullet_ids = this.bullets.map(function(bullet) {
-        return bullet.id;
-      });
-      this.set('bullet_ids', bullet_ids);
-    },
-
-    load: function() {
-      $.when(
-        this.bullets.fetch()
-      ).then(function() {
-        this.trigger('item:loaded');
-      }.bind(this));
+    initialize: function(attributes, options) {
+      this.set('bullets', new BulletCollection(
+        attributes.bullets
+      ));
     },
 
     parse: function(response) {
