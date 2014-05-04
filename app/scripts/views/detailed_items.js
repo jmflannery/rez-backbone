@@ -8,8 +8,6 @@ define([
   'use strict';
 
   var DetailedItemsView = Backbone.View.extend({
-    template: JST['app/scripts/templates/detailed_items.ejs'],
-
     tagName: 'section',
 
     id: 'items',
