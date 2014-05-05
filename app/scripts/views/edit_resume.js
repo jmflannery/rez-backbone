@@ -168,20 +168,17 @@ define([
 
     showEditItem: function(item) {
       Backbone.history.navigate('resumes/' + this.model.id + '/items/' + item.id + '/edit');
-      this.listenToOnce(item, 'item:loaded', function() {
-        var editItemView = new EditItemView({
-          model: item,
-          resume: this.model,
-          vent: this.vent,
-          auth: this.auth
-        });
-        this.listenTo(editItemView, 'item:edit:cancel', this.cancelItem);
-        this.listenTo(editItemView, 'item:updated', this.itemUpdated);
-        this.listenToOnce(editItemView, 'item:edit:ready', function() {
-          this.$('#items').html(editItemView.render().el);
-        });
+      var editItemView = new EditItemView({
+        model: item,
+        resume: this.model,
+        vent: this.vent,
+        auth: this.auth
       });
-      item.load();
+      this.listenTo(editItemView, 'item:edit:cancel', this.cancelItem);
+      this.listenTo(editItemView, 'item:updated', this.itemUpdated);
+      this.listenToOnce(editItemView, 'item:edit:ready', function() {
+        this.$('#items').html(editItemView.render().el);
+      });
     },
 
     doneEditing: function(e) {
