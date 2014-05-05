@@ -3,7 +3,7 @@ define([
   'underscore',
   'backbone',
   'templates',
-  'views/bullets'
+  'views/index/bullets'
 ], function ($, _, Backbone, JST, BulletsView) {
   'use strict';
 

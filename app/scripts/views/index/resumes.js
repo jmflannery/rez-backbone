@@ -3,7 +3,7 @@ define([
   'underscore',
   'backbone',
   'templates',
-  'views/resume'
+  'views/index/resume'
 ], function ($, _, Backbone, JST, ResumeView) {
   'use strict';
 

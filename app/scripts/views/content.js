@@ -5,7 +5,7 @@ define([
   'views/session',
   'views/show/resume',
   'views/new_resume',
-  'views/resumes',
+  'views/index/resumes',
   'views/edit_resume',
   'models/resume',
   'collections/resume'
