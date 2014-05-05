@@ -5,8 +5,8 @@ define([
   'underscore',
   'backbone',
   'templates',
-  'views/detailed_bullet'
-], function ($, _, Backbone, JST, DetailedBulletView) {
+  'views/show/bullet'
+], function ($, _, Backbone, JST, BulletView) {
   'use strict';
 
   var DetailedBulletsView = Backbone.View.extend({
@@ -18,7 +18,7 @@ define([
       this.$el.empty();
       if (this.collection) {
         this.collection.forEach(function(bullet) {
-          var div = new DetailedBulletView({ model: bullet });
+          var div = new BulletView({ model: bullet });
           this.$el.append(div.render().el);
         }, this);
       }

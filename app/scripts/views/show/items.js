@@ -3,11 +3,11 @@ define([
   'underscore',
   'backbone',
   'templates',
-  'views/detailed_item'
-], function ($, _, Backbone, JST, DetailedItemView) {
+  'views/show/item'
+], function ($, _, Backbone, JST, ItemView) {
   'use strict';
 
-  var DetailedItemsView = Backbone.View.extend({
+  var ItemsView = Backbone.View.extend({
     tagName: 'section',
 
     id: 'items',
@@ -16,7 +16,7 @@ define([
       this.$el.empty();
       if (this.collection) {
         this.collection.forEach(function(item) {
-          var div = new DetailedItemView({ model: item });
+          var div = new ItemView({ model: item });
           this.$el.append(div.render().el);
         }, this);
       }
@@ -24,5 +24,5 @@ define([
     }
   });
 
-  return DetailedItemsView;
+  return ItemsView;
 });

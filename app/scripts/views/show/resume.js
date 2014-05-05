@@ -4,14 +4,14 @@ define([
   'backbone',
   'templates',
   'models/resume',
-  'views/profile',
-  'views/address',
-  'views/detailed_items'
-], function ($, _, Backbone, JST, Resume, ProfileView, AddressView, DetailedItemsView) {
+  'views/show/profile',
+  'views/show/address',
+  'views/show/items'
+], function ($, _, Backbone, JST, Resume, ProfileView, AddressView, ItemsView) {
   'use strict';
 
-  var DetailResumeView = Backbone.View.extend({
-    template: JST['app/scripts/templates/detail_resume.ejs'],
+  var ResumeView = Backbone.View.extend({
+    template: JST['app/scripts/templates/show_resume.ejs'],
 
     id: 'resume',
 
@@ -30,7 +30,7 @@ define([
       if (this.model) {
         this.profileView = new ProfileView({ model: this.model.get('profile') });
         this.addressView = new AddressView({ model: this.model.get('address') });
-        this.itemsView = new DetailedItemsView({ collection: this.model.get('items') });
+        this.itemsView = new ItemsView({ collection: this.model.get('items') });
       } else {
         this.profileView = new ProfileView({ model: null });
         this.addressView = new AddressView({ model: null });
@@ -75,5 +75,5 @@ define([
     }
   });
 
-  return DetailResumeView;
+  return ResumeView;
 });
