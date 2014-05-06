@@ -10,7 +10,7 @@ define([
   var ItemsView = Backbone.View.extend({
     template: JST['app/scripts/templates/items.ejs'],
 
-    tagName: 'section',
+    tagName: 'table',
 
     id: 'items',
 
@@ -33,9 +33,11 @@ define([
           auth: this.auth,
           vent: this.vent
         });
+
         this.listenToOnce(itemView, 'item:edit', function(item) {
           this.trigger('edit:item', item);
         });
+
         this.itemViews.push(itemView);
         $tbody.append(itemView.render().el);
       }, this);

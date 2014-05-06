@@ -25,7 +25,9 @@ define([
       var dropDown = this.$('select#resume_profile');
       dropDown.append($('<option>').val(0).text(''));
       this.collection.each(function(profile) {
-        dropDown.append($('<option>').val(profile.id).text(profile.get('firstname')));
+        dropDown.append($('<option>')
+          .val(profile.id)
+          .text(profile.get('firstname')));
       });
     },
 

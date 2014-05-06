@@ -116,21 +116,21 @@ define([
     },
 
     renderSelectProfileView: function() {
-      this.$('#profile').html(this.selectProfileView.render().el);
+      this.$('#edit_profile').html(this.selectProfileView.render().el);
       if (this.model.get('profile')) {
         this.setSelectedProfileId(this.model.get('profile').id);
       }
     },
 
     renderSelectAddressView: function() {
-      this.$('#address').html(this.selectAddressView.render().el);
+      this.$('#edit_address').html(this.selectAddressView.render().el);
       if (this.model.get('address')) {
         this.setSelectedAddressId(this.model.get('address').id);
       }
     },
 
     renderSelectItemsView: function() {
-      this.$('#items').html(this.selectItemsView.render().el);
+      this.$('#edit_items').html(this.selectItemsView.render().el);
     },
 
     showNewProfile: function() {
@@ -141,7 +141,7 @@ define([
       });
       this.listenTo(newProfileView, 'profile:new:saved', this.newProfileSaved);
       this.listenTo(newProfileView, 'profile:new:cancel', this.cancelNewProfile);
-      this.$('#profile').html(newProfileView.render().el);
+      this.$('#edit_profile').html(newProfileView.render().el);
     },
 
     showNewAddress: function() {
@@ -152,7 +152,7 @@ define([
       });
       this.listenTo(newAddressView, 'address:new:saved', this.newAddressSaved);
       this.listenTo(newAddressView, 'address:new:cancel', this.cancelNewAddress);
-      this.$('#address').html(newAddressView.render().el);
+      this.$('#edit_address').html(newAddressView.render().el);
     },
 
     showNewItem: function() {
@@ -163,7 +163,7 @@ define([
       });
       this.listenTo(newItemView, 'item:new:saved', this.newItemSaved);
       this.listenTo(newItemView, 'item:new:cancel', this.cancelItem);
-      this.$('#items').html(newItemView.render().el);
+      this.$('#edit_items').html(newItemView.render().el);
     },
 
     showEditItem: function(item) {
@@ -177,7 +177,7 @@ define([
       this.listenTo(editItemView, 'item:edit:cancel', this.cancelItem);
       this.listenTo(editItemView, 'item:updated', this.itemUpdated);
       this.listenToOnce(editItemView, 'item:edit:ready', function() {
-        this.$('#items').html(editItemView.render().el);
+        this.$('#edit_items').html(editItemView.render().el);
       });
     },
 

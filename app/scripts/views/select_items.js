@@ -1,3 +1,6 @@
+// This view represents a section containing a list of Items to be selected
+// and a link to create a new Item.
+
 define([
   'jquery',
   'underscore',
@@ -10,14 +13,16 @@ define([
   var SelectItemsView = Backbone.View.extend({
     template: JST['app/scripts/templates/select_items.ejs'],
 
+    id: 'select_items',
+
+    events: {
+      'click .new_item': 'newItem'
+    },
+
     initialize: function(options) {
       this.resume = options.resume;
       this.auth = options.auth;
       this.vent = options.vent;
-    },
-
-    events: {
-      'click .new_item': 'newItem'
     },
 
     render: function() {
