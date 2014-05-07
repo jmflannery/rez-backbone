@@ -47,14 +47,12 @@ define([
         this.profiles.fetch(),
         this.addresses.fetch(),
         this.items.fetch()
-      ).then(this.loaded.bind(this));
-    },
-
-    loaded: function() {
-      this.initSelectProfileView();
-      this.initSelectAddressView();
-      this.initSelectItemsView();
-      this.trigger('resume:edit:ready');
+      ).then(function() {
+        this.initSelectProfileView();
+        this.initSelectAddressView();
+        this.initSelectItemsView();
+        this.trigger('resume:edit:ready');
+      }.bind(this));
     },
 
     render: function() {

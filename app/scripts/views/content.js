@@ -97,12 +97,11 @@ define([
     },
 
     showEditResume: function(resumeId, itemId) {
-      this.itemId = itemId;
       var resume = this.resumes.get(resumeId);
 
-      if (this.itemId) {
-        var item = resume.get('items').get(this.itemId);
-        Backbone.history.navigate("resumes/" + resume.id + "/items/" + this.itemId + "/edit");
+      if (itemId) {
+        var item = resume.get('items').get(itemId);
+        Backbone.history.navigate("resumes/" + resume.id + "/items/" + itemId + "/edit");
       } else {
         Backbone.history.navigate("resumes/" + resume.id + "/edit");
       }
@@ -114,8 +113,8 @@ define([
         item: item
       });
 
-      this.listenToOnce(this.editResumeView, 'show:resume', this.showResume);
       this.listenToOnce(this.editResumeView, 'resume:edit:ready', this.renderEditResume);
+      this.listenToOnce(this.editResumeView, 'show:resume', this.showResume);
     },
 
     renderEditResume: function() {
