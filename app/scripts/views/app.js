@@ -20,7 +20,11 @@ define([
       this.vent.on('session:destroy', this.signOut.bind(this));
 
       this.navView = new NavView(this.vent);
+
       this.contentView = new ContentView(this.vent);
+      this.listenTo(this.contentView, 'content:loaded', function() {
+        this.trigger('ready');
+      });
 
       this.render();
 
@@ -30,7 +34,7 @@ define([
       if (userId && key) {
         this.authenticate(userId, key);
       } else {
-        this.contentView.loadContent();
+        this.contentView.load();
       }
     },
 
@@ -61,16 +65,13 @@ define([
       this.navView.userAuthenticated(this.currentUser.get('username'));
       this.contentView.setAuth({ currentUser: this.currentUser, token: this.token });
 
-      this.listenTo(this.contentView, 'content:loaded', function() {
-        this.trigger('ready');
-      });
       this.contentView.load();
     },
 
     notAuthenticated: function(response) {
       $.removeCookie('_jf_session_token');
       $.removeCookie('_jf_session_userId');
-      this.contentView.loadContent();
+      this.contentView.load();
     },
 
     signOut: function() {
