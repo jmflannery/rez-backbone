@@ -28,7 +28,7 @@ define([
       this.listenTo(this.vent, 'show:edit_resume_item', this.showEditResume);
 
       this.resumes = new ResumeCollection();
-      this.listenToOnce(this.resumes, 'sync', this.contentLoaded);
+      this.listenToOnce(this.resumes, 'sync', this.loaded);
     },
 
     render: function() {
@@ -43,12 +43,12 @@ define([
       delete this.auth;
     },
 
-    loadContent: function() {
+    load: function() {
       this.resumes.fetch();
     },
 
-    contentLoaded: function() {
-      this.vent.trigger('content:loaded');
+    loaded: function() {
+      this.trigger('content:loaded');
     },
 
     showSignin: function() {

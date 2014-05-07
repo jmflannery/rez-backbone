@@ -61,13 +61,10 @@ define([
       this.navView.userAuthenticated(this.currentUser.get('username'));
       this.contentView.setAuth({ currentUser: this.currentUser, token: this.token });
 
-      this.contentView.loadContent();
-
-      if (options.nextPage) {
-        this.listenToOnce(this.contentView, 'content:loaded', function() {
-          this.vent.trigger('show:' + options.nextPage);
-        });
-      }
+      this.listenTo(this.contentView, 'content:loaded', function() {
+        this.trigger('ready');
+      });
+      this.contentView.load();
     },
 
     notAuthenticated: function(response) {

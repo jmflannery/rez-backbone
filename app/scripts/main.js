@@ -38,7 +38,7 @@ require([
   var vent = _.extend({}, Backbone.Events);
   var appRouter = new AppRouter(vent);
   var appView = new AppView(vent);
-  vent.listenToOnce(vent, 'content:loaded', function() {
+  vent.listenToOnce(appView, 'ready', function() {
     Backbone.history.start();
   });
 });
