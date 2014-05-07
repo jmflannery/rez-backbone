@@ -16,19 +16,19 @@ define([
     hasOne: ['profile', 'address'],
     hasMany: ['items'],
 
-    initialize: function(attributes, options) {
-      var options = { resumeId: this.id };
-      this.set('address', new Address(attributes.address, options));
-      this.set('profile', new Profile(attributes.profile, options));
-      this.set('items', new ItemCollection(attributes.items, options));
-    },
-
     parse: function(response) {
       if (response.resume) {
-        return response.resume;
+        var resp = response.resume;
       } else {
-        return response;
+        var resp = response;
       }
+
+      var options = { resumeId: this.id };
+      resp.address = new Address(resp.address, options);
+      resp.profile = new Profile(resp.profile, options);
+      resp.items = new ItemCollection(resp.items, options);
+
+      return resp;
     },
 
     toJSON: function() {
