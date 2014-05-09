@@ -1,4 +1,4 @@
-// This view represents a section containing a list of Items to be selected
+// This view represents a div containing a list of Items to be selected
 // and a link to create a new Item.
 
 define([
@@ -33,8 +33,8 @@ define([
         vent: this.vent,
         collection: this.collection
       });
-      this.listenTo(this.itemsView, 'edit:item', function(item) {
-        this.trigger('edit:item:show', item)
+      this.listenTo(this.itemsView, 'item:edit', function(itemId, resumeId) {
+        this.trigger('item:edit:show', itemId, resumeId);
       });
       this.$el.append(this.itemsView.render().el);
       return this;

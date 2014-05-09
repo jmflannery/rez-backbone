@@ -34,8 +34,6 @@ define([
       this.auth = options.auth;
       this.vent = options.vent;
 
-      if (options.item) { this.item = options.item; }
-
       this.listenTo(this.model, 'sync', this.resumeSaved);
       this.listenTo(this.model, 'error', this.resumeSaveError);
 
@@ -51,6 +49,7 @@ define([
         this.initSelectProfileView();
         this.initSelectAddressView();
         this.initSelectItemsView();
+        this.item = this.items.get(options.itemId);
         this.trigger('resume:edit:ready');
       }.bind(this));
     },
@@ -59,8 +58,9 @@ define([
       this.$el.html(this.template());
       this.renderSelectProfileView();
       this.renderSelectAddressView();
+
       if (this.item) {
-        this.showEditItem(this.item);
+        this.renderEditItemView(this.item);
       } else {
         this.renderSelectItemsView();
       }
@@ -90,7 +90,7 @@ define([
         vent: this.vent
       });
       this.listenTo(this.selectItemsView, 'show:new:item', this.showNewItem);
-      this.listenTo(this.selectItemsView, 'edit:item:show', this.showEditItem);
+      this.listenTo(this.selectItemsView, 'item:edit:show', this.renderEditItemView);
     },
 
     setSelectedProfileId: function(profileId) {
@@ -164,7 +164,8 @@ define([
       this.$('#edit_items').html(newItemView.render().el);
     },
 
-    showEditItem: function(item) {
+    renderEditItemView: function(itemId, resumeId) {
+      var item = this.items.get(itemId);
       Backbone.history.navigate('resumes/' + this.model.id + '/items/' + item.id + '/edit');
       var editItemView = new EditItemView({
         model: item,

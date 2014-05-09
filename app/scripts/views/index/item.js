@@ -33,7 +33,7 @@ define([
 
     edit: function(e) {
       e.preventDefault();
-      this.vent.trigger('show:edit_resume_item', this.resume.id, this.model.id);
+      this.trigger('item:edit', this.model.id, this.resume.id);
     },
 
     destroy: function(e) {

@@ -71,7 +71,7 @@ define([
 
     showEditResume: function(e) {
       e.preventDefault();
-      this.trigger('show:edit_resume', this.model.id);
+      this.trigger('resume:edit:show', this.model.id);
     }
   });
 

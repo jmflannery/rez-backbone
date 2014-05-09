@@ -24,8 +24,8 @@ define([
       this.listenTo(this.vent, 'show:resume', this.showResume);
       this.listenTo(this.vent, 'show:new_resume', this.showNewResume);
       this.listenTo(this.vent, 'show:resumes', this.showResumes);
-      this.listenTo(this.vent, 'show:edit_resume', this.showEditResume);
-      this.listenTo(this.vent, 'show:edit_resume_item', this.showEditResume);
+      this.listenTo(this.vent, 'show:resume:edit', this.showEditResume);
+      this.listenTo(this.vent, 'show:resume:item:edit', this.showEditResume);
 
       this.resumes = new ResumeCollection();
       this.listenToOnce(this.resumes, 'sync', this.loaded);
@@ -76,7 +76,7 @@ define([
       this.resumeView = new ShowResumeView({ model: resume, auth: this.auth });
       this.listenToOnce(this.resumeView, 'show:new_resume', this.showNewResume);
       this.listenToOnce(this.resumeView, 'show:resumes', this.showResumes);
-      this.listenToOnce(this.resumeView, 'show:edit_resume', this.showEditResume);
+      this.listenToOnce(this.resumeView, 'resume:edit:show', this.showEditResume);
       this.$el.html(this.resumeView.render().el);
     },
 
@@ -100,7 +100,6 @@ define([
       var resume = this.resumes.get(resumeId);
 
       if (itemId) {
-        var item = resume.get('items').get(itemId);
         Backbone.history.navigate("resumes/" + resume.id + "/items/" + itemId + "/edit");
       } else {
         Backbone.history.navigate("resumes/" + resume.id + "/edit");
@@ -110,7 +109,7 @@ define([
         model: resume,
         auth: this.auth,
         vent: this.vent,
-        item: item
+        itemId: itemId
       });
 
       this.listenToOnce(this.editResumeView, 'resume:edit:ready', this.renderEditResume);

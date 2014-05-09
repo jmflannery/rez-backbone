@@ -45,11 +45,11 @@ define([
     },
 
     editResume: function(resumeId) {
-      this.vent.trigger('show:edit_resume', resumeId);
+      this.vent.trigger('show:resume:edit', resumeId);
     },
 
     editResumeItem: function(resumeId, itemId) {
-      this.vent.trigger('show:edit_resume_item', resumeId, itemId);
+      this.vent.trigger('show:resume:item:edit', resumeId, itemId);
     }
   });
 

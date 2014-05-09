@@ -34,8 +34,8 @@ define([
           vent: this.vent
         });
 
-        this.listenToOnce(itemView, 'item:edit', function(item) {
-          this.trigger('edit:item', item);
+        this.listenToOnce(itemView, 'item:edit', function(itemId, resumeId) {
+          this.trigger('item:edit', itemId, resumeId);
         });
 
         this.itemViews.push(itemView);
