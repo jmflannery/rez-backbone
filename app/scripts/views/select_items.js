@@ -46,7 +46,7 @@ define([
 
     newItem: function(e) {
       e.preventDefault();
-      this.trigger('show:new:item');
+      this.trigger('item:new:show');
     }
   });
 

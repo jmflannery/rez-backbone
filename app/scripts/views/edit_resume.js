@@ -89,7 +89,7 @@ define([
         auth: this.auth,
         vent: this.vent
       });
-      this.listenTo(this.selectItemsView, 'show:new:item', this.showNewItem);
+      this.listenTo(this.selectItemsView, 'item:new:show', this.renderNewItemView);
       this.listenTo(this.selectItemsView, 'item:edit:show', this.renderEditItemView);
     },
 
@@ -153,30 +153,32 @@ define([
       this.$('#edit_address').html(newAddressView.render().el);
     },
 
-    showNewItem: function() {
-      var newItemView = new NewItemView({
+    renderNewItemView: function() {
+      this.selectItemsView.remove();
+      this.newItemView = new NewItemView({
         resume: this.model,
         collection: this.items,
         auth: this.auth
       });
-      this.listenTo(newItemView, 'item:new:saved', this.newItemSaved);
-      this.listenTo(newItemView, 'item:new:cancel', this.cancelItem);
-      this.$('#edit_items').html(newItemView.render().el);
+      this.listenTo(this.newItemView, 'item:new:saved', this.newItemSaved);
+      this.listenTo(this.newItemView, 'item:new:cancel', this.cancelNewItem);
+      this.$('#edit_items').html(this.newItemView.render().el);
     },
 
     renderEditItemView: function(itemId, resumeId) {
+      this.selectItemsView.remove();
       var item = this.items.get(itemId);
       Backbone.history.navigate(this.editItemUrl(item.id));
-      var editItemView = new EditItemView({
+      this.editItemView = new EditItemView({
         model: item,
         resume: this.model,
         vent: this.vent,
         auth: this.auth
       });
-      this.listenTo(editItemView, 'item:edit:cancel', this.cancelItem);
-      this.listenTo(editItemView, 'item:updated', this.itemUpdated);
-      this.listenToOnce(editItemView, 'item:edit:ready', function() {
-        this.$('#edit_items').html(editItemView.render().el);
+      this.listenTo(this.editItemView, 'item:edit:cancel', this.cancelEditItem);
+      this.listenTo(this.editItemView, 'item:updated', this.itemUpdated);
+      this.listenToOnce(this.editItemView, 'item:edit:ready', function() {
+        this.$('#edit_items').html(this.editItemView.render().el);
       });
     },
 
@@ -214,7 +216,7 @@ define([
     },
 
     itemUpdated: function() {
-      this.cancelItem();
+      this.cancelEditItem();
     },
 
     resumeSaved: function() {
@@ -257,8 +259,17 @@ define([
       this.renderSelectItemsView();
     },
 
-    cancelItem: function() {
+    cancelNewItem: function() {
       Backbone.history.navigate(this.editUrl());
+      this.newItemView.remove();
+      this.initSelectItemsView();
+      this.renderSelectItemsView();
+    },
+
+    cancelEditItem: function() {
+      Backbone.history.navigate(this.editUrl());
+      this.editItemView.remove();
+      this.initSelectItemsView();
       this.renderSelectItemsView();
     },
 
