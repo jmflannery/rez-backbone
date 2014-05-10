@@ -11,6 +11,10 @@ define([
 
     tagName: 'li',
 
+    events: {
+      'click #edit_bullet': 'editBullet'
+    },
+
     initialize: function(options) {
       this.selected = options.selected;
     },
@@ -18,6 +22,11 @@ define([
     render: function() {
       this.$el.html(this.template());
       return this;
+    },
+
+    editBullet: function(e) {
+      e.preventDefault();
+      this.trigger('bullet:edit', this.model.id);
     }
   });
 

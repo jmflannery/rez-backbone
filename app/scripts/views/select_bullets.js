@@ -31,6 +31,9 @@ define([
         auth: this.auth,
         selected: this.selectedBullets
       });
+      this.listenTo(this.bulletsView, 'bullet:edit', function(bulletId) {
+        this.trigger('bullet:edit:show', bulletId);
+      });
       this.$el.append(this.bulletsView.render().el);
       return this;
     },

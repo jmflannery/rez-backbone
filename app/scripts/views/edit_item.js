@@ -5,12 +5,15 @@ define([
   'templates',
   'collections/bullet',
   'views/select_bullets',
-  'views/new_bullet'
-], function ($, _, Backbone, JST, BulletCollection, SelectBulletsView, NewBulletView) {
+  'views/new_bullet',
+  'views/edit/bullet'
+], function ($, _, Backbone, JST, BulletCollection, SelectBulletsView, NewBulletView, EditBulletView) {
   'use strict';
 
   var EditItemView = Backbone.View.extend({
     template: JST['app/scripts/templates/edit_item.ejs'],
+
+    id: 'edit-item',
 
     events: {
       'click #save_item': 'save',
@@ -40,6 +43,7 @@ define([
         selectedBullets: this.model.get('bullet_ids')
       });
       this.listenTo(this.selectBulletsView, 'show:new:bullet', this.showNewBullet);
+      this.listenTo(this.selectBulletsView, 'bullet:edit:show', this.renderEditBulletView);
     },
 
     render: function() {
@@ -50,6 +54,14 @@ define([
 
     renderSelectBulletsView: function() {
       this.$('section#bullets').html(this.selectBulletsView.render().el);
+    },
+
+    renderEditBulletView: function(bulletId) {
+      var bullet = this.bullets.get(bulletId);
+      var editBulletView = new EditBulletView({
+        model: bullet
+      });
+      this.$('section#bullets').html(editBulletView.render().el);
     },
 
     save: function(e) {
