@@ -166,7 +166,7 @@ define([
 
     renderEditItemView: function(itemId, resumeId) {
       var item = this.items.get(itemId);
-      Backbone.history.navigate('resumes/' + this.model.id + '/items/' + item.id + '/edit');
+      Backbone.history.navigate(this.editItemUrl(item.id));
       var editItemView = new EditItemView({
         model: item,
         resume: this.model,
@@ -258,8 +258,16 @@ define([
     },
 
     cancelItem: function() {
-      this.initSelectItemsView();
+      Backbone.history.navigate(this.editUrl());
       this.renderSelectItemsView();
+    },
+
+    editUrl: function() {
+      return 'resumes/' + this.model.id + '/edit'
+    },
+
+    editItemUrl: function(itemId) {
+      return 'resumes/' + this.model.id + '/items/' + itemId + '/edit'
     },
 
     formatErrors: function(errorText) {
