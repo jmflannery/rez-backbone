@@ -42,7 +42,7 @@ define([
         auth: this.auth,
         selectedBullets: this.model.get('bullet_ids')
       });
-      this.listenTo(this.selectBulletsView, 'show:new:bullet', this.showNewBullet);
+      this.listenTo(this.selectBulletsView, 'show:new:bullet', this.renderNewBullet);
       this.listenTo(this.selectBulletsView, 'bullet:edit:show', this.renderEditBulletView);
     },
 
@@ -54,6 +54,7 @@ define([
 
     renderSelectBulletsView: function() {
       this.$('section#bullets').html(this.selectBulletsView.render().el);
+      Backbone.history.navigate(this.editUrl());
     },
 
     renderEditBulletView: function(bulletId) {
@@ -63,6 +64,7 @@ define([
       });
       this.listenTo(editBulletView, 'bullet:edit:cancel', this.cancelEditBullet);
       this.$('section#bullets').html(editBulletView.render().el);
+      Backbone.history.navigate(this.editBulletUrl(bullet.id));
     },
 
     cancelEditBullet: function() {
@@ -94,18 +96,18 @@ define([
 
     cancel: function(e) {
       e.preventDefault();
-      this.vent.trigger('show:edit_resume', this.resume.id);
+      this.trigger('item:edit:cancel');
     },
 
-    showNewBullet: function() {
-      var nbv = new NewBulletView({
-        collection: this.model.bullets,
+    renderNewBullet: function() {
+      var view = new NewBulletView({
+        collection: this.model.get('bullets'),
         model: this.model,
         auth: this.auth
       });
-      this.listenTo(nbv, 'bullet:new:saved', this.newBulletSaved);
-      this.listenTo(nbv, 'bullet:new:cancel', this.cancelBullet);
-      this.$('section#bullets').html(nbv.render().el);
+      this.listenTo(view, 'bullet:new:saved', this.newBulletSaved);
+      this.listenTo(view, 'bullet:new:cancel', this.cancelNewBullet);
+      this.$('section#bullets').html(view.render().el);
     },
 
     newBulletSaved: function(bullet) {
@@ -114,8 +116,16 @@ define([
       this.renderSelectBulletsView();
     },
 
-    cancelBullet: function() {
+    cancelNewBullet: function() {
       this.render();
+    },
+
+    editBulletUrl: function(bulletId) {
+      return "resumes/" + this.resume.id + "/items/" + this.model.id + "/bullets/" + bulletId + "/edit";
+    },
+
+    editUrl: function() {
+      return "resumes/" + this.resume.id + "/items/" + this.model.id + "/edit";
     }
   });
 
