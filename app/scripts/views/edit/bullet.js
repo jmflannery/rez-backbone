@@ -11,9 +11,18 @@ define([
 
     id: 'edit-bullet',
 
+    events: {
+      'click #cancel_bullet': 'cancel'
+    },
+
     render: function() {
       this.$el.html(this.template());
       return this;
+    },
+
+    cancel: function(e) {
+      e.preventDefault();
+      this.trigger('bullet:edit:cancel');
     }
   });
 

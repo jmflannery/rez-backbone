@@ -61,7 +61,12 @@ define([
       var editBulletView = new EditBulletView({
         model: bullet
       });
+      this.listenTo(editBulletView, 'bullet:edit:cancel', this.cancelEditBullet);
       this.$('section#bullets').html(editBulletView.render().el);
+    },
+
+    cancelEditBullet: function() {
+      this.renderSelectBulletsView();
     },
 
     save: function(e) {
