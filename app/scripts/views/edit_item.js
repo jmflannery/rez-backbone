@@ -59,15 +59,17 @@ define([
 
     renderEditBulletView: function(bulletId) {
       var bullet = this.bullets.get(bulletId);
-      var editBulletView = new EditBulletView({
+      this.editBulletView = new EditBulletView({
         model: bullet
       });
-      this.listenTo(editBulletView, 'bullet:edit:cancel', this.cancelEditBullet);
-      this.$('section#bullets').html(editBulletView.render().el);
+      this.listenTo(this.editBulletView, 'bullet:edit:cancel', this.cancelEditBullet);
+      this.$('section#bullets').html(this.editBulletView.render().el);
       Backbone.history.navigate(this.editBulletUrl(bullet.id));
     },
 
     cancelEditBullet: function() {
+      this.editBulletView.remove();
+      this.initSelectBulletsView();
       this.renderSelectBulletsView();
     },
 
@@ -100,14 +102,14 @@ define([
     },
 
     renderNewBullet: function() {
-      var view = new NewBulletView({
+      this.newBulletView = new NewBulletView({
         collection: this.model.get('bullets'),
         model: this.model,
         auth: this.auth
       });
-      this.listenTo(view, 'bullet:new:saved', this.newBulletSaved);
-      this.listenTo(view, 'bullet:new:cancel', this.cancelNewBullet);
-      this.$('section#bullets').html(view.render().el);
+      this.listenTo(this.newBulletView, 'bullet:new:saved', this.newBulletSaved);
+      this.listenTo(this.newBulletView, 'bullet:new:cancel', this.cancelNewBullet);
+      this.$('section#bullets').html(this.newBulletView.render().el);
     },
 
     newBulletSaved: function(bullet) {
@@ -117,7 +119,9 @@ define([
     },
 
     cancelNewBullet: function() {
-      this.render();
+      this.newBulletView.remove();
+      this.initSelectBulletsView();
+      this.renderSelectBulletsView();
     },
 
     editBulletUrl: function(bulletId) {
