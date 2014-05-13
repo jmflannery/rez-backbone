@@ -34,6 +34,9 @@ define([
       this.auth = options.auth;
       this.vent = options.vent;
 
+      this.itemId = options.itemId;
+      this.bulletId = options.bulletId;
+
       this.listenTo(this.model, 'sync', this.resumeSaved);
       this.listenTo(this.model, 'error', this.resumeSaveError);
 
@@ -49,7 +52,6 @@ define([
         this.initSelectProfileView();
         this.initSelectAddressView();
         this.initSelectItemsView();
-        this.item = this.items.get(options.itemId);
         this.trigger('resume:edit:ready');
       }.bind(this));
     },
@@ -59,8 +61,8 @@ define([
       this.renderSelectProfileView();
       this.renderSelectAddressView();
 
-      if (this.item) {
-        this.renderEditItemView(this.item);
+      if (this.itemId) {
+        this.renderEditItemView(this.itemId, this.bulletId);
       } else {
         this.renderSelectItemsView();
       }
@@ -165,21 +167,29 @@ define([
       this.$('#edit_items').html(this.newItemView.render().el);
     },
 
-    renderEditItemView: function(itemId, resumeId) {
+    renderEditItemView: function(itemId, bulletId) {
       this.selectItemsView.remove();
       var item = this.items.get(itemId);
-      Backbone.history.navigate(this.editItemUrl(item.id));
-      this.editItemView = new EditItemView({
-        model: item,
-        resume: this.model,
-        vent: this.vent,
-        auth: this.auth
-      });
-      this.listenTo(this.editItemView, 'item:edit:cancel', this.cancelEditItem);
-      this.listenTo(this.editItemView, 'item:updated', this.itemUpdated);
-      this.listenToOnce(this.editItemView, 'item:edit:ready', function() {
-        this.$('#edit_items').html(this.editItemView.render().el);
-      });
+      if (item) {
+        Backbone.history.navigate(this.editItemUrl(item.id));
+
+        this.editItemView = new EditItemView({
+          model: item,
+          resume: this.model,
+          vent: this.vent,
+          auth: this.auth,
+          bulletId: bulletId
+        });
+
+        this.listenTo(this.editItemView, 'item:edit:cancel', this.cancelEditItem);
+        this.listenTo(this.editItemView, 'item:updated', this.itemUpdated);
+
+        this.listenToOnce(this.editItemView, 'item:edit:ready', function() {
+          this.$('#edit_items').html(this.editItemView.render().el);
+        });
+      } else {
+        console.log("no item " + itemId);
+      }
     },
 
     doneEditing: function(e) {

@@ -22,8 +22,10 @@ define([
 
     initialize: function(options) {
       this.resume = options.resume;
+      this.bulletId = options.bulletId;
       this.auth = options.auth;
       this.vent = options.vent;
+
       this.listenTo(this.model, 'sync', this.itemSynced);
 
       this.bullets = new BulletCollection();
@@ -32,8 +34,20 @@ define([
     },
 
     contentLoaded: function() {
-      this.initSelectBulletsView();
       this.trigger('item:edit:ready');
+    },
+
+    render: function() {
+      this.$el.html(this.template());
+
+      if (this.bulletId) {
+        this.renderEditBulletView(this.bulletId);
+      } else {
+        this.initSelectBulletsView();
+        this.renderSelectBulletsView();
+      }
+
+      return this;
     },
 
     initSelectBulletsView: function() {
@@ -44,12 +58,6 @@ define([
       });
       this.listenTo(this.selectBulletsView, 'show:new:bullet', this.renderNewBullet);
       this.listenTo(this.selectBulletsView, 'bullet:edit:show', this.renderEditBulletView);
-    },
-
-    render: function() {
-      this.$el.html(this.template());
-      this.renderSelectBulletsView();
-      return this;
     },
 
     renderSelectBulletsView: function() {
@@ -69,6 +77,7 @@ define([
 
     cancelEditBullet: function() {
       this.editBulletView.remove();
+      delete this.bulletId;
       this.initSelectBulletsView();
       this.renderSelectBulletsView();
     },

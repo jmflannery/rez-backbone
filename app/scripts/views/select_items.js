@@ -34,7 +34,7 @@ define([
         collection: this.collection
       });
       this.listenTo(this.itemsView, 'item:edit', function(itemId, resumeId) {
-        this.trigger('item:edit:show', itemId, resumeId);
+        this.trigger('item:edit:show', itemId);
       });
       this.$el.append(this.itemsView.render().el);
       return this;
