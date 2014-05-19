@@ -29,12 +29,12 @@ define([
       this.listenTo(this.model, 'sync', this.itemSynced);
 
       this.bullets = new BulletCollection();
-      this.listenTo(this.bullets, 'sync', this.contentLoaded);
-      this.bullets.fetch();
-    },
 
-    contentLoaded: function() {
-      this.trigger('item:edit:ready');
+      this.listenTo(this.bullets, 'sync', function() {
+        this.trigger('item:edit:ready');
+      });
+
+      this.bullets.fetch();
     },
 
     render: function() {

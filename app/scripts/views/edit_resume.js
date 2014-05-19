@@ -171,8 +171,6 @@ define([
       this.selectItemsView.remove();
       var item = this.items.get(itemId);
       if (item) {
-        Backbone.history.navigate(this.editItemUrl(item.id));
-
         this.editItemView = new EditItemView({
           model: item,
           resume: this.model,

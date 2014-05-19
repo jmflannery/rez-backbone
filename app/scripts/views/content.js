@@ -29,7 +29,13 @@ define([
       this.listenTo(this.vent, 'show:resume:item:bullet:edit', this.showEditResume);
 
       this.resumes = new ResumeCollection();
-      this.listenToOnce(this.resumes, 'sync', this.loaded);
+      this.listenToOnce(this.resumes, 'sync', function() {
+        this.trigger('content:loaded');
+      });
+    },
+
+    load: function() {
+      this.resumes.fetch();
     },
 
     render: function() {
@@ -42,14 +48,6 @@ define([
 
     destroyAuth: function() {
       delete this.auth;
-    },
-
-    load: function() {
-      this.resumes.fetch();
-    },
-
-    loaded: function() {
-      this.trigger('content:loaded');
     },
 
     showSignin: function() {
@@ -110,19 +108,17 @@ define([
         bulletId: bulletId
       });
 
-      this.listenToOnce(this.editResumeView, 'resume:edit:ready', this.renderEditResume);
+      this.listenToOnce(this.editResumeView, 'resume:edit:ready', function() {
+        this.$el.html(this.editResumeView.render().el);
+      });
       this.listenToOnce(this.editResumeView, 'show:resume', this.showResume);
-    },
-
-    renderEditResume: function() {
-      this.$el.html(this.editResumeView.render().el);
     },
 
     editUrl: function(resumeId, itemId, bulletId) {
       var url = '';
       if (resumeId && itemId && bulletId) {
         url = '/resumes/' + resumeId + '/items/' + itemId + '/bullets/' + bulletId + '/edit';
-      } else if (resumeId && itemId && bulletId) {
+      } else if (resumeId && itemId) {
         url = '/resumes/' + resumeId + '/items/' + itemId + '/edit';
       } else if (resumeId) {
         url = '/resumes/' + resumeId + '/edit';
