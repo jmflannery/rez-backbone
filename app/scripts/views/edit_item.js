@@ -6,8 +6,9 @@ define([
   'collections/bullet',
   'views/select_bullets',
   'views/new_bullet',
-  'views/edit/bullet'
-], function ($, _, Backbone, JST, BulletCollection, SelectBulletsView, NewBulletView, EditBulletView) {
+  'views/edit/bullet',
+  'views/paragraphs/select'
+], function ($, _, Backbone, JST, BulletCollection, SelectBulletsView, NewBulletView, EditBulletView, SelectParagraphsView) {
   'use strict';
 
   var EditItemView = Backbone.View.extend({
@@ -44,7 +45,9 @@ define([
         this.renderEditBulletView(this.bulletId);
       } else {
         this.initSelectBulletsView();
+        this.initSelectParagraphsView();
         this.renderSelectBulletsView();
+        this.renderSelectParagraphsView();
       }
 
       return this;
@@ -60,8 +63,19 @@ define([
       this.listenTo(this.selectBulletsView, 'bullet:edit:show', this.renderEditBulletView);
     },
 
+    initSelectParagraphsView: function() {
+      this.selectParagraphsView = new SelectParagraphsView({
+        auth: this.auth
+      });
+    },
+
     renderSelectBulletsView: function() {
       this.$('section#bullets').html(this.selectBulletsView.render().el);
+      Backbone.history.navigate(this.editUrl());
+    },
+
+    renderSelectParagraphsView: function() {
+      this.$('section#paragraphs').html(this.selectParagraphsView.render().el);
       Backbone.history.navigate(this.editUrl());
     },
 
