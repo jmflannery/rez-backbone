@@ -8,24 +8,19 @@ define([
   'use strict';
 
   var SelectBulletsView = Backbone.View.extend({
+    template: JST['app/scripts/templates/select_bullets.ejs'],
 
     tagName: 'section',
 
     id: 'select-bullets',
 
+    events: {
+      'click #new_bullet': 'newBullet'
+    },
+
     initialize: function(options) {
       this.auth = options.auth;
       this.selectedBullets = options.selectedBullets;
-    },
-
-    setSelectedBullets: function(selectedBullets) {
-      this.selectedBullets = selectedBullets;
-    },
-
-    template: JST['app/scripts/templates/select_bullets.ejs'],
-
-    events: {
-      'click #new_bullet': 'newBullet'
     },
 
     render: function() {
@@ -39,7 +34,12 @@ define([
         this.trigger('bullet:edit:show', bulletId);
       });
       this.$el.append(this.bulletsView.render().el);
+
       return this;
+    },
+
+    setSelectedBullets: function(selectedBullets) {
+      this.selectedBullets = selectedBullets;
     },
 
     newBullet: function(e) {

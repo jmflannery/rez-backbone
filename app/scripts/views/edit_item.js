@@ -5,11 +5,11 @@ define([
   'templates',
   'collections/bullet',
   'collections/paragraphs',
-  'views/select_bullets',
+  'views/bullets/select',
+  'views/paragraphs/select',
   'views/new_bullet',
-  'views/edit/bullet',
-  'views/paragraphs/select'
-], function ($, _, Backbone, JST, BulletCollection, ParagraphCollection, SelectBulletsView, NewBulletView, EditBulletView, SelectParagraphsView) {
+  'views/edit/bullet'
+], function ($, _, Backbone, JST, BulletCollection, ParagraphCollection, SelectBulletsView, SelectParagraphsView, NewBulletView, EditBulletView) {
   'use strict';
 
   var EditItemView = Backbone.View.extend({
