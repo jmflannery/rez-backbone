@@ -9,6 +9,10 @@ define([
   var SelectParagraphsView = Backbone.View.extend({
     template: JST['app/scripts/templates/select_paragraphs.ejs'],
 
+    tagName: 'section',
+
+    id: 'select-paragraphs',
+
     initialize: function(options) {
       this.auth = options.auth;
     },

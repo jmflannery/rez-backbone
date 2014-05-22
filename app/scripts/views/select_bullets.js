@@ -9,6 +9,10 @@ define([
 
   var SelectBulletsView = Backbone.View.extend({
 
+    tagName: 'section',
+
+    id: 'select-bullets',
+
     initialize: function(options) {
       this.auth = options.auth;
       this.selectedBullets = options.selectedBullets;
