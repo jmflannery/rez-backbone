@@ -4,11 +4,12 @@ define([
   'backbone',
   'templates',
   'collections/bullet',
+  'collections/paragraphs',
   'views/select_bullets',
   'views/new_bullet',
   'views/edit/bullet',
   'views/paragraphs/select'
-], function ($, _, Backbone, JST, BulletCollection, SelectBulletsView, NewBulletView, EditBulletView, SelectParagraphsView) {
+], function ($, _, Backbone, JST, BulletCollection, ParagraphCollection, SelectBulletsView, NewBulletView, EditBulletView, SelectParagraphsView) {
   'use strict';
 
   var EditItemView = Backbone.View.extend({
@@ -30,12 +31,14 @@ define([
       this.listenTo(this.model, 'sync', this.itemSynced);
 
       this.bullets = new BulletCollection();
+      this.paragraphs = new ParagraphCollection();
 
-      this.listenTo(this.bullets, 'sync', function() {
+      $.when(
+        this.bullets.fetch(),
+        this.paragraphs.fetch()
+      ).then(function() {
         this.trigger('item:edit:ready');
-      });
-
-      this.bullets.fetch();
+      }.bind(this));
     },
 
     render: function() {
