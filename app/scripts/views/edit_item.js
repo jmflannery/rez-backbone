@@ -4,12 +4,13 @@ define([
   'backbone',
   'templates',
   'collections/bullet',
-  'collections/paragraphs',
+  'collections/paragraph',
   'views/bullets/select',
   'views/paragraphs/select',
   'views/new_bullet',
-  'views/edit/bullet'
-], function ($, _, Backbone, JST, BulletCollection, ParagraphCollection, SelectBulletsView, SelectParagraphsView, NewBulletView, EditBulletView) {
+  'views/edit/bullet',
+  'views/paragraphs/new'
+], function ($, _, Backbone, JST, BulletCollection, ParagraphCollection, SelectBulletsView, SelectParagraphsView, NewBulletView, EditBulletView, NewParagraphView) {
   'use strict';
 
   var EditItemView = Backbone.View.extend({
@@ -70,6 +71,7 @@ define([
       this.selectParagraphsView = new SelectParagraphsView({
         auth: this.auth
       });
+      this.listenTo(this.selectParagraphsView, 'paragraph:new', this.renderNewParagraph);
     },
 
     renderSelectBulletsView: function() {
@@ -148,6 +150,23 @@ define([
       this.newBulletView.remove();
       this.initSelectBulletsView();
       this.renderSelectBulletsView();
+    },
+
+    renderNewParagraph: function() {
+      this.newParagraphView = new NewParagraphView({
+        collection: this.model.get('paragraphs'),
+        model: this.model,
+        auth: this.auth
+      });
+      this.listenTo(this.newParagraphView, 'paragraph:new:saved', this.newParagraphSaved);
+      this.listenTo(this.newParagraphView, 'paragraph:new:cancel', this.cancelNewParagraph);
+      this.$('section#paragraphs').html(this.newParagraphView.render().el);
+    },
+
+    cancelNewParagraph: function() {
+      this.newParagraphView.remove();
+      this.initSelectParagraphsView();
+      this.renderSelectParagraphsView();
     },
 
     editBulletUrl: function(bulletId) {

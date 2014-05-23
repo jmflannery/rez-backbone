@@ -13,6 +13,10 @@ define([
 
     id: 'select-paragraphs',
 
+    events: {
+      'click #new_paragraph': 'newParagraph'
+    },
+
     initialize: function(options) {
       this.auth = options.auth;
     },
@@ -20,6 +24,11 @@ define([
     render: function() {
       this.$el.html(this.template());
       return this;
+    },
+
+    newParagraph: function(e) {
+      e.preventDefault();
+      this.trigger('paragraph:new');
     }
   });
 
