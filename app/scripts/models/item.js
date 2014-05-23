@@ -2,8 +2,9 @@ define([
   'underscore',
   'backbone',
   'jquery',
-  'collections/bullet'
-], function (_, Backbone, $, BulletCollection) {
+  'collections/bullet',
+  'collections/paragraph'
+], function (_, Backbone, $, BulletCollection, ParagraphCollection) {
   'use strict';
 
   var ItemModel = Backbone.Model.extend({
@@ -16,6 +17,9 @@ define([
     initialize: function(attributes, options) {
       this.set('bullets', new BulletCollection(
         attributes.bullets
+      ));
+      this.set('paragraphs', new ParagraphCollection(
+        attributes.paragraphs
       ));
     },
 

@@ -11,7 +11,7 @@ define([
 
     toJSON: function() {
       return {
-        paragraph: this.attributes
+        point: this.attributes
       };
     },
 
