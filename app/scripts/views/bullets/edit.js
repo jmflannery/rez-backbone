@@ -12,7 +12,15 @@ define([
     id: 'edit-bullet',
 
     events: {
+      'click #save_bullet': 'save',
       'click #cancel_bullet': 'cancel'
+    },
+
+    initialize: function(options) {
+      this.auth = options.auth;
+      this.listenTo(this.model, 'sync', function() {
+        this.trigger('bullet:saved');
+      });
     },
 
     render: function() {
@@ -20,9 +28,26 @@ define([
       return this;
     },
 
+    save: function(e) {
+      e.preventDefault();
+      this.model.set(this.newAttributes());
+      if (this.auth) {
+        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+        this.model.save({}, header);
+      } else {
+        console.log('Not Authorized');
+      }
+    },
+
     cancel: function(e) {
       e.preventDefault();
       this.trigger('bullet:edit:cancel');
+    },
+
+    newAttributes: function() {
+      return {
+        text: this.$('#edit_bullet_text').val(),
+      };
     }
   });
 

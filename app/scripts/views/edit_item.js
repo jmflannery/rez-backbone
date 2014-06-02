@@ -97,9 +97,13 @@ define([
     renderEditBulletView: function(bulletId) {
       var bullet = this.bullets.get(bulletId);
       this.editBulletView = new EditBulletView({
-        model: bullet
+        model: bullet,
+        auth: this.auth
       });
       this.listenTo(this.editBulletView, 'bullet:edit:cancel', this.cancelEditBullet);
+      this.listenTo(this.editBulletView, 'bullet:saved', function() {
+        this.renderSelectBulletsView();
+      });
       this.$('section#bullets').html(this.editBulletView.render().el);
       Backbone.history.navigate(this.editBulletUrl(bullet.id));
     },
