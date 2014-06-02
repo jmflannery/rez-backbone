@@ -3,8 +3,8 @@ define([
   'underscore',
   'backbone',
   'templates',
-  'views/bullets/bullets'
-], function ($, _, Backbone, JST, BulletsView) {
+  'views/bullets/bullet'
+], function ($, _, Backbone, JST, BulletView) {
   'use strict';
 
   var SelectBulletsView = Backbone.View.extend({
@@ -25,15 +25,19 @@ define([
 
     render: function() {
       this.$el.html(this.template());
-      this.bulletsView = new BulletsView({
-        collection: this.collection,
-        auth: this.auth,
-        selected: this.selectedBullets
-      });
-      this.listenTo(this.bulletsView, 'bullet:edit', function(bulletId) {
-        this.trigger('bullet:edit:show', bulletId);
-      });
-      this.$el.append(this.bulletsView.render().el);
+      this.collection.each(function(bullet) {
+        var selected = $.inArray(bullet.id, this.selectedBullets) > -1;
+        var view = new BulletView({
+          model: bullet,
+          selected: selected
+        });
+
+        this.listenToOnce(view, 'bullet:edit', function(bulletId) {
+          this.trigger('bullet:edit:show', bulletId);
+        });
+
+        this.$el.append(view.render().el);
+      }, this);
 
       return this;
     },
