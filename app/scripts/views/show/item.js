@@ -3,11 +3,11 @@ define([
   'underscore',
   'backbone',
   'templates',
-  'views/bullets/bullets'
+  'views/bullets/index'
 ], function ($, _, Backbone, JST, BulletsView) {
   'use strict';
 
-  var DetailedItemView = Backbone.View.extend({
+  var ItemView = Backbone.View.extend({
     template: JST['app/scripts/templates/show_item.ejs'],
 
     render: function() {
@@ -21,5 +21,5 @@ define([
     }
   });
 
-  return DetailedItemView;
+  return ItemView;
 });
