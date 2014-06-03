@@ -8,7 +8,7 @@ define([
   'views/select_items',
   'views/new_profile',
   'views/new_address',
-  'views/new_item',
+  'views/items/new',
   'views/items/edit',
   'models/profile',
   'collections/profile',
