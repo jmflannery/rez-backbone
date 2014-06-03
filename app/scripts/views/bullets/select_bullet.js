@@ -6,7 +6,7 @@ define([
 ], function ($, _, Backbone, JST) {
   'use strict';
 
-  var BulletView = Backbone.View.extend({
+  var SelectBulletView = Backbone.View.extend({
     template: JST['app/scripts/templates/bullet.ejs'],
 
     tagName: 'li',
@@ -30,5 +30,5 @@ define([
     }
   });
 
-  return BulletView;
+  return SelectBulletView;
 });

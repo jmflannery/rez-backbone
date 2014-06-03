@@ -9,7 +9,7 @@ define([
 ], function ($, _, Backbone, JST, BulletView) {
   'use strict';
 
-  var DetailedBulletsView = Backbone.View.extend({
+  var BulletsView = Backbone.View.extend({
     tagName: 'ul',
 
     id: 'bullets',
@@ -26,5 +26,5 @@ define([
     }
   });
 
-  return DetailedBulletsView;
+  return BulletsView;
 });
