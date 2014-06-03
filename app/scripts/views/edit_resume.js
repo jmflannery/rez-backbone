@@ -9,7 +9,7 @@ define([
   'views/new_profile',
   'views/new_address',
   'views/new_item',
-  'views/edit_item',
+  'views/items/edit',
   'models/profile',
   'collections/profile',
   'collections/address',
