@@ -6,7 +6,7 @@ define([
   'collections/bullet',
   'collections/paragraph',
   'views/bullets/new',
-  'views/bullets/select',
+  'views/bullets/select_bullets',
   'views/bullets/edit',
   'views/paragraphs/new',
   'views/paragraphs/select'
