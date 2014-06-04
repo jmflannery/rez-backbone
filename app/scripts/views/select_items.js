@@ -6,8 +6,8 @@ define([
   'underscore',
   'backbone',
   'templates',
-  'views/index/items'
-], function ($, _, Backbone, JST, ItemsView) {
+  'views/index/item'
+], function ($, _, Backbone, JST, ItemView) {
   'use strict';
 
   var SelectItemsView = Backbone.View.extend({
@@ -23,25 +23,50 @@ define([
       this.resume = options.resume;
       this.auth = options.auth;
       this.vent = options.vent;
+      this.listenTo(this.collection, 'remove', this.render);
     },
 
     render: function() {
       this.$el.html(this.template());
-      this.itemsView = new ItemsView({
-        resume: this.resume,
-        auth: this.auth,
-        vent: this.vent,
-        collection: this.collection
-      });
-      this.listenTo(this.itemsView, 'item:edit', function(itemId, resumeId) {
-        this.trigger('item:edit:show', itemId);
-      });
-      this.$el.append(this.itemsView.render().el);
+      var $tbody = this.$('tbody');
+      this.itemViews = [];
+
+      this.collection.each(function(item) {
+        var itemView = new ItemView({
+          model: item,
+          resume: this.resume,
+          auth: this.auth,
+          vent: this.vent
+        });
+
+        this.listenToOnce(itemView, 'item:edit', function(itemId, resumeId) {
+          this.trigger('item:edit:show', itemId, resumeId);
+        });
+
+        this.itemViews.push(itemView);
+
+        $tbody.append(itemView.render().el);
+      }, this);
+
+      this.setItemsSelected();
+
       return this;
     },
 
+    setItemsSelected: function() {
+      this.resume.get('items').each(function(item) {
+        this.$('tr#item_' + item.id + ' input[type=checkbox]').prop('checked', true);
+      }, this);
+    },
+
     getSelectedItemIds: function() {
-      return this.itemsView.getSelectedItemIds();
+      var item_ids = [];
+      _.each(this.itemViews, function(itemView) {
+        if (itemView.isSelected()) {
+          item_ids.push(itemView.itemId());
+        }
+      });
+      return item_ids;
     },
 
     newItem: function(e) {
