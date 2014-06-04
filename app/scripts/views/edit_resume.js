@@ -5,7 +5,7 @@ define([
   'templates',
   'views/select_profile',
   'views/select_address',
-  'views/select_items',
+  'views/items/select_items',
   'views/new_profile',
   'views/new_address',
   'views/items/new',
