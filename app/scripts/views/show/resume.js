@@ -6,7 +6,7 @@ define([
   'models/resume',
   'views/show/profile',
   'views/show/address',
-  'views/show/items'
+  'views/items/items'
 ], function ($, _, Backbone, JST, Resume, ProfileView, AddressView, ItemsView) {
   'use strict';
 
