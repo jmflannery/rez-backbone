@@ -71,7 +71,7 @@ define([
       this.selectBulletsView = new SelectBulletsView({
         collection: this.bullets,
         auth: this.auth,
-        selectedBullets: this.model.get('bullet_ids')
+        selectedBullets: this.model.bulletIds()
       });
       this.listenTo(this.selectBulletsView, 'show:new:bullet', this.renderNewBullet);
       this.listenTo(this.selectBulletsView, 'bullet:edit:show', this.renderEditBulletView);

@@ -23,6 +23,12 @@ define([
       ));
     },
 
+    bulletIds: function() {
+      return this.get('bullets').map(function(bullet) {
+        return bullet.id;
+      });
+    },
+
     parse: function(response) {
       if (response.item) {
         return response.item;
