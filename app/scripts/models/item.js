@@ -1,18 +1,21 @@
 define([
   'underscore',
-  'backbone',
   'jquery',
+  'models/resource',
   'collections/bullet',
   'collections/paragraph'
-], function (_, Backbone, $, BulletCollection, ParagraphCollection) {
+], function (_, $, Resource, BulletCollection, ParagraphCollection) {
   'use strict';
 
-  var ItemModel = Backbone.Model.extend({
+  var ItemModel = Resource.extend({
     defaults: {
       name: '',
       title: '',
       heading: ''
     },
+
+    resource: 'item',
+    hasMany: ['bullets', 'paragraphs'],
 
     initialize: function(attributes, options) {
       this.set('bullets', new BulletCollection(
@@ -35,12 +38,6 @@ define([
       } else {
         return response;
       }
-    },
-
-    toJSON: function() {
-      return {
-        item: this.attributes
-      };
     }
   });
 
