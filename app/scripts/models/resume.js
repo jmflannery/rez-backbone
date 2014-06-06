@@ -1,18 +1,19 @@
 define([
   'underscore',
-  'backbone',
+  'models/resource',
   'models/profile',
   'models/address',
   'collections/item'
-], function (_, Backbone, Profile, Address, ItemCollection) {
+], function (_, Resource, Profile, Address, ItemCollection) {
   'use strict';
 
-  var ResumeModel = Backbone.Model.extend({
+  var ResumeModel = Resource.extend({
 
     defaults: {
       name: ''
     },
 
+    resource: 'resume',
     hasOne: ['profile', 'address'],
     hasMany: ['items'],
 
@@ -29,29 +30,6 @@ define([
       resp.items = new ItemCollection(resp.items, options);
 
       return resp;
-    },
-
-    toJSON: function() {
-      var json = JSON.parse(JSON.stringify(this.attributes));
-
-      // has one associations
-      _.each(this.hasOne, function(assoc) {
-        json[assoc + '_id'] = this.get(assoc).id;
-        delete json[assoc];
-      }, this);
-
-      // has many associations
-      _.each(this.hasMany, function(assoc) {
-        var singular = assoc.substring(0, assoc.length - 1);
-        json[singular + '_ids'] = this.get(assoc).map(function(item) {
-          return item.id;
-        });
-        delete json[assoc];
-      }, this);
-
-      return {
-        resume: json
-      };
     }
   });
 
