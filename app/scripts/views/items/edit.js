@@ -36,6 +36,7 @@ define([
     initialize: function(options) {
       this.resume = options.resume;
       this.bulletId = options.bulletId;
+      this.paragraphId = options.paragraphId;
       this.auth = options.auth;
       this.vent = options.vent;
 
@@ -59,9 +60,14 @@ define([
         this.renderEditBulletView(this.bulletId);
       } else {
         this.initSelectBulletsView();
-        this.initSelectParagraphsView();
         this.renderSelectBulletsView();
-        this.renderSelectParagraphsView();
+
+        if (this.paragraphId === 'new') {
+          this.renderNewParagraph();
+        } else {
+          this.initSelectParagraphsView();
+          this.renderSelectParagraphsView();
+        }
       }
 
       return this;
@@ -184,6 +190,7 @@ define([
       });
       this.listenTo(this.newParagraphView, 'paragraph:new:saved', this.newParagraphSaved);
       this.listenTo(this.newParagraphView, 'paragraph:new:cancel', this.cancelNewParagraph);
+      Backbone.history.navigate(this.newParagraphUrl());
       this.$('section#paragraphs').html(this.newParagraphView.render().el);
     },
 
@@ -203,6 +210,10 @@ define([
 
     editBulletUrl: function(bulletId) {
       return this.baseUrl() + "/bullets/" + bulletId + "/edit";
+    },
+
+    newParagraphUrl: function() {
+      return this.baseUrl() + "/paragraphs/new";
     }
   });
 

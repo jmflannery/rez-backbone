@@ -36,6 +36,7 @@ define([
 
       this.itemId = options.itemId;
       this.bulletId = options.bulletId;
+      this.paragraphId = options.paragraphId;
 
       this.listenTo(this.model, 'sync', this.resumeSaved);
       this.listenTo(this.model, 'error', this.resumeSaveError);
@@ -62,7 +63,7 @@ define([
       this.renderSelectAddressView();
 
       if (this.itemId) {
-        this.renderEditItemView(this.itemId, this.bulletId);
+        this.renderEditItemView(this.itemId, this.bulletId, this.paragraphId);
       } else {
         this.renderSelectItemsView();
       }
@@ -167,7 +168,7 @@ define([
       this.$('#edit_items').html(this.newItemView.render().el);
     },
 
-    renderEditItemView: function(itemId, bulletId) {
+    renderEditItemView: function(itemId, bulletId, paragraphId) {
       this.selectItemsView.remove();
       var item = this.items.get(itemId);
       if (item) {
@@ -176,7 +177,8 @@ define([
           resume: this.model,
           vent: this.vent,
           auth: this.auth,
-          bulletId: bulletId
+          bulletId: bulletId,
+          paragraphId: paragraphId
         });
 
         this.listenTo(this.editItemView, 'item:edit:cancel', this.cancelEditItem);

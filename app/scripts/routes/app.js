@@ -18,6 +18,7 @@ define([
       'resumes/:id': 'resume',
       'resumes/:id/edit': 'editResume',
       'resumes/:resume_id/items/:item_id/edit': 'editResumeItem',
+      'resumes/:resume_id/items/:item_id/paragraphs/new': 'newParagraph',
       'resumes/:resume_id/items/:item_id/bullets/:bullet_id/edit': 'editResumeItemBullet'
     },
 
@@ -51,6 +52,10 @@ define([
 
     editResumeItem: function(resumeId, itemId) {
       this.vent.trigger('show:resume:item:edit', resumeId, itemId);
+    },
+
+    newParagraph: function(resumeId, itemId) {
+      this.vent.trigger('show:resume:item:paragraph:new', resumeId, itemId, null, 'new');
     },
 
     editResumeItemBullet: function(resumeId, itemId, bulletId) {
