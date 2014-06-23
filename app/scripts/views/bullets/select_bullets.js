@@ -25,6 +25,8 @@ define([
 
     render: function() {
       this.$el.html(this.template());
+      this.bulletViews = [];
+
       this.collection.each(function(bullet) {
         var selected = $.inArray(bullet.id, this.selectedBullets) > -1;
         var view = new BulletView({
@@ -37,6 +39,8 @@ define([
         });
 
         this.$el.append(view.render().el);
+
+        this.bulletViews.push(view);
       }, this);
 
       return this;
@@ -44,6 +48,16 @@ define([
 
     setSelectedBullets: function(selectedBullets) {
       this.selectedBullets = selectedBullets;
+    },
+
+    getSelectedBulletIds: function() {
+      var bullet_ids = [];
+      _.each(this.bulletViews, function(bulletView) {
+        if (bulletView.isSelected()) {
+          bullet_ids.push(bulletView.bulletId());
+        }
+      });
+      return bullet_ids;
     },
 
     newBullet: function(e) {

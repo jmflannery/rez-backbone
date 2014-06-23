@@ -24,6 +24,14 @@ define([
       return this;
     },
 
+    isSelected: function() {
+      return this.$('input[type=checkbox]').is(':checked');
+    },
+
+    bulletId: function() {
+      return this.model.id;
+    },
+
     editBullet: function(e) {
       e.preventDefault();
       this.trigger('bullet:edit', this.model.id);

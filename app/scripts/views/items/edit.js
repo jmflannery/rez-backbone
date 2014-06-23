@@ -118,6 +118,12 @@ define([
     save: function(e) {
       e.preventDefault();
       this.model.set(this.newAttributes());
+
+      var bullets = _.map(this.getSelectedBulletIds(), function(bulletId) {
+        return this.bullets.get(bulletId);
+      }, this);
+      this.model.set('bullets', bullets);
+
       if (this.auth) {
         var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
         this.model.save({}, header);
@@ -132,6 +138,10 @@ define([
         title: this.$('#new_item_title').val(),
         heading: this.$('#new_item_heading').val()
       };
+    },
+
+    getSelectedBulletIds: function() {
+      return this.selectBulletsView.getSelectedBulletIds();
     },
 
     itemSynced: function(model, response, options) {
@@ -183,12 +193,16 @@ define([
       this.renderSelectParagraphsView();
     },
 
-    editBulletUrl: function(bulletId) {
-      return "resumes/" + this.resume.id + "/items/" + this.model.id + "/bullets/" + bulletId + "/edit";
+    baseUrl: function() {
+      return "resumes/" + this.resume.id + "/items/" + this.model.id;
     },
 
     editUrl: function() {
-      return "resumes/" + this.resume.id + "/items/" + this.model.id + "/edit";
+      return this.baseUrl() + "/edit";
+    },
+
+    editBulletUrl: function(bulletId) {
+      return this.baseUrl() + "/bullets/" + bulletId + "/edit";
     }
   });
 
