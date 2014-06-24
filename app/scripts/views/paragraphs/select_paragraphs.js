@@ -28,7 +28,7 @@ define([
       this.paragraphViews = [];
 
       this.collection.each(function(paragraph) {
-        var selected = $.inArray(paragraph.id, this.selectedparagraphs) > -1;
+        var selected = $.inArray(paragraph.id, this.selectedParagraphs) > -1;
         var view = new ParagraphView({
           model: paragraph,
           selected: selected
