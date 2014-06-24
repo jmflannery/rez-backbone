@@ -32,6 +32,12 @@ define([
       });
     },
 
+    paragraphIds: function() {
+      return this.get('paragraphs').map(function(paragraph) {
+        return paragraph.id;
+      });
+    },
+
     parse: function(response) {
       if (response.item) {
         return response.item;
