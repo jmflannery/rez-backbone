@@ -1,0 +1,5 @@
+<input type='checkbox' id='paragraph_<%= this.model.id %>' <%= this.selected ? 'checked' : '' %>>
+<label for='paragraph_<%= this.model.id %>'><%= this.model.get('text') %></label>
+<a href='#' id='edit_paragraph'>Edit</a>
+<a href='#' id='delete_paragraph'>Delete</a>
+

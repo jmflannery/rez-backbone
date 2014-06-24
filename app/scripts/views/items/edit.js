@@ -93,7 +93,9 @@ define([
 
     initSelectParagraphsView: function() {
       this.selectParagraphsView = new SelectParagraphsView({
-        auth: this.auth
+        collection: this.paragraphs,
+        auth: this.auth,
+        selectedParagraph: this.model.paragraphIds()
       });
       this.listenTo(this.selectParagraphsView, 'paragraph:new', this.renderNewParagraph);
     },
