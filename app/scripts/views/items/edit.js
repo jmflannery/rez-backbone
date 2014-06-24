@@ -9,7 +9,7 @@ define([
   'views/bullets/select_bullets',
   'views/bullets/edit',
   'views/paragraphs/new',
-  'views/paragraphs/select'
+  'views/paragraphs/select_paragraphs'
 ], function ($,
              _,
              Backbone,
@@ -140,6 +140,11 @@ define([
       }, this);
       this.model.set('bullets', bullets);
 
+      var paragraphs = _.map(this.getSelectedParagraphIds(), function(paragraphId) {
+        return this.paragraphs.get(paragraphId);
+      }, this);
+      this.model.set('paragraphs', paragraphs);
+
       if (this.auth) {
         var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
         this.model.save({}, header);
@@ -158,6 +163,10 @@ define([
 
     getSelectedBulletIds: function() {
       return this.selectBulletsView.getSelectedBulletIds();
+    },
+
+    getSelectedParagraphIds: function() {
+      return this.selectParagraphsView.getSelectedParagraphIds();
     },
 
     itemSynced: function(model, response, options) {

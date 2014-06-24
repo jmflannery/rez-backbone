@@ -39,12 +39,21 @@ define([
         });
 
         this.$el.append(view.render().el);
-        console.log(view.el);
 
         this.paragraphViews.push(view);
       }, this);
 
       return this;
+    },
+
+    getSelectedParagraphIds: function() {
+      var paragraph_ids = [];
+      _.each(this.paragraphViews, function(paragraphView) {
+        if (paragraphView.isSelected()) {
+          paragraph_ids.push(paragraphView.paragraphId());
+        }
+      });
+      return paragraph_ids;
     },
 
     newParagraph: function(e) {
