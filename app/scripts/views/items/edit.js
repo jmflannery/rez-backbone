@@ -56,16 +56,24 @@ define([
     render: function() {
       this.$el.html(this.template());
 
-      if (this.bulletId) {
+      // TODO: Refactor this.
+      // Need to reduce the amount of times
+      // Backbone.history.navigate is called.
+      if (this.bulletId && this.bulletId !== 'new') {
         this.renderEditBulletView(this.bulletId);
       } else {
-        this.initSelectBulletsView();
-        this.renderSelectBulletsView();
-
-        if (this.paragraphId === 'new') {
+        if (this.bulletId === 'new') {
+          this.initSelectParagraphsView();
+          this.renderSelectParagraphsView();
+          this.renderNewBullet();
+        } else if (this.paragraphId === 'new') {
+          this.initSelectBulletsView();
+          this.renderSelectBulletsView();
           this.renderNewParagraph();
         } else {
+          this.initSelectBulletsView();
           this.initSelectParagraphsView();
+          this.renderSelectBulletsView();
           this.renderSelectParagraphsView();
         }
       }
@@ -167,6 +175,7 @@ define([
       });
       this.listenTo(this.newBulletView, 'bullet:new:saved', this.newBulletSaved);
       this.listenTo(this.newBulletView, 'bullet:new:cancel', this.cancelNewBullet);
+      Backbone.history.navigate(this.newBullet());
       this.$('section#bullets').html(this.newBulletView.render().el);
     },
 
@@ -210,6 +219,10 @@ define([
 
     editBulletUrl: function(bulletId) {
       return this.baseUrl() + "/bullets/" + bulletId + "/edit";
+    },
+
+    newBullet: function() {
+      return this.baseUrl() + "/bullets/new";
     },
 
     newParagraphUrl: function() {

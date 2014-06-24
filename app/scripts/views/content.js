@@ -26,6 +26,7 @@ define([
       this.listenTo(this.vent, 'show:resumes', this.showResumes);
       this.listenTo(this.vent, 'show:resume:edit', this.showEditResume);
       this.listenTo(this.vent, 'show:resume:item:edit', this.showEditResume);
+      this.listenTo(this.vent, 'show:resume:item:bullet:new', this.showEditResume);
       this.listenTo(this.vent, 'show:resume:item:paragraph:new', this.showEditResume);
       this.listenTo(this.vent, 'show:resume:item:bullet:edit', this.showEditResume);
 
@@ -97,7 +98,6 @@ define([
     },
 
     showEditResume: function(resumeId, itemId, bulletId, paragraphId) {
-      console.log('edit resume, new paragraph ' + paragraphId);
       var resume = this.resumes.get(resumeId);
 
       Backbone.history.navigate(this.editUrl(resumeId, itemId, bulletId, paragraphId));
@@ -119,7 +119,10 @@ define([
 
     editUrl: function(resumeId, itemId, bulletId, paragraphId) {
       var url = '';
-      if (resumeId && itemId && paragraphId === 'new') {
+
+      if (resumeId && itemId && bulletId === 'new' && !paragraphId) {
+        url = '/resumes/' + resumeId + '/items/' + itemId + '/bullets/new';
+      } else if (resumeId && itemId && paragraphId === 'new' && !bulletId) {
         url = '/resumes/' + resumeId + '/items/' + itemId + '/paragraphs/new';
       } else if (resumeId && itemId && bulletId) {
         url = '/resumes/' + resumeId + '/items/' + itemId + '/bullets/' + bulletId + '/edit';
