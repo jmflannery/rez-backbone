@@ -34,7 +34,7 @@ define([
       } else {
         this.profileView = new ProfileView({ model: null });
         this.addressView = new AddressView({ model: null });
-        this.itemsView = new DetailedItemsView({ collection: null });
+        this.itemsView = new ItemsView({ collection: null });
       }
       this.trigger('resume:ready');
     },
