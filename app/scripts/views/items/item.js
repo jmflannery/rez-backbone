@@ -11,6 +11,8 @@ define([
   var ItemView = Backbone.View.extend({
     template: JST['app/scripts/templates/show_item.ejs'],
 
+    className: 'item',
+
     render: function() {
       this.$el.html(this.template());
 
