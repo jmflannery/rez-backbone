@@ -12,7 +12,7 @@ define([
   var BulletsView = Backbone.View.extend({
     tagName: 'ul',
 
-    id: 'bullets',
+    className: 'bullets',
 
     render: function() {
       this.$el.empty();

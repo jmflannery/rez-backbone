@@ -8,7 +8,7 @@ define([
   'use strict';
 
   var ParagraphsView = Backbone.View.extend({
-    id: 'paragraphs',
+    className: 'paragraphs',
 
     render: function() {
       this.$el.empty();
