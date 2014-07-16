@@ -6,7 +6,7 @@ define([
   'views/resumes/resume',
   'views/new_resume',
   'views/resumes/list',
-  'views/edit_resume',
+  'views/resumes/edit',
   'models/resume',
   'collections/resume'
 ], function ($, _, Backbone, SessionView, ResumeView, NewResumeView, ResumeListView, EditResumeView, Resume, ResumeCollection) {
