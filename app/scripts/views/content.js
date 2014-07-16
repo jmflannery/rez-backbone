@@ -4,7 +4,7 @@ define([
   'backbone',
   'views/session',
   'views/resumes/resume',
-  'views/new_resume',
+  'views/resumes/new',
   'views/resumes/list',
   'views/resumes/edit',
   'models/resume',
