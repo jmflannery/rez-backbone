@@ -3,14 +3,14 @@ define([
   'underscore',
   'backbone',
   'templates',
-  'views/index/resume'
-], function ($, _, Backbone, JST, ResumeView) {
+  'views/resumes/list_item'
+], function ($, _, Backbone, JST, ResumeListItemView) {
   'use strict';
 
-  var ResumesView = Backbone.View.extend({
+  var ResumeListView = Backbone.View.extend({
     tagName: 'ul',
 
-    id: 'resumes',
+    className: 'resumes',
 
     initialize: function(options) {
       this.auth = options.auth;
@@ -21,7 +21,7 @@ define([
     render: function() {
       this.$el.empty();
       this.collection.each(function(resume) {
-        this.$el.append(new ResumeView({
+        this.$el.append(new ResumeListItemView({
           model: resume,
           auth: this.auth,
           vent: this.vent
@@ -32,5 +32,5 @@ define([
     }
   });
 
-  return ResumesView;
+  return ResumeListView;
 });

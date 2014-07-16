@@ -5,11 +5,11 @@ define([
   'views/session',
   'views/resumes/resume',
   'views/new_resume',
-  'views/index/resumes',
+  'views/resumes/list',
   'views/edit_resume',
   'models/resume',
   'collections/resume'
-], function ($, _, Backbone, SessionView, ResumeView, NewResumeView, ResumesView, EditResumeView, Resume, ResumeCollection) {
+], function ($, _, Backbone, SessionView, ResumeView, NewResumeView, ResumeListView, EditResumeView, Resume, ResumeCollection) {
   'use strict';
 
   var ContentView = Backbone.View.extend({
@@ -90,7 +90,7 @@ define([
 
     showResumes: function() {
       Backbone.history.navigate("resumes");
-      this.$el.html(new ResumesView({
+      this.$el.html(new ResumeListView({
         collection: this.resumes,
         auth: this.auth,
         vent: this.vent
