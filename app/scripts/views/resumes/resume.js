@@ -6,8 +6,8 @@ define([
   'models/resume',
   'views/show/profile',
   'views/show/address',
-  'views/items/items'
-], function ($, _, Backbone, JST, Resume, ProfileView, AddressView, ItemsView) {
+  'views/sections/sections'
+], function ($, _, Backbone, JST, Resume, ProfileView, AddressView, SectionsView) {
   'use strict';
 
   var ResumeView = Backbone.View.extend({
@@ -30,11 +30,11 @@ define([
       if (this.model) {
         this.profileView = new ProfileView({ model: this.model.get('profile') });
         this.addressView = new AddressView({ model: this.model.get('address') });
-        this.itemsView = new ItemsView({ collection: this.model.get('items') });
+        this.sectionsView = new SectionsView({ collection: this.model.get('sections') });
       } else {
         this.profileView = new ProfileView({ model: null });
         this.addressView = new AddressView({ model: null });
-        this.itemsView = new ItemsView({ collection: null });
+        this.sectionsView = new SectionsView({ collection: null });
       }
       this.trigger('resume:ready');
     },
@@ -43,7 +43,7 @@ define([
       this.$el.html(this.template());
       this.renderProfileView();
       this.renderAddressView();
-      this.renderItemsView();
+      this.renderSectionsView();
       return this;
     },
 
@@ -55,8 +55,8 @@ define([
       this.$el.append(this.addressView.render().el);
     },
 
-    renderItemsView: function() {
-      this.$el.append(this.itemsView.render().el);
+    renderSectionsView: function() {
+      this.$el.append(this.sectionsView.render().el);
     },
 
     showNewResume: function(e) {
