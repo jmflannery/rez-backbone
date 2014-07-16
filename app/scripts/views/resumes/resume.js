@@ -4,8 +4,8 @@ define([
   'backbone',
   'templates',
   'models/resume',
-  'views/show/profile',
-  'views/show/address',
+  'views/profiles/profile',
+  'views/addresses/address',
   'views/sections/sections'
 ], function ($, _, Backbone, JST, Resume, ProfileView, AddressView, SectionsView) {
   'use strict';
