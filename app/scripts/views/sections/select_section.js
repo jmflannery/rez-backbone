@@ -11,7 +11,9 @@ define([
 
     tagName: 'tr',
 
-    className: 'section',
+    id: function() {
+      return 'section_' + this.model.id;
+    },
 
     events: {
       'click #edit_section': 'edit',
