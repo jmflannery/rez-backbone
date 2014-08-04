@@ -5,7 +5,7 @@ define([
   'templates',
   'views/select_profile',
   'views/select_address',
-  'views/items/select_items',
+  'views/sections/select_sections',
   'views/profiles/new',
   'views/addresses/new',
   'views/items/new',
@@ -13,8 +13,22 @@ define([
   'models/profile',
   'collections/profile',
   'collections/address',
-  'collections/item'
-], function ($, _, Backbone, JST, SelectProfileView, SelectAddressView, SelectItemsView, NewProfileView, NewAddressView, NewItemView, EditItemView, Profile, ProfileCollection, AddressCollection, ItemCollection) {
+  'collections/section'
+], function ($,
+             _,
+             Backbone,
+             JST,
+             SelectProfileView,
+             SelectAddressView,
+             SelectSectionsView,
+             NewProfileView,
+             NewAddressView,
+             NewItemView,
+             EditItemView,
+             Profile,
+             ProfileCollection,
+             AddressCollection,
+             SectionCollection) {
   'use strict';
 
   var EditResumeView = Backbone.View.extend({
@@ -43,16 +57,16 @@ define([
 
       this.profiles = new ProfileCollection();
       this.addresses = new AddressCollection();
-      this.items = new ItemCollection();
+      this.sections = new SectionCollection();
 
       $.when(
         this.profiles.fetch(),
         this.addresses.fetch(),
-        this.items.fetch()
+        this.sections.fetch()
       ).then(function() {
         this.initSelectProfileView();
         this.initSelectAddressView();
-        this.initSelectItemsView();
+        this.initSelectSectionsView();
         this.trigger('resume:edit:ready');
       }.bind(this));
     },
@@ -85,15 +99,15 @@ define([
       this.listenTo(this.selectAddressView, 'show:new:address', this.showNewAddress);
     },
 
-    initSelectItemsView: function() {
-      this.selectItemsView = new SelectItemsView({
-        collection: this.items,
+    initSelectSectionsView: function() {
+      this.selectSectionsView = new SelectSectionsView({
+        collection: this.sections,
         resume: this.model,
         auth: this.auth,
         vent: this.vent
       });
-      this.listenTo(this.selectItemsView, 'item:new:show', this.renderNewItemView);
-      this.listenTo(this.selectItemsView, 'item:edit:show', this.renderEditItemView);
+      this.listenTo(this.selectSectionsView, 'item:new:show', this.renderNewItemView);
+      this.listenTo(this.selectSectionsView, 'item:edit:show', this.renderEditItemView);
     },
 
     setSelectedProfileId: function(profileId) {
@@ -113,7 +127,7 @@ define([
     },
 
     getSelectedItemIds: function() {
-      return this.selectItemsView.getSelectedItemIds();
+      return this.selectSectionsView.getSelectedItemIds();
     },
 
     renderSelectProfileView: function() {
@@ -131,7 +145,7 @@ define([
     },
 
     renderSelectItemsView: function() {
-      this.$('#edit_items').html(this.selectItemsView.render().el);
+      this.$('#edit_items').html(this.selectSectionsView.render().el);
     },
 
     showNewProfile: function() {
@@ -157,10 +171,10 @@ define([
     },
 
     renderNewItemView: function() {
-      this.selectItemsView.remove();
+      this.selectSectionsView.remove();
       this.newItemView = new NewItemView({
         resume: this.model,
-        collection: this.items,
+        collection: this.sections,
         auth: this.auth
       });
       this.listenTo(this.newItemView, 'item:new:saved', this.newItemSaved);
@@ -169,8 +183,8 @@ define([
     },
 
     renderEditItemView: function(itemId, bulletId, paragraphId) {
-      this.selectItemsView.remove();
-      var item = this.items.get(itemId);
+      this.selectSectionsView.remove();
+      var item = this.sections.get(itemId);
       if (item) {
         this.editItemView = new EditItemView({
           model: item,
@@ -212,7 +226,7 @@ define([
       // items
       var itemIds = this.getSelectedItemIds();
       var items = _.map(itemIds, function(itemId) {
-        return this.items.get(itemId);
+        return this.sections.get(itemId);
       }, this);
       this.model.set('items', items);
 
@@ -265,21 +279,21 @@ define([
     },
 
     newItemSaved: function(address) {
-      this.initSelectItemsView();
+      this.initSelectSectionsView();
       this.renderSelectItemsView();
     },
 
     cancelNewItem: function() {
       Backbone.history.navigate(this.editUrl());
       this.newItemView.remove();
-      this.initSelectItemsView();
+      this.initSelectSectionsView();
       this.renderSelectItemsView();
     },
 
     cancelEditItem: function() {
       Backbone.history.navigate(this.editUrl());
       this.editItemView.remove();
-      this.initSelectItemsView();
+      this.initSelectSectionsView();
       this.renderSelectItemsView();
     },
 
