@@ -6,7 +6,25 @@ define([
   'use strict';
 
   var SectionCollection = Backbone.Collection.extend({
-    model: Section
+    model: Section,
+
+    initialize: function(options) {
+      if (options) {
+        this.resumeId = options.resumeId;
+      }
+    },
+
+    url: function() {
+      if (this.resumeId) {
+        return 'http://localhost:3000/rez/resumes/' + this.resumeId + '/sections';
+      } else {
+        return 'http://localhost:3000/rez/sections';
+      }
+    },
+
+    parse: function(response) {
+      return response.sections;
+    }
   });
 
   return SectionCollection;
