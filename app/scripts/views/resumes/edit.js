@@ -8,7 +8,7 @@ define([
   'views/sections/select_sections',
   'views/profiles/new',
   'views/addresses/new',
-  'views/items/new',
+  'views/sections/new',
   'views/items/edit',
   'models/profile',
   'collections/profile',
@@ -23,7 +23,7 @@ define([
              SelectSectionsView,
              NewProfileView,
              NewAddressView,
-             NewItemView,
+             NewSectionView,
              EditItemView,
              Profile,
              ProfileCollection,
@@ -79,7 +79,7 @@ define([
       if (this.itemId) {
         this.renderEditItemView(this.itemId, this.bulletId, this.paragraphId);
       } else {
-        this.renderSelectItemsView();
+        this.renderSelectSectionsView();
       }
 
       return this;
@@ -106,8 +106,8 @@ define([
         auth: this.auth,
         vent: this.vent
       });
-      this.listenTo(this.selectSectionsView, 'item:new:show', this.renderNewItemView);
-      this.listenTo(this.selectSectionsView, 'item:edit:show', this.renderEditItemView);
+      this.listenTo(this.selectSectionsView, 'section:new:show', this.renderNewItemView);
+      this.listenTo(this.selectSectionsView, 'section:edit:show', this.renderEditItemView);
     },
 
     setSelectedProfileId: function(profileId) {
@@ -144,7 +144,7 @@ define([
       }
     },
 
-    renderSelectItemsView: function() {
+    renderSelectSectionsView: function() {
       this.$('#edit_items').html(this.selectSectionsView.render().el);
     },
 
@@ -172,14 +172,14 @@ define([
 
     renderNewItemView: function() {
       this.selectSectionsView.remove();
-      this.newItemView = new NewItemView({
+      this.newSectionView = new NewSectionView({
         resume: this.model,
         collection: this.sections,
         auth: this.auth
       });
-      this.listenTo(this.newItemView, 'item:new:saved', this.newItemSaved);
-      this.listenTo(this.newItemView, 'item:new:cancel', this.cancelNewItem);
-      this.$('#edit_items').html(this.newItemView.render().el);
+      this.listenTo(this.newSectionView, 'section:new:saved', this.newSectionSaved);
+      this.listenTo(this.newSectionView, 'section:new:cancel', this.cancelNewSection);
+      this.$('#edit_items').html(this.newSectionView.render().el);
     },
 
     renderEditItemView: function(itemId, bulletId, paragraphId) {
@@ -278,23 +278,23 @@ define([
       this.renderSelectAddressView();
     },
 
-    newItemSaved: function(address) {
+    newSectionSaved: function(address) {
       this.initSelectSectionsView();
-      this.renderSelectItemsView();
+      this.renderSelectSectionsView();
     },
 
-    cancelNewItem: function() {
+    cancelNewSection: function() {
       Backbone.history.navigate(this.editUrl());
-      this.newItemView.remove();
+      this.newSectionView.remove();
       this.initSelectSectionsView();
-      this.renderSelectItemsView();
+      this.renderSelectSectionsView();
     },
 
     cancelEditItem: function() {
       Backbone.history.navigate(this.editUrl());
       this.editItemView.remove();
       this.initSelectSectionsView();
-      this.renderSelectItemsView();
+      this.renderSelectSectionsView();
     },
 
     editUrl: function() {
