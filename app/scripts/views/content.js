@@ -25,7 +25,7 @@ define([
       this.listenTo(this.vent, 'show:new_resume', this.showNewResume);
       this.listenTo(this.vent, 'show:resumes', this.showResumes);
       this.listenTo(this.vent, 'show:resume:edit', this.showEditResume);
-      this.listenTo(this.vent, 'show:resume:item:edit', this.showEditResume);
+      this.listenTo(this.vent, 'show:resume:section:edit', this.showEditResume);
       this.listenTo(this.vent, 'show:resume:item:bullet:new', this.showEditResume);
       this.listenTo(this.vent, 'show:resume:item:paragraph:new', this.showEditResume);
       this.listenTo(this.vent, 'show:resume:item:bullet:edit', this.showEditResume);
@@ -97,15 +97,16 @@ define([
       }).render().el);
     },
 
-    showEditResume: function(resumeId, itemId, bulletId, paragraphId) {
+    showEditResume: function(resumeId, sectionId, itemId, bulletId, paragraphId) {
       var resume = this.resumes.get(resumeId);
 
-      Backbone.history.navigate(this.editUrl(resumeId, itemId, bulletId, paragraphId));
+      Backbone.history.navigate(this.editUrl(resumeId, sectionId, bulletId, paragraphId));
 
       this.editResumeView = new EditResumeView({
         model: resume,
         auth: this.auth,
         vent: this.vent,
+        sectionId: sectionId,
         itemId: itemId,
         bulletId: bulletId,
         paragraphId: paragraphId
@@ -117,7 +118,7 @@ define([
       this.listenToOnce(this.editResumeView, 'show:resume', this.showResume);
     },
 
-    editUrl: function(resumeId, itemId, bulletId, paragraphId) {
+    editUrl: function(resumeId, sectionId, itemId, bulletId, paragraphId) {
       var url = '';
 
       if (resumeId && itemId && bulletId === 'new' && !paragraphId) {
@@ -126,8 +127,8 @@ define([
         url = '/resumes/' + resumeId + '/items/' + itemId + '/paragraphs/new';
       } else if (resumeId && itemId && bulletId) {
         url = '/resumes/' + resumeId + '/items/' + itemId + '/bullets/' + bulletId + '/edit';
-      } else if (resumeId && itemId) {
-        url = '/resumes/' + resumeId + '/items/' + itemId + '/edit';
+      } else if (resumeId && sectionId) {
+        url = '/resumes/' + resumeId + '/sections/' + sectionId + '/edit';
       } else if (resumeId) {
         url = '/resumes/' + resumeId + '/edit';
       }

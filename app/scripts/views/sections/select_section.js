@@ -21,9 +21,7 @@ define([
     },
 
     initialize: function(options) {
-      this.resume = options.resume;
       this.auth = options.auth;
-      this.vent = options.vent;
     },
 
     render: function() {

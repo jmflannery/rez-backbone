@@ -20,7 +20,7 @@ define([
     },
 
     initialize: function(options) {
-      this.resume = options.resume;
+      this.section = options.section;
       this.auth = options.auth;
       this.vent = options.vent;
       this.listenTo(this.collection, 'remove', this.render);
@@ -34,7 +34,7 @@ define([
       this.collection.each(function(item) {
         var itemView = new ItemView({
           model: item,
-          resume: this.resume,
+          section: this.section,
           auth: this.auth,
           vent: this.vent
         });
@@ -54,7 +54,7 @@ define([
     },
 
     setItemsSelected: function() {
-      this.resume.get('items').each(function(item) {
+      this.section.get('items').each(function(item) {
         this.$('tr#item_' + item.id + ' input[type=checkbox]').prop('checked', true);
       }, this);
     },

@@ -34,13 +34,11 @@ define([
       this.collection.each(function(section) {
         var sectionView = new SectionView({
           model: section,
-          resume: this.resume,
-          auth: this.auth,
-          vent: this.vent
+          auth: this.auth
         });
 
-        this.listenToOnce(sectionView, 'section:edit', function(sectionId, resumeId) {
-          this.trigger('section:edit:show', sectionId, resumeId);
+        this.listenToOnce(sectionView, 'section:edit', function(sectionId) {
+          this.trigger('section:edit:show', sectionId);
         });
 
         this.sectionViews.push(sectionView);

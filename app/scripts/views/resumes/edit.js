@@ -9,7 +9,7 @@ define([
   'views/profiles/new',
   'views/addresses/new',
   'views/sections/new',
-  'views/items/edit',
+  'views/sections/edit',
   'models/profile',
   'collections/profile',
   'collections/address',
@@ -24,7 +24,7 @@ define([
              NewProfileView,
              NewAddressView,
              NewSectionView,
-             EditItemView,
+             EditSectionView,
              Profile,
              ProfileCollection,
              AddressCollection,
@@ -48,7 +48,8 @@ define([
       this.auth = options.auth;
       this.vent = options.vent;
 
-      this.itemId = options.itemId;
+      this.sectionId = options.sectionId;
+      //this.itemId = options.itemId;
       this.bulletId = options.bulletId;
       this.paragraphId = options.paragraphId;
 
@@ -76,8 +77,8 @@ define([
       this.renderSelectProfileView();
       this.renderSelectAddressView();
 
-      if (this.itemId) {
-        this.renderEditItemView(this.itemId, this.bulletId, this.paragraphId);
+      if (this.sectionId) {
+        this.renderEditSectionView(this.sectionId);
       } else {
         this.renderSelectSectionsView();
       }
@@ -107,7 +108,7 @@ define([
         vent: this.vent
       });
       this.listenTo(this.selectSectionsView, 'section:new:show', this.renderNewItemView);
-      this.listenTo(this.selectSectionsView, 'section:edit:show', this.renderEditItemView);
+      this.listenTo(this.selectSectionsView, 'section:edit:show', this.renderEditSectionView);
     },
 
     setSelectedProfileId: function(profileId) {
@@ -145,7 +146,7 @@ define([
     },
 
     renderSelectSectionsView: function() {
-      this.$('#edit_items').html(this.selectSectionsView.render().el);
+      this.$('#edit_sections').html(this.selectSectionsView.render().el);
     },
 
     showNewProfile: function() {
@@ -182,24 +183,23 @@ define([
       this.$('#edit_items').html(this.newSectionView.render().el);
     },
 
-    renderEditItemView: function(itemId, bulletId, paragraphId) {
+    // TODO: Start here. Also routes are worong since addition of section. Therefore there params are wrong. Need fixxing.
+    renderEditSectionView: function(sectionId) {
       this.selectSectionsView.remove();
-      var item = this.sections.get(itemId);
-      if (item) {
-        this.editItemView = new EditItemView({
-          model: item,
+      var section = this.sections.get(sectionId);
+      if (section) {
+        this.editSectionView = new EditSectionView({
+          model: section,
           resume: this.model,
           vent: this.vent,
-          auth: this.auth,
-          bulletId: bulletId,
-          paragraphId: paragraphId
+          auth: this.auth
         });
 
-        this.listenTo(this.editItemView, 'item:edit:cancel', this.cancelEditItem);
-        this.listenTo(this.editItemView, 'item:updated', this.itemUpdated);
+        this.listenTo(this.editSectionView, 'section:edit:cancel', this.cancelEditSection);
+        this.listenTo(this.editSectionView, 'section:updated', this.sectionUpdated);
 
-        this.listenToOnce(this.editItemView, 'item:edit:ready', function() {
-          this.$('#edit_items').html(this.editItemView.render().el);
+        this.listenToOnce(this.editSectionView, 'section:edit:ready', function() {
+          this.$('#edit_sections').html(this.editSectionView.render().el);
         });
       } else {
         console.log("no item " + itemId);
@@ -239,8 +239,8 @@ define([
       }
     },
 
-    itemUpdated: function() {
-      this.cancelEditItem();
+    sectionUpdated: function() {
+      this.cancelEditSection();
     },
 
     resumeSaved: function() {
@@ -290,9 +290,9 @@ define([
       this.renderSelectSectionsView();
     },
 
-    cancelEditItem: function() {
+    cancelEditSection: function() {
       Backbone.history.navigate(this.editUrl());
-      this.editItemView.remove();
+      this.editSectionView.remove();
       this.initSelectSectionsView();
       this.renderSelectSectionsView();
     },
