@@ -127,8 +127,8 @@ define([
       return this.selectAddressView.getSelectedAddressId();
     },
 
-    getSelectedItemIds: function() {
-      return this.selectSectionsView.getSelectedItemIds();
+    getSelectedSectionIds: function() {
+      return this.selectSectionsView.getSelectedSectionIds();
     },
 
     renderSelectProfileView: function() {
@@ -223,12 +223,12 @@ define([
       if (address) {
         this.model.set('address', address);
       }
-      // items
-      var itemIds = this.getSelectedItemIds();
-      var items = _.map(itemIds, function(itemId) {
-        return this.sections.get(itemId);
+      // sections
+      var sectionIds = this.getSelectedSectionIds();
+      var sections = _.map(sectionIds, function(sectionId) {
+        return this.sections.get(sectionId);
       }, this);
-      this.model.set('items', items);
+      this.model.set('sections', sections);
 
       // header
       if (this.auth) {
