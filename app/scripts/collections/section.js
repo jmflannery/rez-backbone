@@ -8,7 +8,7 @@ define([
   var SectionCollection = Backbone.Collection.extend({
     model: Section,
 
-    initialize: function(options) {
+    initialize: function(models, options) {
       if (options) {
         this.resumeId = options.resumeId;
       }
