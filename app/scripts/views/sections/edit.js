@@ -23,7 +23,7 @@ define([
     id: 'edit-section',
 
     events: {
-      'click #save_item': 'save',
+      'click #save_section': 'save',
       'click #cancel': 'cancel'
     },
 
@@ -100,15 +100,13 @@ define([
       e.preventDefault();
       this.model.set(this.newAttributes());
 
-      var bullets = _.map(this.getSelectedBulletIds(), function(bulletId) {
-        return this.bullets.get(bulletId);
+      // items
+      var itemIds = this.getSelectedItemIds();
+      var items = _.map(itemIds, function(itemId) {
+        return this.items.get(itemId);
       }, this);
-      this.model.set('bullets', bullets);
 
-      var paragraphs = _.map(this.getSelectedParagraphIds(), function(paragraphId) {
-        return this.paragraphs.get(paragraphId);
-      }, this);
-      this.model.set('paragraphs', paragraphs);
+      this.model.set('items', items);
 
       if (this.auth) {
         var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
