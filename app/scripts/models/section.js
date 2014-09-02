@@ -14,12 +14,6 @@ define([
     defaults: {
     },
 
-    initialize: function(attributes, options) {
-      this.set('items', new ItemCollection(
-        attributes.items
-      ));
-    },
-
     itemIds: function() {
       return this.get('items').map(function(item) {
         return item.id;
@@ -28,10 +22,15 @@ define([
 
     parse: function(response) {
       if (response.section) {
-        return response.section;
+        var resp = response.section;
       } else {
-        return response;
+        var resp = response;
       }
+
+      var options = { sectionId: this.id };
+      resp.items = new ItemCollection(resp.items, options);
+
+      return resp;
     }
   });
 
