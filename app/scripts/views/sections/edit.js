@@ -118,9 +118,9 @@ define([
 
     newAttributes: function() {
       return {
-        name: this.$('#new_item_name').val(),
-        title: this.$('#new_item_title').val(),
-        heading: this.$('#new_item_heading').val()
+        name: this.$('#new_section_name').val(),
+        heading: this.$('#new_section_heading').val(),
+        subheading: this.$('#new_section_subheading').val()
       };
     },
 
