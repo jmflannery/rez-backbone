@@ -10,7 +10,7 @@ define([
 
     url: 'http://localhost:3000/rez/resumes',
 
-    parse: function(response) {
+    parse: function(response, options) {
       return response.resumes;
     }
   });

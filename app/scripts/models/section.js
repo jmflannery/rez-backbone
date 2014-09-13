@@ -24,7 +24,7 @@ define([
       });
     },
 
-    parse: function(response) {
+    parse: function(response, options) {
       if (response.section) {
         var resp = response.section;
       } else {

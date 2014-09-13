@@ -17,26 +17,25 @@ define([
     hasOne: ['profile', 'address'],
     hasMany: ['sections'],
 
-    initialize: function(attributes) {
+    initialize: function(attributes, options) {
       var options = { resumeId: this.id };
       this.set('profile', new Profile(attributes.profile, options));
       this.set('address', new Address(attributes.address, options))
       this.set('sections', new SectionCollection(attributes.sections, options));
     },
 
-    parse: function(response) {
+    parse: function(response, options) {
       if (response.resume) {
         var resp = response.resume;
       } else {
         var resp = response;
       }
 
-      // if not new record, but saving existing
       if (this.id) {
-        var options = { resumeId: this.id };
-        resp.profile = new Profile(resp.profile, options);
-        resp.address = new Address(resp.address, options);
-        resp.sections = new SectionCollection(resp.sections, options);
+        var opts = { resumeId: this.id };
+        resp.profile = new Profile(resp.profile, opts);
+        resp.address = new Address(resp.address, opts);
+        resp.sections = new SectionCollection(resp.sections, opts);
       }
 
       return resp;

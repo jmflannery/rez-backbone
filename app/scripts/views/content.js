@@ -2,14 +2,14 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'models/resume',
+  'collections/resume',
   'views/session',
   'views/resumes/resume',
   'views/resumes/new',
   'views/resumes/list',
-  'views/resumes/edit',
-  'models/resume',
-  'collections/resume'
-], function ($, _, Backbone, SessionView, ResumeView, NewResumeView, ResumeListView, EditResumeView, Resume, ResumeCollection) {
+  'views/resumes/edit'
+], function ($, _, Backbone, Resume, ResumeCollection, SessionView, ResumeView, NewResumeView, ResumeListView, EditResumeView) {
   'use strict';
 
   var ContentView = Backbone.View.extend({

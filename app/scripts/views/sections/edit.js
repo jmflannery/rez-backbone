@@ -62,7 +62,7 @@ define([
         selectedItems: this.model.itemIds()
       });
       this.listenTo(this.selectItemsView, 'show:new:bullet', this.renderNewBullet);
-      this.listenTo(this.selectItemsView, 'bullet:edit:show', this.renderEditBulletView);
+      this.listenTo(this.selectItemsView, 'item:edit:show', this.renderEditItemView);
     },
 
     renderSelectItemsView: function() {
@@ -73,6 +73,18 @@ define([
     renderSelectParagraphsView: function() {
       this.$('section#paragraphs').html(this.selectParagraphsView.render().el);
       Backbone.history.navigate(this.editUrl());
+    },
+
+    renderEditItemView: function(itemId) {
+      console.log('Render edit item ' + itemId + ' view');
+      var item = this.items.get(itemId);
+      this.editItemView = new EditItemView({
+        model: item,
+        section: this.model,
+        resume: this.resume,
+        auth: this.auth
+      });
+      this.$('section#items').html(this.editItemView.render().el);
     },
 
     renderEditBulletView: function(bulletId) {
