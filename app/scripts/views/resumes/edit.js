@@ -49,7 +49,7 @@ define([
       this.vent = options.vent;
 
       this.sectionId = options.sectionId;
-      //this.itemId = options.itemId;
+      this.itemId = options.itemId;
       this.bulletId = options.bulletId;
       this.paragraphId = options.paragraphId;
 
@@ -183,7 +183,6 @@ define([
       this.$('#edit_items').html(this.newSectionView.render().el);
     },
 
-    // TODO: Start here. Also routes are worong since addition of section. Therefore there params are wrong. Need fixxing.
     renderEditSectionView: function(sectionId) {
       this.selectSectionsView.remove();
       var section = this.sections.get(sectionId);
@@ -191,6 +190,7 @@ define([
         this.editSectionView = new EditSectionView({
           model: section,
           resume: this.model,
+          itemId: this.itemId,
           vent: this.vent,
           auth: this.auth
         });
@@ -284,25 +284,15 @@ define([
     },
 
     cancelNewSection: function() {
-      Backbone.history.navigate(this.editUrl());
       this.newSectionView.remove();
       this.initSelectSectionsView();
       this.renderSelectSectionsView();
     },
 
     cancelEditSection: function() {
-      Backbone.history.navigate(this.editUrl());
       this.editSectionView.remove();
       this.initSelectSectionsView();
       this.renderSelectSectionsView();
-    },
-
-    editUrl: function() {
-      return 'resumes/' + this.model.id + '/edit'
-    },
-
-    editItemUrl: function(itemId) {
-      return 'resumes/' + this.model.id + '/items/' + itemId + '/edit'
     },
 
     formatErrors: function(errorText) {

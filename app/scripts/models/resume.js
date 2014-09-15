@@ -18,10 +18,10 @@ define([
     hasMany: ['sections'],
 
     initialize: function(attributes, options) {
-      var options = { resumeId: this.id };
-      this.set('profile', new Profile(attributes.profile, options));
-      this.set('address', new Address(attributes.address, options))
-      this.set('sections', new SectionCollection(attributes.sections, options));
+      var opts = { resume: this };
+      this.set('profile', new Profile(attributes.profile, opts));
+      this.set('address', new Address(attributes.address, opts))
+      this.set('sections', new SectionCollection(attributes.sections, opts));
     },
 
     parse: function(response, options) {

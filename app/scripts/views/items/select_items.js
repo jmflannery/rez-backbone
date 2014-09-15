@@ -21,6 +21,7 @@ define([
 
     initialize: function(options) {
       this.section = options.section;
+      this.resume = options.resume;
       this.auth = options.auth;
       this.vent = options.vent;
       this.listenTo(this.collection, 'remove', this.render);
@@ -35,6 +36,7 @@ define([
         var itemView = new ItemView({
           model: item,
           section: this.section,
+          resume: this.resume,
           auth: this.auth,
           vent: this.vent
         });

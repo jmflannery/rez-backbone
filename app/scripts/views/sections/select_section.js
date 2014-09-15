@@ -11,6 +11,10 @@ define([
 
     tagName: 'tr',
 
+    urls: {
+      editSection: "resumes/:resumeId/sections/:sectionId/edit"
+    },
+
     id: function() {
       return 'section_' + this.model.id;
     },
@@ -21,6 +25,7 @@ define([
     },
 
     initialize: function(options) {
+      this.resume = options.resume;
       this.auth = options.auth;
     },
 
@@ -31,6 +36,7 @@ define([
 
     edit: function(e) {
       e.preventDefault();
+      Backbone.history.navigate(this.editSectionUrl());
       this.trigger('section:edit', this.model.id);
     },
 
@@ -48,8 +54,8 @@ define([
       return this.$('input[type=checkbox]').is(':checked');
     },
 
-    sectionId: function() {
-      return this.model.id;
+    editSectionUrl: function() {
+      return this.urls['editSection'].replace(/:resumeId/, this.resume.id).replace(/:sectionId/, this.model.id);
     }
   });
 

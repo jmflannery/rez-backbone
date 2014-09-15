@@ -28,13 +28,18 @@ define([
 
     id: 'edit-item',
 
+    urls: {
+      editSection: '/resumes/:resumeId/sections/:sectionId/edit'
+    },
+
     events: {
-      'click #save_item': 'save',
-      'click #cancel': 'cancel'
+      'click #save-item': 'save',
+      'click #cancel-edit-item': 'cancel'
     },
 
     initialize: function(options) {
       this.resume = options.resume;
+      this.section = options.section;
       this.bulletId = options.bulletId;
       this.paragraphId = options.paragraphId;
       this.auth = options.auth;
@@ -56,9 +61,6 @@ define([
     render: function() {
       this.$el.html(this.template());
 
-      // TODO: Refactor this.
-      // Need to reduce the amount of times
-      // Backbone.history.navigate is called.
       if (this.bulletId && this.bulletId !== 'new') {
         this.renderEditBulletView(this.bulletId);
       } else {
@@ -102,12 +104,10 @@ define([
 
     renderSelectBulletsView: function() {
       this.$('section#bullets').html(this.selectBulletsView.render().el);
-      Backbone.history.navigate(this.editUrl());
     },
 
     renderSelectParagraphsView: function() {
       this.$('section#paragraphs').html(this.selectParagraphsView.render().el);
-      Backbone.history.navigate(this.editUrl());
     },
 
     renderEditBulletView: function(bulletId) {
@@ -121,7 +121,6 @@ define([
         this.renderSelectBulletsView();
       });
       this.$('section#bullets').html(this.editBulletView.render().el);
-      Backbone.history.navigate(this.editBulletUrl(bullet.id));
     },
 
     cancelEditBullet: function() {
@@ -175,6 +174,7 @@ define([
 
     cancel: function(e) {
       e.preventDefault();
+      Backbone.history.navigate(this.editSectionUrl());
       this.trigger('item:edit:cancel');
     },
 
@@ -186,7 +186,6 @@ define([
       });
       this.listenTo(this.newBulletView, 'bullet:new:saved', this.newBulletSaved);
       this.listenTo(this.newBulletView, 'bullet:new:cancel', this.cancelNewBullet);
-      Backbone.history.navigate(this.newBullet());
       this.$('section#bullets').html(this.newBulletView.render().el);
     },
 
@@ -210,7 +209,6 @@ define([
       });
       this.listenTo(this.newParagraphView, 'paragraph:new:saved', this.newParagraphSaved);
       this.listenTo(this.newParagraphView, 'paragraph:new:cancel', this.cancelNewParagraph);
-      Backbone.history.navigate(this.newParagraphUrl());
       this.$('section#paragraphs').html(this.newParagraphView.render().el);
     },
 
@@ -220,24 +218,8 @@ define([
       this.renderSelectParagraphsView();
     },
 
-    baseUrl: function() {
-      return "resumes/" + this.resume.id + "/items/" + this.model.id;
-    },
-
-    editUrl: function() {
-      return this.baseUrl() + "/edit";
-    },
-
-    editBulletUrl: function(bulletId) {
-      return this.baseUrl() + "/bullets/" + bulletId + "/edit";
-    },
-
-    newBullet: function() {
-      return this.baseUrl() + "/bullets/new";
-    },
-
-    newParagraphUrl: function() {
-      return this.baseUrl() + "/paragraphs/new";
+    editSectionUrl: function() {
+      return this.urls['editSection'].replace(/:resumeId/, this.resume.id).replace(/:sectionId/, this.section.id);
     }
   });
 

@@ -15,12 +15,17 @@ define([
       return 'item_' + this.model.id;
     },
 
+    urls: {
+      editItem: '/resumes/:resumeId/sections/:sectionId/items/:itemId/edit'
+    },
+
     events: {
       'click #edit_item': 'edit',
       'click #delete_item': 'destroy'
     },
 
     initialize: function(options) {
+      this.section = options.section;
       this.resume = options.resume;
       this.auth = options.auth;
       this.vent = options.vent;
@@ -33,6 +38,7 @@ define([
 
     edit: function(e) {
       e.preventDefault();
+      Backbone.history.navigate(this.editItemUrl());
       this.trigger('item:edit', this.model.id);
     },
 
@@ -52,6 +58,10 @@ define([
 
     itemId: function() {
       return this.model.id;
+    },
+
+    editItemUrl: function() {
+      return this.urls['editItem'].replace(/:resumeId/, this.resume.id).replace(/:sectionId/, this.section.id).replace(/:itemId/, this.model.id);
     }
   });
 

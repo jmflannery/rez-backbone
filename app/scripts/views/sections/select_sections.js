@@ -34,6 +34,7 @@ define([
       this.collection.each(function(section) {
         var sectionView = new SectionView({
           model: section,
+          resume: this.resume,
           auth: this.auth
         });
 

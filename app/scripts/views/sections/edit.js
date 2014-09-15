@@ -22,6 +22,10 @@ define([
 
     id: 'edit-section',
 
+    urls: {
+      editResume: 'resumes/:resumeId/edit'
+    },
+
     events: {
       'click #save_section': 'save',
       'click #cancel': 'cancel'
@@ -29,6 +33,7 @@ define([
 
     initialize: function(options) {
       this.resume = options.resume;
+      this.itemId = options.itemId;
       this.auth = options.auth;
       this.vent = options.vent;
 
@@ -48,8 +53,12 @@ define([
     render: function() {
       this.$el.html(this.template());
 
-      this.initSelectItemsView();
-      this.renderSelectItemsView();
+      if (this.itemId) {
+        this.renderEditItemView(this.itemId);
+      } else {
+        this.initSelectItemsView();
+        this.renderSelectItemsView();
+      }
 
       return this;
     },
@@ -58,8 +67,8 @@ define([
       this.selectItemsView = new SelectItemsView({
         collection: this.items,
         section: this.model,
-        auth: this.auth,
-        selectedItems: this.model.itemIds()
+        resume: this.resume,
+        auth: this.auth
       });
       this.listenTo(this.selectItemsView, 'show:new:bullet', this.renderNewBullet);
       this.listenTo(this.selectItemsView, 'item:edit:show', this.renderEditItemView);
@@ -67,16 +76,13 @@ define([
 
     renderSelectItemsView: function() {
       this.$('section#items').html(this.selectItemsView.render().el);
-      Backbone.history.navigate(this.editUrl());
     },
 
     renderSelectParagraphsView: function() {
       this.$('section#paragraphs').html(this.selectParagraphsView.render().el);
-      Backbone.history.navigate(this.editUrl());
     },
 
     renderEditItemView: function(itemId) {
-      console.log('Render edit item ' + itemId + ' view');
       var item = this.items.get(itemId);
       this.editItemView = new EditItemView({
         model: item,
@@ -84,6 +90,7 @@ define([
         resume: this.resume,
         auth: this.auth
       });
+      this.listenTo(this.editItemView, 'item:edit:cancel', this.cancelEditItem);
       this.$('section#items').html(this.editItemView.render().el);
     },
 
@@ -98,7 +105,6 @@ define([
         this.renderSelectBulletsView();
       });
       this.$('section#bullets').html(this.editBulletView.render().el);
-      Backbone.history.navigate(this.editBulletUrl(bullet.id));
     },
 
     cancelEditBullet: function() {
@@ -106,6 +112,11 @@ define([
       delete this.bulletId;
       this.initSelectBulletsView();
       this.renderSelectBulletsView();
+    },
+
+    cancelEditItem: function() {
+      this.initSelectItemsView();
+      this.renderSelectItemsView();
     },
 
     save: function(e) {
@@ -142,6 +153,7 @@ define([
 
     cancel: function(e) {
       e.preventDefault();
+      Backbone.history.navigate(this.editResumeUrl());
       this.trigger('section:edit:cancel');
     },
 
@@ -153,7 +165,6 @@ define([
       });
       this.listenTo(this.newBulletView, 'bullet:new:saved', this.newBulletSaved);
       this.listenTo(this.newBulletView, 'bullet:new:cancel', this.cancelNewBullet);
-      Backbone.history.navigate(this.newBullet());
       this.$('section#bullets').html(this.newBulletView.render().el);
     },
 
@@ -177,7 +188,6 @@ define([
       });
       this.listenTo(this.newParagraphView, 'paragraph:new:saved', this.newParagraphSaved);
       this.listenTo(this.newParagraphView, 'paragraph:new:cancel', this.cancelNewParagraph);
-      Backbone.history.navigate(this.newParagraphUrl());
       this.$('section#paragraphs').html(this.newParagraphView.render().el);
     },
 
@@ -187,24 +197,8 @@ define([
       this.renderSelectParagraphsView();
     },
 
-    baseUrl: function() {
-      return "resumes/" + this.resume.id + "/sections/" + this.model.id;
-    },
-
-    editUrl: function() {
-      return this.baseUrl() + "/edit";
-    },
-
-    editBulletUrl: function(bulletId) {
-      return this.baseUrl() + "/bullets/" + bulletId + "/edit";
-    },
-
-    newBullet: function() {
-      return this.baseUrl() + "/bullets/new";
-    },
-
-    newParagraphUrl: function() {
-      return this.baseUrl() + "/paragraphs/new";
+    editResumeUrl: function() {
+      return this.urls['editResume'].replace(/:resumeId/, this.resume.id);
     }
   });
 

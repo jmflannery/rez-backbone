@@ -10,19 +10,19 @@ define([
 
     initialize: function(models, options) {
       if (options) {
-        this.resumeId = options.resumeId;
+        this.resume = options.resume;
       }
     },
 
     url: function() {
-      if (this.resumeId) {
-        return 'http://localhost:3000/rez/resumes/' + this.resumeId + '/sections';
+      if (this.resume) {
+        return 'http://localhost:3000/rez/resumes/' + this.resume.id + '/sections';
       } else {
         return 'http://localhost:3000/rez/sections';
       }
     },
 
-    parse: function(response) {
+    parse: function(response, options) {
       return response.sections;
     }
   });

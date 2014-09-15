@@ -15,7 +15,7 @@ define([
     },
 
     initialize: function(attributes, options) {
-      this.set('items', new ItemCollection(attributes.items, {}));
+      this.set('items', new ItemCollection(attributes.items, { section: this }));
     },
 
     itemIds: function() {
@@ -32,8 +32,7 @@ define([
       }
 
       if (this.id) {
-        var options = { sectionId: this.id };
-        resp.items = new ItemCollection(resp.items, options);
+        resp.items = new ItemCollection(resp.items, { section: this });
       }
 
       return resp;
