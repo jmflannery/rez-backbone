@@ -34,6 +34,10 @@ define([
       return this;
     },
 
+    sectionId: function() {
+      return this.model.id;
+    },
+
     edit: function(e) {
       e.preventDefault();
       Backbone.history.navigate(this.editSectionUrl());
