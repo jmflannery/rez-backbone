@@ -13,13 +13,18 @@ define([
 
     id: 'new_section',
 
+    urls: {
+      editResume: '/resumes/:resumeId/edit'
+    },
+
     initialize: function(options) {
+      this.resume = options.resume;
       this.auth = options.auth;
       this.listenTo(this.collection, 'sync', this.sectionSynced);
     },
 
     events: {
-      'click #save_section': 'saveSection',
+      'click #save-section': 'saveSection',
       'click #cancel': 'cancel'
     },
 
@@ -30,6 +35,8 @@ define([
 
     saveSection: function(e) {
       e.preventDefault();
+      Backbone.history.navigate(this.editResumeUrl());
+
       if (this.auth) {
         var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
         this.collection.create(this.newAttributes(), header);
@@ -44,15 +51,20 @@ define([
 
     newAttributes: function() {
       return {
-        name: this.$('#new_section_name').val(),
-        heading: this.$('#new_section_heading').val(),
-        subheading: this.$('#new_section_subheading').val()
+        name: this.$('#new-section-name').val(),
+        heading: this.$('#new-section-heading').val(),
+        subheading: this.$('#new-section-subheading').val()
       };
     },
 
     cancel: function(e) {
       e.preventDefault();
+      Backbone.history.navigate(this.editResumeUrl());
       this.trigger('section:new:cancel');
+    },
+
+    editResumeUrl: function() {
+      return this.urls['editResume'].replace(/:resumeId/, this.resume.id);
     }
   });
 

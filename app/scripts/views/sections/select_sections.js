@@ -15,6 +15,10 @@ define([
 
     id: 'select_sections',
 
+    urls: {
+      newSection: '/resumes/:resumeId/sections/new'
+    },
+
     events: {
       'click .new_section': 'newSection'
     },
@@ -70,7 +74,12 @@ define([
 
     newSection: function(e) {
       e.preventDefault();
+      Backbone.history.navigate(this.newSectionUrl());
       this.trigger('section:new:show');
+    },
+
+    newSectionUrl: function() {
+      return this.urls['newSection'].replace(/:resumeId/, this.resume.id);
     }
   });
 

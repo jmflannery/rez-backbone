@@ -107,7 +107,7 @@ define([
         auth: this.auth,
         vent: this.vent
       });
-      this.listenTo(this.selectSectionsView, 'section:new:show', this.renderNewItemView);
+      this.listenTo(this.selectSectionsView, 'section:new:show', this.renderNewSectionView);
       this.listenTo(this.selectSectionsView, 'section:edit:show', this.renderEditSectionView);
     },
 
@@ -146,7 +146,7 @@ define([
     },
 
     renderSelectSectionsView: function() {
-      this.$('#edit_sections').html(this.selectSectionsView.render().el);
+      this.$('#edit-sections').html(this.selectSectionsView.render().el);
     },
 
     showNewProfile: function() {
@@ -171,7 +171,7 @@ define([
       this.$('#edit_address').html(newAddressView.render().el);
     },
 
-    renderNewItemView: function() {
+    renderNewSectionView: function() {
       this.selectSectionsView.remove();
       this.newSectionView = new NewSectionView({
         resume: this.model,
@@ -180,7 +180,7 @@ define([
       });
       this.listenTo(this.newSectionView, 'section:new:saved', this.newSectionSaved);
       this.listenTo(this.newSectionView, 'section:new:cancel', this.cancelNewSection);
-      this.$('#edit_items').html(this.newSectionView.render().el);
+      this.$('#edit-sections').html(this.newSectionView.render().el);
     },
 
     renderEditSectionView: function(sectionId) {
@@ -199,7 +199,7 @@ define([
         this.listenTo(this.editSectionView, 'section:updated', this.sectionUpdated);
 
         this.listenToOnce(this.editSectionView, 'section:edit:ready', function() {
-          this.$('#edit_sections').html(this.editSectionView.render().el);
+          this.$('#edit-sections').html(this.editSectionView.render().el);
         });
       } else {
         console.log("no item " + itemId);

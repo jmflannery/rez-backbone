@@ -154,9 +154,9 @@ define([
 
     newAttributes: function() {
       return {
-        name: this.$('#new_item_name').val(),
-        title: this.$('#new_item_title').val(),
-        heading: this.$('#new_item_heading').val()
+        name: this.$('#new-item-name').val(),
+        title: this.$('#new-item-title').val(),
+        heading: this.$('#new-item-heading').val()
       };
     },
 
