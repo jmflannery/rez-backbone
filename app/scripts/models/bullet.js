@@ -1,29 +1,26 @@
 define([
   'underscore',
-  'backbone'
-], function (_, Backbone) {
+  'backbone',
+  'models/resource',
+], function (_, Backbone, Resource) {
   'use strict';
 
-  var BulletModel = Backbone.Model.extend({
+  var BulletModel = Resource.extend({
+    resource: 'point',
+
+    url: function() {
+      if (this.id) {
+        return 'http://localhost:3000/rez/points/' + this.id + '?type=bullet';
+      } else {
+        return 'http://localhost:3000/rez/points?type=bullet';
+      }
+    },
+
     defaults: {
       text: ''
     },
 
-    url: function() {
-      var url = 'http://localhost:3000/rez/points';
-      if (this.id) {
-        url += '/' + this.id;
-      }
-      return url;
-    },
-
-    toJSON: function() {
-      return {
-        point: this.attributes
-      };
-    },
-
-    parse: function(response) {
+    parse: function(response, options) {
       if (response.point) {
         return response.point;
       } else {
