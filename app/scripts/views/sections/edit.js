@@ -91,7 +91,9 @@ define([
         auth: this.auth
       });
       this.listenTo(this.editItemView, 'item:edit:cancel', this.cancelEditItem);
-      this.$('section#items').html(this.editItemView.render().el);
+      this.listenTo(this.editItemView, 'item:edit:ready', function() {
+        this.$('section#items').html(this.editItemView.render().el);
+      });
     },
 
     renderEditBulletView: function(bulletId) {
