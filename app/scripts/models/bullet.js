@@ -8,16 +8,16 @@ define([
   var BulletModel = Resource.extend({
     resource: 'point',
 
-    url: function() {
+    defaults: {
+      text: ''
+    },
+
+   url: function() {
       if (this.id) {
         return 'http://localhost:3000/rez/points/' + this.id + '?type=bullet';
       } else {
         return 'http://localhost:3000/rez/points?type=bullet';
       }
-    },
-
-    defaults: {
-      text: ''
     },
 
     parse: function(response, options) {
