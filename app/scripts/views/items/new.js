@@ -19,8 +19,8 @@ define([
     },
 
     events: {
-      'click #save_item': 'saveItem',
-      'click #cancel': 'cancel'
+      'click #save-item': 'saveItem',
+      'click #cancel-new-item': 'cancel'
     },
 
     render: function() {
