@@ -118,6 +118,7 @@ define([
       });
       this.listenTo(this.editBulletView, 'bullet:edit:cancel', this.cancelEditBullet);
       this.listenTo(this.editBulletView, 'bullet:saved', function() {
+        this.initSelectBulletsView();
         this.renderSelectBulletsView();
       });
       this.$('section#bullets').html(this.editBulletView.render().el);
