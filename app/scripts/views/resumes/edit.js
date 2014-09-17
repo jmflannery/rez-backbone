@@ -175,7 +175,7 @@ define([
       this.selectSectionsView.remove();
       this.newSectionView = new NewSectionView({
         resume: this.model,
-        collection: this.sections,
+        collection: this.model.get('sections'),
         auth: this.auth
       });
       this.listenTo(this.newSectionView, 'section:new:saved', this.newSectionSaved);
