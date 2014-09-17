@@ -72,6 +72,7 @@ define([
       });
       this.listenTo(this.selectItemsView, 'show:new:bullet', this.renderNewBullet);
       this.listenTo(this.selectItemsView, 'item:edit:show', this.renderEditItemView);
+      this.listenTo(this.selectItemsView, 'item:new:show', this.renderNewItemView);
     },
 
     renderSelectItemsView: function() {
@@ -80,6 +81,14 @@ define([
 
     renderSelectParagraphsView: function() {
       this.$('section#paragraphs').html(this.selectParagraphsView.render().el);
+    },
+
+    renderNewItemView: function() {
+      var view = new NewItemView({
+        collection: this.model.get('items'),
+        auth: this.auth
+      });
+      this.$('section#items').html(view.render().el);
     },
 
     renderEditItemView: function(itemId) {

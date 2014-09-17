@@ -46,7 +46,7 @@ define([
 
     newAttributes: function() {
       return {
-        text: this.$('#edit_bullet_text').val(),
+        text: this.$('#edit_bullet_text').val()
       };
     }
   });
