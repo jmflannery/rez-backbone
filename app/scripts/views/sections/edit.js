@@ -70,7 +70,6 @@ define([
         resume: this.resume,
         auth: this.auth
       });
-      this.listenTo(this.selectItemsView, 'show:new:bullet', this.renderNewBullet);
       this.listenTo(this.selectItemsView, 'item:edit:show', this.renderEditItemView);
       this.listenTo(this.selectItemsView, 'item:new:show', this.renderNewItemView);
     },
@@ -79,16 +78,36 @@ define([
       this.$('section#items').html(this.selectItemsView.render().el);
     },
 
+    initNewItemView: function() {
+      this.newItemView = new NewItemView({
+        collection: this.model.get('items'),
+        auth: this.auth
+      });
+      this.listenTo(this.newItemView, 'item:new:saved', this.newItemSaved);
+      this.listenTo(this.newItemView, 'item:new:cancel', this.cancelNewItem);
+    },
+
+    renderNewItemView: function() {
+      this.selectItemsView.remove();
+      this.initNewItemView();
+      this.$('section#items').html(this.newItemView.render().el);
+    },
+
     renderSelectParagraphsView: function() {
       this.$('section#paragraphs').html(this.selectParagraphsView.render().el);
     },
 
-    renderNewItemView: function() {
-      var view = new NewItemView({
-        collection: this.model.get('items'),
-        auth: this.auth
-      });
-      this.$('section#items').html(view.render().el);
+    newItemSaved: function(item) {
+      this.items.add(item);
+      this.newItemView.remove();
+      this.initSelectItemsView();
+      this.renderSelectItemsView();
+    },
+
+    cancelNewItem: function() {
+      this.newItemView.remove();
+      this.initSelectItemsView();
+      this.renderSelectItemsView();
     },
 
     renderEditItemView: function(itemId) {
