@@ -1,4 +1,4 @@
-jackflannery.me
-===============
+rez-backbone
+============
 
-jackflannery.me
+backbone front end to resume API.
