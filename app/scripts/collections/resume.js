@@ -1,14 +1,15 @@
 define([
   'underscore',
   'backbone',
-  'models/resume'
-], function (_, Backbone, Resume) {
+  'models/resume',
+  'config'
+], function (_, Backbone, Resume, config) {
   'use strict';
 
   var ResumeCollection = Backbone.Collection.extend({
     model: Resume,
 
-    url: 'http://localhost:3000/rez/resumes',
+    url: config.domain + '/rez/resumes',
 
     parse: function(response, options) {
       return response.resumes;

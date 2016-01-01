@@ -2,7 +2,8 @@ define([
   'underscore',
   'backbone',
   'models/resource',
-], function (_, Backbone, Resource) {
+  'config'
+], function (_, Backbone, Resource, config) {
   'use strict';
 
   var BulletModel = Resource.extend({
@@ -14,9 +15,9 @@ define([
 
    url: function() {
       if (this.id) {
-        return 'http://localhost:3000/rez/points/' + this.id + '?type=bullet';
+        return config.domain + '/rez/points/' + this.id + '?type=bullet';
       } else {
-        return 'http://localhost:3000/rez/points?type=bullet';
+        return config.domain + '/rez/points?type=bullet';
       }
     },
 

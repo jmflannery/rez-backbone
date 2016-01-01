@@ -1,11 +1,12 @@
 define([
   'underscore',
-  'backbone'
-], function (_, Backbone) {
+  'backbone',
+  'config'
+], function (_, Backbone, config) {
   'use strict';
 
   var TokenModel = Backbone.Model.extend({
-    urlRoot: 'http://localhost:3000/toke/sessions'
+    urlRoot: config.domain + '/toke/sessions'
   });
 
   return TokenModel;

@@ -1,7 +1,8 @@
 define([
   'underscore',
-  'backbone'
-], function (_, Backbone) {
+  'backbone',
+  'config'
+], function (_, Backbone, config) {
   'use strict';
 
   var UserModel = Backbone.Model.extend({
@@ -9,7 +10,7 @@ define([
       username: ''
     },
 
-    urlRoot: 'http://localhost:3000/toke/users',
+    urlRoot: config.domain + '/toke/users',
 
     toJSON: function() {
       return {

@@ -1,8 +1,9 @@
 define([
   'underscore',
   'backbone',
-  'models/item'
-], function (_, Backbone, Item) {
+  'models/item',
+  'config'
+], function (_, Backbone, Item, config) {
   'use strict';
 
   var ItemCollection = Backbone.Collection.extend({
@@ -16,9 +17,9 @@ define([
 
     url: function() {
       if (this.section) {
-        return 'http://localhost:3000/rez/sections/' + this.section.id + '/items';
+        return config.domain + '/rez/sections/' + this.section.id + '/items';
       } else {
-        return 'http://localhost:3000/rez/items';
+        return config.domain + '/rez/items';
       }
     },
 

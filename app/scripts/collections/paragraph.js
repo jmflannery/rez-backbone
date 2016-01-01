@@ -1,14 +1,15 @@
 define([
   'underscore',
   'backbone',
-  'models/paragraph'
-], function (_, Backbone, Paragraph) {
+  'models/paragraph',
+  'config'
+], function (_, Backbone, Paragraph, config) {
   'use strict';
 
   var ParagraphsCollection = Backbone.Collection.extend({
     model: Paragraph,
 
-    url: 'http://localhost:3000/rez/points?type=paragraph',
+    url: config.domain + '/rez/points?type=paragraph',
 
     parse: function(response) {
       return response.points;

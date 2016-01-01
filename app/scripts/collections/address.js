@@ -1,14 +1,15 @@
 define([
   'underscore',
   'backbone',
-  'models/address'
-], function (_, Backbone, Address) {
+  'models/address',
+  'config',
+], function (_, Backbone, Address, config) {
   'use strict';
 
   var AddressCollection = Backbone.Collection.extend({
     model: Address,
 
-    url: 'http://localhost:3000/rez/addresses',
+    url: config.domain + '/rez/addresses',
 
     parse: function(response) {
       return response.addresses;
