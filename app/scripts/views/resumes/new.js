@@ -2,9 +2,8 @@ define([
   'jquery',
   'underscore',
   'backbone',
-  'templates',
-  'models/resume'
-], function ($, _, Backbone, JST, Resume) {
+  'templates'
+], function ($, _, Backbone, JST) {
   'use strict';
 
   var NewResumeView = Backbone.View.extend({
@@ -15,13 +14,14 @@ define([
     id: 'new_resume',
 
     events: {
-      'submit': 'addResume'
+      'click .submit_new_resume': 'addResume',
+      'click .cancel_new_resume': 'cancelAddResume'
     },
 
-    initialize: function(resumes, auth) {
+    initialize: function(resumes, user) {
       this.resumes = resumes;
-      this.auth = auth;
-      this.listenTo(this.resumes, 'add', this.resumeAdded);
+      this.user = user;
+      this.listenTo(this.resumes, 'sync', this.resumeSynced);
     },
 
     render: function() {
@@ -30,21 +30,26 @@ define([
     },
 
     addResume: function(e) {
-      e.preventDefault();
-      if (this.auth) {
-        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+      if (this.user) {
+        var header = { headers: { 'X-Toke-Key': this.user.get('token').get('key') }};
         this.resumes.create(this.newAttributes(), header);
       } else {
         console.log('Not Authorized');
+        this.remove();
+        Backbone.history.navigate('/', true);
       }
+      e.preventDefault();
     },
 
-    resumeAdded: function(model, collection, options) {
-      this.listenToOnce(model, 'sync', this.resumeSynced);
+    cancelAddResume: function(e) {
+      this.remove();
+      Backbone.history.navigate('/', true);
+      e.preventDefault();
     },
 
     resumeSynced: function(model, response, options) {
-      this.trigger('show:resume', model.id);
+      this.remove();
+      Backbone.history.navigate('resumes/' + model.id, true);
     },
 
     newAttributes: function() {

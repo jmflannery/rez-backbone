@@ -32,13 +32,19 @@ require([
   'backbone',
   'core_ext',
   'routes/app',
-  'views/app'
-], function (Backbone, CoreExt, AppRouter, AppView) {
-  CoreExt.include();
+  'lib/Authenticate'
+], function (Backbone, CoreExt, AppRouter, Auth) {
   var vent = _.extend({}, Backbone.Events);
-  var appRouter = new AppRouter(vent);
-  var appView = new AppView(vent);
-  vent.listenToOnce(appView, 'ready', function() {
-    Backbone.history.start();
+  CoreExt.include();
+
+  Auth.authenticate({
+    success: function(user) {
+      new AppRouter(vent, user);
+      Backbone.history.start();
+    },
+    fail: function() {
+      new AppRouter(vent);
+      Backbone.history.start();
+    }
   });
 });

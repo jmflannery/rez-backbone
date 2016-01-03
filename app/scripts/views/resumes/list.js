@@ -13,7 +13,7 @@ define([
     className: 'resumes',
 
     initialize: function(options) {
-      this.auth = options.auth;
+      this.user = options.user;
       this.vent = options.vent;
       this.listenTo(this.collection, 'remove', this.render);
     },
@@ -23,7 +23,7 @@ define([
       this.collection.each(function(resume) {
         this.$el.append(new ResumeListItemView({
           model: resume,
-          auth: this.auth,
+          user: this.user,
           vent: this.vent
         }).render().el);
       }, this);

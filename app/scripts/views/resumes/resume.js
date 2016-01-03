@@ -3,11 +3,10 @@ define([
   'underscore',
   'backbone',
   'templates',
-  'models/resume',
   'views/profiles/profile',
   'views/addresses/address',
   'views/sections/sections'
-], function ($, _, Backbone, JST, Resume, ProfileView, AddressView, SectionsView) {
+], function ($, _, Backbone, JST, ProfileView, AddressView, SectionsView) {
   'use strict';
 
   var ResumeView = Backbone.View.extend({
@@ -22,7 +21,7 @@ define([
     },
 
     initialize: function(options) {
-      this.auth = options.auth;
+      this.user = options.user;
       this.initSubViews();
     },
 
@@ -36,7 +35,6 @@ define([
         this.addressView = new AddressView({ model: null });
         this.sectionsView = new SectionsView({ collection: null });
       }
-      this.trigger('resume:ready');
     },
 
     render: function() {
@@ -60,13 +58,13 @@ define([
     },
 
     showNewResume: function(e) {
+      Backbone.history.navigate('resumes/new', true);
       e.preventDefault();
-      this.trigger('show:new_resume');
     },
 
     showResumes: function(e) {
+      Backbone.history.navigate('resumes', true);
       e.preventDefault();
-      this.trigger('show:resumes');
     },
 
     showEditResume: function(e) {

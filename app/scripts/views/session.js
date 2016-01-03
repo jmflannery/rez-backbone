@@ -14,8 +14,8 @@ define([
 
     id: 'signin',
 
-    initialize: function(vent) {
-      this.vent = vent;
+    initialize: function(user) {
+      this.user = user;
     },
 
     events: {
@@ -38,8 +38,8 @@ define([
     },
 
     signinSuccess: function(model, response, options) {
-      options.nextPage = 'home';
-      this.vent.trigger('session:authenticated', model, response, options);
+      // options.nextPage = 'home';
+      this.trigger('session:authenticated', model, response, options);
     },
 
     signinFailure: function(model, response, xhr) {

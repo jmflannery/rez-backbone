@@ -19,7 +19,7 @@ define([
     },
 
     initialize: function(options) {
-      this.auth = options.auth;
+      this.user = options.user;
       this.vent = options.vent;
     },
 
@@ -30,13 +30,13 @@ define([
 
     show: function(e) {
       e.preventDefault();
-      this.vent.trigger('show:resume', this.model.id);
+      Backbone.history.navigate('resumes/' + this.model.id, true);
     },
 
     destroy: function(e) {
       e.preventDefault();
-      if (this.auth) {
-        var header = { headers: {'X-Toke-Key': this.auth.token.get('key') }};
+      if (this.user) {
+        var header = { headers: {'X-Toke-Key': this.user.token.get('key') }};
         this.model.destroy(header);
       } else {
         console.log('Not Authorized');
