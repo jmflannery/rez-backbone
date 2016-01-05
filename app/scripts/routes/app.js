@@ -1,12 +1,16 @@
 define([
   'backbone',
   'collections/resume',
+  'collections/profile',
+  'collections/address',
+  'collections/section',
   'views/resumes/resume',
   'views/session',
   'lib/authenticate',
   'views/resumes/new',
   'views/resumes/list',
-], function (Backbone, ResumeCollection, ResumeView, SessionView, Auth, NewResumeView, ResumeListView) {
+  'views/resumes/edit'
+], function (Backbone, ResumeCollection, ProfileCollection, AddressCollection, SectionCollection, ResumeView, SessionView, Auth, NewResumeView, ResumeListView, EditResumeView) {
   'use strict';
 
   var AppRouter = Backbone.Router.extend({
@@ -21,9 +25,9 @@ define([
     routes: {
       '': 'activeResume',
       'signin': 'signin',
+      'resumes': 'resumes',
       'resumes/new': 'newResume',
       'resumes/:id': 'resume',
-      'resumes': 'resumes',
       'resumes/:id/edit': 'editResume',
       'resumes/:resume_id/sections/:section_id/edit': 'editResumeSection',
       'resumes/:resume_id/sections/:section_id/items/:item_id/edit': 'editResumeSectionItem',
@@ -33,11 +37,10 @@ define([
     },
 
     activeResume: function() {
-      this.resumes.fetch().then(function(resumes, response, options) {
-        this.resumes.reset(resumes.resumes);
+      this._maybeFetchResumeData(function() {
         var resume = this.resumes.get(1);
         this.renderResume(resume);
-      }.bind(this));
+      });
     },
 
     signin: function() {
@@ -51,10 +54,10 @@ define([
     },
 
     resume: function(resumeId) {
-      this.resumes.fetch().then(function(resumes, response, options) {
+      this._maybeFetchResumeData(function() {
         var resume = this.resumes.get(resumeId);
         this.renderResume(resume);
-      }.bind(this));
+      });
     },
 
     renderResume: function(resume) {
@@ -63,24 +66,74 @@ define([
     },
 
     resumes: function() {
-      this.resumes.fetch().then(function(resumes, response, options) {
+      this._maybeFetchResumeData(function() {
         this.$page.html(new ResumeListView({
           collection: this.resumes,
           user: this.user,
           vent: this.vent
         }).render().el);
-      }.bind(this));
+      });
     },
 
     newResume: function() {
-      this.resumes.fetch().then(function(resumes, response, options) {
+      this._maybeFetchResumeData(function() {
         var newResumeView = new NewResumeView(this.resumes, this.user);
         this.$page.html(newResumeView.render().el);
-      }.bind(this));
+      });
     },
 
-    editResume: function(resumeId) {
-      this.vent.trigger('show:resume:edit', resumeId);
+    editResume: function(resumeId, sectionId, itemId, bulletId, paragraphId) {
+      this._maybeFetchEditResumeData(function() {
+        var resume = this.resumes.get(resumeId);
+
+        this.editResumeView = new EditResumeView({
+          model: resume,
+          resumes: this.resumes,
+          profiles: this.profiles,
+          addresses: this.addresses,
+          sections: this.sections,
+          sectionId: sectionId,
+          itemId: itemId,
+          bulletId: bulletId,
+          paragraphId: paragraphId,
+          user: this.user,
+          vent: this.vent
+        });
+        this.$page.html(this.editResumeView.render().el);
+      });
+    },
+
+    _maybeFetchResumeData: function(callback) {
+      this.resumes = this.resumes ? this.resumes : new ResumeCollection();
+      if (!this.resumes.fetched) {
+        this.resumes.fetch().then(function(resumes, response, options) {
+          this.resumes.reset(resumes.resumes);
+          callback.call(this);
+        }.bind(this));
+      } else {
+        callback.call(this);
+      }
+    },
+
+    _maybeFetchEditResumeData: function(callback) {
+      this.resumes = this.resumes ? this.resumes : new ResumeCollection();
+      this.profiles = this.profiles ? this.profiles : new ProfileCollection();
+      this.addresses = this.addresses ? this.addresses : new AddressCollection();
+      this.sections = this.sections ? this.sections : new SectionCollection();
+      $.when(
+        this.resumes.fetched ? null : this.resumes.fetch(),
+        this.profiles.fetched ? null : this.profiles.fetch(),
+        this.addresses.fetched ? null : this.addresses.fetch(),
+        this.sections.fetched ? null : this.sections.fetch()
+      ).then(function(resumes, profiles, addresses, sections) {
+        if (resumes) { this.resumes.reset(resumes[0].resumes) }
+        if (profiles) { this.profiles.reset(profiles[0].profiles) }
+        if (addresses) { this.addresses.reset(addresses[0].addresses) }
+        if (sections) { this.sections.reset(sections[0].sections) }
+        callback.call(this);
+        console.log('all fetched');
+        console.log(this.resumes);
+      }.bind(this));
     },
 
     editResumeSection: function(resumeId, sectionId) {

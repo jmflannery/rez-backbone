@@ -45,7 +45,7 @@ define([
     },
 
     initialize: function(options) {
-      this.auth = options.auth;
+      this.user = options.user;
       this.vent = options.vent;
 
       this.sectionId = options.sectionId;
@@ -53,23 +53,16 @@ define([
       this.bulletId = options.bulletId;
       this.paragraphId = options.paragraphId;
 
+      this.profiles = options.resumes;
+      this.addresses = options.addresses;
+      this.sections = options.sections;
+
       this.listenTo(this.model, 'sync', this.resumeSaved);
       this.listenTo(this.model, 'error', this.resumeSaveError);
 
-      this.profiles = new ProfileCollection();
-      this.addresses = new AddressCollection();
-      this.sections = new SectionCollection();
-
-      $.when(
-        this.profiles.fetch(),
-        this.addresses.fetch(),
-        this.sections.fetch()
-      ).then(function() {
-        this.initSelectProfileView();
-        this.initSelectAddressView();
-        this.initSelectSectionsView();
-        this.trigger('resume:edit:ready');
-      }.bind(this));
+      this.initSelectProfileView();
+      this.initSelectAddressView();
+      this.initSelectSectionsView();
     },
 
     render: function() {
@@ -104,7 +97,7 @@ define([
       this.selectSectionsView = new SelectSectionsView({
         collection: this.sections,
         resume: this.model,
-        auth: this.auth,
+        user: this.user,
         vent: this.vent
       });
       this.listenTo(this.selectSectionsView, 'section:new:show', this.renderNewSectionView);
@@ -153,7 +146,7 @@ define([
       var newProfileView = new NewProfileView({
         resume: this.model,
         collection: this.profiles,
-        auth: this.auth
+        user: this.user
       });
       this.listenTo(newProfileView, 'profile:new:saved', this.newProfileSaved);
       this.listenTo(newProfileView, 'profile:new:cancel', this.cancelNewProfile);
@@ -164,7 +157,7 @@ define([
       var newAddressView = new NewAddressView({
         resume: this.model,
         collection: this.addresses,
-        auth: this.auth
+        user: this.user
       });
       this.listenTo(newAddressView, 'address:new:saved', this.newAddressSaved);
       this.listenTo(newAddressView, 'address:new:cancel', this.cancelNewAddress);
@@ -176,7 +169,7 @@ define([
       this.newSectionView = new NewSectionView({
         resume: this.model,
         collection: this.model.get('sections'),
-        auth: this.auth
+        user: this.user
       });
       this.listenTo(this.newSectionView, 'section:new:saved', this.newSectionSaved);
       this.listenTo(this.newSectionView, 'section:new:cancel', this.cancelNewSection);
@@ -192,7 +185,7 @@ define([
           resume: this.model,
           itemId: this.itemId,
           vent: this.vent,
-          auth: this.auth
+          user: this.user
         });
 
         this.listenTo(this.editSectionView, 'section:edit:cancel', this.cancelEditSection);
@@ -231,8 +224,8 @@ define([
       this.model.set('sections', sections);
 
       // header
-      if (this.auth) {
-        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+      if (this.user) {
+        var header = { headers: { 'X-Toke-Key': this.user.token.get('key') }};
         this.model.save({}, header);
       } else {
         console.log('Not Authorized');

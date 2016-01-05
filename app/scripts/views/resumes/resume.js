@@ -68,8 +68,8 @@ define([
     },
 
     showEditResume: function(e) {
+      Backbone.history.navigate('resumes/' + this.model.id + '/edit', true);
       e.preventDefault();
-      this.trigger('resume:edit:show', this.model.id);
     }
   });
 

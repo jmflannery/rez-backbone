@@ -11,6 +11,11 @@ define([
 
     url: config.domain + '/rez/addresses',
 
+    initialize: function() {
+      this.fetched = false;
+      this.listenTo(this, 'reset', function() { this.fetched = true });
+    },
+
     parse: function(response) {
       return response.addresses;
     }

@@ -10,9 +10,9 @@ define([
     model: Section,
 
     initialize: function(models, options) {
-      if (options) {
-        this.resume = options.resume;
-      }
+      if (options) { this.resume = options.resume; }
+      this.fetched = false;
+      this.listenTo(this, 'reset', function() { this.fetched = true });
     },
 
     url: function() {
