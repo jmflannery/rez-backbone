@@ -35,7 +35,6 @@ define([
       this.resume = options.resume;
       this.itemId = options.itemId;
       this.auth = options.auth;
-      this.vent = options.vent;
 
       this.listenTo(this.model, 'sync', function(model, response, options) {
         this.trigger('section:updated');

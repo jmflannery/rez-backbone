@@ -11,10 +11,6 @@ define([
 
     tagName: 'tr',
 
-    urls: {
-      editSection: "resumes/:resumeId/sections/:sectionId/edit"
-    },
-
     id: function() {
       return 'section_' + this.model.id;
     },
@@ -59,7 +55,9 @@ define([
     },
 
     editSectionUrl: function() {
-      return this.urls['editSection'].replace(/:resumeId/, this.resume.id).replace(/:sectionId/, this.model.id);
+      return ("resumes/:resumeId/sections/:sectionId/edit"
+        .replace(/:resumeId/, this.resume.id)
+        .replace(/:sectionId/, this.model.id));
     }
   });
 

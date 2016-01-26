@@ -19,6 +19,9 @@ define([
       this.vent = vent;
       this.user = user;
       this.resumes = new ResumeCollection();
+      this.profiles = new ProfileCollection();
+      this.addresses = new AddressCollection();
+      this.sections = new SectionCollection();
       this.$page = $('#page');
     },
 
@@ -37,9 +40,8 @@ define([
     },
 
     activeResume: function() {
-      this._maybeFetchResumeData(function() {
-        var resume = this.resumes.get(1);
-        this.renderResume(resume);
+      this._maybeFetchResumes(function(resumes) {
+        this.renderResume(resumes.get(1));
       });
     },
 
@@ -54,8 +56,8 @@ define([
     },
 
     resume: function(resumeId) {
-      this._maybeFetchResumeData(function() {
-        var resume = this.resumes.get(resumeId);
+      this._maybeFetchResumes(function(resumes) {
+        var resume = resumes.get(resumeId);
         this.renderResume(resume);
       });
     },
@@ -66,9 +68,9 @@ define([
     },
 
     resumes: function() {
-      this._maybeFetchResumeData(function() {
+      this._maybeFetchResumes(function(resumes) {
         this.$page.html(new ResumeListView({
-          collection: this.resumes,
+          collection: resumes,
           user: this.user,
           vent: this.vent
         }).render().el);
@@ -76,72 +78,41 @@ define([
     },
 
     newResume: function() {
-      this._maybeFetchResumeData(function() {
-        var newResumeView = new NewResumeView(this.resumes, this.user);
+      this._maybeFetchResumes(function(resumes) {
+        var newResumeView = new NewResumeView(resumes, this.user);
         this.$page.html(newResumeView.render().el);
       });
     },
 
     editResume: function(resumeId, sectionId, itemId, bulletId, paragraphId) {
-      this._maybeFetchEditResumeData(function() {
-        var resume = this.resumes.get(resumeId);
+      this._maybeFetchEditResumeData(function(resumes, profiles, addresses, sections) {
+        var resume = resumes.get(resumeId);
 
-        this.editResumeView = new EditResumeView({
-          model: resume,
-          resumes: this.resumes,
-          profiles: this.profiles,
-          addresses: this.addresses,
-          sections: this.sections,
-          sectionId: sectionId,
-          itemId: itemId,
-          bulletId: bulletId,
-          paragraphId: paragraphId,
-          user: this.user,
-          vent: this.vent
-        });
-        this.$page.html(this.editResumeView.render().el);
+        if (resume) {
+          this.editResumeView = new EditResumeView({
+            model: resume,
+            resumes: resumes,
+            profiles: profiles,
+            addresses: addresses,
+            sections: sections,
+            sectionId: sectionId,
+            itemId: itemId,
+            bulletId: bulletId,
+            paragraphId: paragraphId,
+            user: this.user,
+            vent: this.vent
+          });
+          this.$page.html(this.editResumeView.render().el);
+        }
       });
     },
 
-    _maybeFetchResumeData: function(callback) {
-      this.resumes = this.resumes ? this.resumes : new ResumeCollection();
-      if (!this.resumes.fetched) {
-        this.resumes.fetch().then(function(resumes, response, options) {
-          this.resumes.reset(resumes.resumes);
-          callback.call(this);
-        }.bind(this));
-      } else {
-        callback.call(this);
-      }
-    },
-
-    _maybeFetchEditResumeData: function(callback) {
-      this.resumes = this.resumes ? this.resumes : new ResumeCollection();
-      this.profiles = this.profiles ? this.profiles : new ProfileCollection();
-      this.addresses = this.addresses ? this.addresses : new AddressCollection();
-      this.sections = this.sections ? this.sections : new SectionCollection();
-      $.when(
-        this.resumes.fetched ? null : this.resumes.fetch(),
-        this.profiles.fetched ? null : this.profiles.fetch(),
-        this.addresses.fetched ? null : this.addresses.fetch(),
-        this.sections.fetched ? null : this.sections.fetch()
-      ).then(function(resumes, profiles, addresses, sections) {
-        if (resumes) { this.resumes.reset(resumes[0].resumes) }
-        if (profiles) { this.profiles.reset(profiles[0].profiles) }
-        if (addresses) { this.addresses.reset(addresses[0].addresses) }
-        if (sections) { this.sections.reset(sections[0].sections) }
-        callback.call(this);
-        console.log('all fetched');
-        console.log(this.resumes);
-      }.bind(this));
-    },
-
     editResumeSection: function(resumeId, sectionId) {
-      this.vent.trigger('show:resume:section:edit', resumeId, sectionId);
+      this.editResume(resumeId, sectionId);
     },
 
     editResumeSectionItem: function(resumeId, sectionId, itemId) {
-      this.vent.trigger('show:resume:section:item:edit', resumeId, sectionId, itemId);
+      this.editResume(resumeId, sectionId, itemId);
     },
 
     newResumeItemBullet: function(resumeId, itemId) {
@@ -154,6 +125,32 @@ define([
 
     editResumeItemBullet: function(resumeId, itemId, bulletId) {
       this.vent.trigger('show:resume:item:bullet:edit', resumeId, itemId, bulletId);
+    },
+
+    _maybeFetchResumes: function(callback) {
+      if (!this.resumes.fetched) {
+        this.resumes.fetch().then(function(resumes, response, options) {
+          this.resumes.reset(resumes.resumes);
+          callback.call(this, this.resumes);
+        }.bind(this));
+      } else {
+        callback.call(this, this.resumes);
+      }
+    },
+
+    _maybeFetchEditResumeData: function(callback) {
+      $.when(
+        this.resumes.fetched ? null : this.resumes.fetch(),
+        this.profiles.fetched ? null : this.profiles.fetch(),
+        this.addresses.fetched ? null : this.addresses.fetch(),
+        this.sections.fetched ? null : this.sections.fetch()
+      ).then(function(resumes, profiles, addresses, sections) {
+        if (resumes) { this.resumes.reset(resumes[0].resumes) }
+        if (profiles) { this.profiles.reset(profiles[0].profiles) }
+        if (addresses) { this.addresses.reset(addresses[0].addresses) }
+        if (sections) { this.sections.reset(sections[0].sections) }
+        callback.call(this, this.resumes, this.profiles, this.addresses, this.sections);
+      }.bind(this));
     }
   });
 

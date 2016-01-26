@@ -53,7 +53,7 @@ define([
       this.bulletId = options.bulletId;
       this.paragraphId = options.paragraphId;
 
-      this.profiles = options.resumes;
+      this.profiles = options.profiles;
       this.addresses = options.addresses;
       this.sections = options.sections;
 
@@ -184,7 +184,6 @@ define([
           model: section,
           resume: this.model,
           itemId: this.itemId,
-          vent: this.vent,
           user: this.user
         });
 
@@ -225,7 +224,7 @@ define([
 
       // header
       if (this.user) {
-        var header = { headers: { 'X-Toke-Key': this.user.token.get('key') }};
+        var header = { headers: { 'X-Toke-Key': this.user.get('token').get('key') }};
         this.model.save({}, header);
       } else {
         console.log('Not Authorized');
@@ -237,7 +236,7 @@ define([
     },
 
     resumeSaved: function() {
-      this.trigger('show:resume', this.model.id);
+      Backbone.history.navigate('/', true);
     },
 
     resumeSaveError: function(model, xhr, options) {

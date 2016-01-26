@@ -27,7 +27,7 @@ define([
       this.collection.each(function(profile) {
         dropDown.append($('<option>')
           .val(profile.id)
-          .text(profile.get('firstname')));
+          .text(profile.get('title')));
       });
     },
 

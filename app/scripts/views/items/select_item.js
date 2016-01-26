@@ -61,7 +61,10 @@ define([
     },
 
     editItemUrl: function() {
-      return this.urls['editItem'].replace(/:resumeId/, this.resume.id).replace(/:sectionId/, this.section.id).replace(/:itemId/, this.model.id);
+      return '/resumes/:resumeId/sections/:sectionId/items/:itemId/edit'
+        .replace(/:resumeId/, this.resume.id)
+        .replace(/:sectionId/, this.section.id)
+        .replace(/:itemId/, this.model.id);
     }
   });
 
