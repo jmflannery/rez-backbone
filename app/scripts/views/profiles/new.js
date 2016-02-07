@@ -14,13 +14,13 @@ define([
 
     initialize: function(options) {
       this.resume = options.resume;
-      this.auth = options.auth;
+      this.user = options.user;
       this.listenTo(this.collection, 'sync', this.profileSynced);
     },
 
     events: {
-      'click #save_profile': 'saveProfile',
-      'click #cancel': 'cancel'
+      'click button#save_profile': 'saveProfile',
+      'click button#cancel_profile': 'cancel'
     },
 
     render: function() {
@@ -29,11 +29,12 @@ define([
     },
 
     saveProfile: function(e) {
+      console.log("hey now");
       e.preventDefault();
-      if (this.auth) {
+      if (this.user) {
         var options = { resumeId: this.resume.id };
         var profile = new Profile(this.newAttributes(), options);
-        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') } };
+        var header = { headers: { 'X-Toke-Key': this.user.get('token').get('key') }};
         this.collection.create(profile, header);
       } else {
         console.log('Aint Authed');
@@ -52,7 +53,8 @@ define([
         nickname: this.$('#new_profile_nickname').val(),
         prefix: this.$('#new_profile_prefix').val(),
         suffix: this.$('#new_profile_suffix').val(),
-        title: this.$('#new_profile_title').val()
+        title: this.$('#new_profile_title').val(),
+        email: this.$('#new_profile_email').val()
       };
     },
 

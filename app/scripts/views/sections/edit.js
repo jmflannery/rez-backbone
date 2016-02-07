@@ -34,7 +34,7 @@ define([
     initialize: function(options) {
       this.resume = options.resume;
       this.itemId = options.itemId;
-      this.auth = options.auth;
+      this.user = options.user;
 
       this.listenTo(this.model, 'sync', function(model, response, options) {
         this.trigger('section:updated');
@@ -67,7 +67,7 @@ define([
         collection: this.items,
         section: this.model,
         resume: this.resume,
-        auth: this.auth
+        user: this.user
       });
       this.listenTo(this.selectItemsView, 'item:edit:show', this.renderEditItemView);
       this.listenTo(this.selectItemsView, 'item:new:show', this.renderNewItemView);
@@ -80,7 +80,7 @@ define([
     initNewItemView: function() {
       this.newItemView = new NewItemView({
         collection: this.model.get('items'),
-        auth: this.auth
+        user: this.user
       });
       this.listenTo(this.newItemView, 'item:new:saved', this.newItemSaved);
       this.listenTo(this.newItemView, 'item:new:cancel', this.cancelNewItem);
@@ -115,7 +115,7 @@ define([
         model: item,
         section: this.model,
         resume: this.resume,
-        auth: this.auth
+        user: this.user
       });
       this.listenTo(this.editItemView, 'item:edit:cancel', this.cancelEditItem);
       this.listenTo(this.editItemView, 'item:edit:ready', function() {
@@ -127,7 +127,7 @@ define([
       var bullet = this.bullets.get(bulletId);
       this.editBulletView = new EditBulletView({
         model: bullet,
-        auth: this.auth
+        user: this.user
       });
       this.listenTo(this.editBulletView, 'bullet:edit:cancel', this.cancelEditBullet);
       this.listenTo(this.editBulletView, 'bullet:saved', function() {
@@ -160,8 +160,8 @@ define([
 
       this.model.set('items', items);
 
-      if (this.auth) {
-        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+      if (this.user) {
+        var header = { headers: { 'X-Toke-Key': this.user.get('token').get('key') }};
         this.model.save({}, header);
       } else {
         console.log('Not Authorized');
@@ -190,7 +190,7 @@ define([
       this.newBulletView = new NewBulletView({
         collection: this.model.get('bullets'),
         model: this.model,
-        auth: this.auth
+        user: this.user
       });
       this.listenTo(this.newBulletView, 'bullet:new:saved', this.newBulletSaved);
       this.listenTo(this.newBulletView, 'bullet:new:cancel', this.cancelNewBullet);
@@ -213,7 +213,7 @@ define([
       this.newParagraphView = new NewParagraphView({
         collection: this.model.get('paragraphs'),
         model: this.model,
-        auth: this.auth
+        user: this.user
       });
       this.listenTo(this.newParagraphView, 'paragraph:new:saved', this.newParagraphSaved);
       this.listenTo(this.newParagraphView, 'paragraph:new:cancel', this.cancelNewParagraph);

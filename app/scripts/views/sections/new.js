@@ -19,7 +19,7 @@ define([
 
     initialize: function(options) {
       this.resume = options.resume;
-      this.auth = options.auth;
+      this.user = options.user;
       this.listenTo(this.collection, 'sync', this.sectionSynced);
     },
 
@@ -37,8 +37,8 @@ define([
       e.preventDefault();
       Backbone.history.navigate(this.editResumeUrl());
 
-      if (this.auth) {
-        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+      if (this.user) {
+        var header = { headers: { 'X-Toke-Key': this.user.get('token').get('key') }};
         this.collection.create(this.newAttributes(), header);
       } else {
         console.log('Aint Authed');

@@ -13,13 +13,13 @@ define([
 
     initialize: function(options) {
       this.resume = options.resume;
-      this.auth = options.auth;
+      this.user = options.user;
       this.listenTo(this.collection, 'sync', this.addressSynced);
     },
 
     events: {
       'click #save_address': 'saveAddress',
-      'click #cancel': 'cancel'
+      'click #cancel_address': 'cancel'
     },
 
     render: function() {
@@ -29,8 +29,8 @@ define([
 
     saveAddress: function(e) {
       e.preventDefault();
-      if (this.auth) {
-        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+      if (this.user) {
+        var header = { headers: { 'X-Toke-Key': this.user.get('token').get('key') }};
         this.collection.create(this.newAttributes(), header);
       } else {
         console.log('Aint Authed');
