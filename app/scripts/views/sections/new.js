@@ -24,8 +24,8 @@ define([
     },
 
     events: {
-      'click #save-section': 'saveSection',
-      'click #cancel': 'cancel'
+      'click #save_section': 'saveSection',
+      'click #cancel_section': 'cancel'
     },
 
     render: function() {

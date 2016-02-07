@@ -4,18 +4,18 @@
   <a href='#' class='edit_resume'>Edit</a>
 <% } %>
 <% if (this.model) { %>
-  <div class='container'>
-    <div class='row'>
-      <div class='five columns profile'>
-        <h1><%= this.model.get('profile').fullNickNameWithSuffix() %></h1>
-        <p class='title'><%= this.model.get('profile').get('title') %></p>
-      </div>
-      <div class='offset-by-two five columns address'>
-        <p><%= this.model.get('address').lineOne() %></p>
-        <p><%= this.model.get('address').lineTwo() %></p>
-        <p><%= this.model.get('address').lineThree() %></p>
-        </p>
-      </div>
+  <div class="row header">
+    <div class='seven columns profile'>
+      <h1><%= this.model.get('profile').fullNickNameWithSuffix() %></h1>
+      <p class='title'><%= this.model.get('profile').get('title') %></p>
+    </div>
+    <div class='five columns address'>
+      <p>
+        <%= this.model.get('address').lineOne() %><br>
+        <%= this.model.get('address').lineTwo() %><br>
+        <strong><%= this.model.get('address').lineThree() %></strong><br>
+        <strong><%= this.model.get('profile').get('email') %></strong>
+      </p>
     </div>
   </div>
 <% } else { %>

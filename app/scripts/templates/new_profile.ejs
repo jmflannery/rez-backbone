@@ -1,35 +1,43 @@
 <h3>New Profile</h3>
-<div>
-  <label for="new_profile_firstname">First Name:</label>
-  <input type="text" id="new_profile_firstname">
+<div class="row">
+  <div class="one-half column">
+    <label for="new_profile_firstname">First Name:</label>
+    <input type="text" class="u-full-width" id="new_profile_firstname">
+  </div>
+  <div class="one-half column">
+    <label for="new_profile_middlename">Middle Name:</label>
+    <input type="text" class="u-full-width" id="new_profile_middlename">
+  </div>
 </div>
-<div>
-  <label for="new_profile_middlename">Middle Name:</label>
-  <input type="text" id="new_profile_middlename">
-</div>
-<div>
+<div class="row">
   <label for="new_profile_lastname">Last Name:</label>
-  <input type="text" id="new_profile_lastname">
+  <input type="text" class="u-full-width" id="new_profile_lastname">
 </div>
-<div>
-  <label for="new_profile_nickname">Nick Name:</label>
-  <input type="text" id="new_profile_nickname">
+<div class="row">
+  <div class="one-half column">
+    <label for="new_profile_prefix">Prefix: </label>
+    <input type="text" class="u-full-width" id="new_profile_prefix">
+  </div>
+  <div class="one-half column">
+    <label for="new_profile_suffix">Suffix: </label>
+    <input type="text" class="u-full-width" id="new_profile_suffix">
+  </div>
 </div>
-<div>
-  <label for="new_profile_prefix">Prefix: </label>
-  <input type="text" id="new_profile_prefix">
+<div class="row bottom-margin">
+  <div class="one-half column">
+    <label for="new_profile_nickname">Nick Name:</label>
+    <input type="text" class="u-full-width" id="new_profile_nickname">
+  </div>
+  <div class="one-half column">
+    <label for="new_profile_title">Title: </label>
+    <input type="text" class="u-full-width" id="new_profile_title">
+  </div>
 </div>
-<div>
-  <label for="new_profile_suffix">Suffix: </label>
-  <input type="text" id="new_profile_suffix">
+<div class="row bottom-margin">
+  <label for="new_profile_email">Email: </label>
+  <input type="text" class="u-full-width" id="new_profile_email">
 </div>
-<div>
-  <label for="new_profile_title">Title: </label>
-  <input type="text" id="new_profile_title">
-</div>
-<div>
-  <ul>
-    <li><a href='#' id='save_profile'>Save</a></li>
-    <li><a href='#' id='cancel'>Cancel</a></li>
-  </ul>
+<div class="row">
+  <button class="button-primary" id='save_profile'>Save Profile</button>
+  <button class="button" id='cancel_profile'>Cancel</button>
 </div>

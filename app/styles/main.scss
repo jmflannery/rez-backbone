@@ -2,11 +2,22 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
+.bottom-margin {
+  margin-bottom: 8px;
+}
+
+.header {
+  margin-bottom: 32px;
+}
+
 .profile {
   text-align: center;
   h1 {
     font-family: 'Trade Winds';
-    margin-bottom: 10px;
+    margin-bottom: 4px;
+  }
+  p {
+    margin-bottom: 8px;
   }
 }
 
@@ -17,10 +28,31 @@ body {
 }
 
 .address {
+  text-align: center;
   p {
+    line-height: 1.2;
     margin: 0;
-    margin-top: -6px;
     padding: 0;
   }
 }
 
+.section_heading {
+  color: #2079c7;
+  font-size: 1.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+/* Larger than phablet */
+@media (min-width: 550px) {
+
+  .address {
+    text-align: left;
+  }
+  .profile {
+    text-align: left;
+  }
+  .title {
+    text-align: left;
+  }
+}

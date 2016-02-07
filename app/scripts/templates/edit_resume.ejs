@@ -1,15 +1,15 @@
 <% if (this.model) { %>
-  <div id='errors'></div>
-  <div id='done'>
-    <a href='#' class='done_editing'>Done</a>
-  </div>
-  <section id='edit_resume'>
+  <h1>Edit Resume</h1>
+  <div class='row' id='errors'></div>
+  <button class='button-primary done_editing'>Save Resume</button>
+  <div class='row bottom-margin'>
     <label for="resume_name">Resume name: </label>
-    <input type="text" id="resume_name" value="<%= this.model.get('name') %>">
-  </section>
+    <input type="text" class="u-full-width" id="resume_name" value="<%= this.model.get('name') %>">
+  </div>
   <section id='edit_profile'></section>
   <section id='edit_address'></section>
   <section id='edit-sections'></section>
+  <button class='button-primary done_editing'>Save Resume</button>
 <% } else { %>
   <p>No Resume</p>
 <% } %>

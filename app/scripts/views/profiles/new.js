@@ -29,7 +29,6 @@ define([
     },
 
     saveProfile: function(e) {
-      console.log("hey now");
       e.preventDefault();
       if (this.user) {
         var options = { resumeId: this.resume.id };
