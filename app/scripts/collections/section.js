@@ -16,11 +16,7 @@ define([
     },
 
     url: function() {
-      if (this.resume) {
-        return config.domain + '/rez/resumes/' + this.resume.id + '/sections';
-      } else {
-        return config.domain + '/rez/sections';
-      }
+      return config.domain + '/rez/sections';
     },
 
     parse: function(response, options) {
