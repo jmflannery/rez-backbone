@@ -1,20 +1,18 @@
 <h3>Edit Section</h3>
-<div>
+<div class="row">
   <label for="new_section_name">Name:</label>
-  <input type="text" id="new_section_name" value="<%= this.model.get('name') %>">
+  <input type="text" class="u-full-width" id="new_section_name" value="<%= this.model.get('name') %>">
 </div>
-<div>
+<div class="row">
   <label for="new_section_heading">Heading:</label>
-  <input type="text" id="new_section_heading" value="<%= this.model.get('heading') %>">
+  <input type="text" class="u-full-width" id="new_section_heading" value="<%= this.model.get('heading') %>">
 </div>
-<div>
+<div class="row bottom-margin">
   <label for="new_section_heading">Subheading:</label>
-  <input type="text" id="new_section_subheading" value="<%= this.model.get('subheading') %>">
+  <input type="text" class="u-full-width" id="new_section_subheading" value="<%= this.model.get('subheading') %>">
 </div>
 <section id="items"></section>
-<div>
-  <ul>
-    <li><a href='#' id='save_section'>Save</a></li>
-    <li><a href='#' id='cancel'>Cancel</a></li>
-  </ul>
+<div class="row">
+  <button class="button-primary" id='save_section'>Save Section</button>
+  <button class="button" id='cancel_section'>Cancel</button>
 </div>

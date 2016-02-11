@@ -33,8 +33,8 @@ define([
     },
 
     events: {
-      'click #save-item': 'save',
-      'click #cancel-edit-item': 'cancel'
+      'click #save_item': 'save',
+      'click #cancel_item': 'cancel'
     },
 
     initialize: function(options) {
@@ -42,7 +42,7 @@ define([
       this.section = options.section;
       this.bulletId = options.bulletId;
       this.paragraphId = options.paragraphId;
-      this.auth = options.auth;
+      this.user = options.user;
       this.vent = options.vent;
 
       this.listenTo(this.model, 'sync', this.itemSynced);
@@ -86,8 +86,11 @@ define([
     initSelectBulletsView: function() {
       this.selectBulletsView = new SelectBulletsView({
         collection: this.bullets,
-        auth: this.auth,
-        selectedBullets: this.model.bulletIds()
+        user: this.user,
+        selectedBullets: this.model.bulletIds(),
+        resume: this.resume,
+        section: this.section,
+        item: this.model
       });
       this.listenTo(this.selectBulletsView, 'show:new:bullet', this.renderNewBullet);
       this.listenTo(this.selectBulletsView, 'bullet:edit:show', this.renderEditBulletView);
@@ -96,7 +99,7 @@ define([
     initSelectParagraphsView: function() {
       this.selectParagraphsView = new SelectParagraphsView({
         collection: this.paragraphs,
-        auth: this.auth,
+        user: this.user,
         selectedParagraphs: this.model.paragraphIds()
       });
       this.listenTo(this.selectParagraphsView, 'paragraph:new', this.renderNewParagraph);
@@ -114,7 +117,7 @@ define([
       var bullet = this.bullets.get(bulletId);
       this.editBulletView = new EditBulletView({
         model: bullet,
-        auth: this.auth
+        user: this.user
       });
       this.listenTo(this.editBulletView, 'bullet:edit:cancel', this.cancelEditBullet);
       this.listenTo(this.editBulletView, 'bullet:saved', function() {
@@ -145,8 +148,8 @@ define([
       }, this);
       this.model.set('paragraphs', paragraphs);
 
-      if (this.auth) {
-        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+      if (this.user) {
+        var header = { headers: { 'X-Toke-Key': this.user.get('token').get('key') }};
         this.model.save({}, header);
       } else {
         console.log('Not Authorized');
@@ -183,7 +186,7 @@ define([
       this.newBulletView = new NewBulletView({
         collection: this.model.get('bullets'),
         model: this.model,
-        auth: this.auth
+        user: this.user
       });
       this.listenTo(this.newBulletView, 'bullet:new:saved', this.newBulletSaved);
       this.listenTo(this.newBulletView, 'bullet:new:cancel', this.cancelNewBullet);
@@ -206,7 +209,7 @@ define([
       this.newParagraphView = new NewParagraphView({
         collection: this.model.get('paragraphs'),
         model: this.model,
-        auth: this.auth
+        user: this.user
       });
       this.listenTo(this.newParagraphView, 'paragraph:new:saved', this.newParagraphSaved);
       this.listenTo(this.newParagraphView, 'paragraph:new:cancel', this.cancelNewParagraph);

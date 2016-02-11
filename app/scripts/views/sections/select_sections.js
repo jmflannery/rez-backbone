@@ -25,8 +25,7 @@ define([
 
     initialize: function(options) {
       this.resume = options.resume;
-      this.auth = options.auth;
-      this.vent = options.vent;
+      this.user = options.user;
       this.listenTo(this.collection, 'remove', this.render);
     },
 
@@ -39,7 +38,7 @@ define([
         var sectionView = new SectionView({
           model: section,
           resume: this.resume,
-          auth: this.auth
+          user: this.user
         });
 
         this.listenToOnce(sectionView, 'section:edit', function(sectionId) {

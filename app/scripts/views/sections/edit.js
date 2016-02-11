@@ -28,7 +28,7 @@ define([
 
     events: {
       'click #save_section': 'save',
-      'click #cancel': 'cancel'
+      'click #cancel_section': 'cancel'
     },
 
     initialize: function(options) {

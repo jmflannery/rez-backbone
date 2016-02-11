@@ -16,7 +16,7 @@ define([
     id: 'select_items',
 
     events: {
-      'click .new_item': 'newItem'
+      'click #new_item': 'newItem'
     },
 
     initialize: function(options) {

@@ -1,21 +1,19 @@
 <h3>Edit Item</h3>
-<div>
+<div class="row">
   <label for="new-item-name">Name:</label>
-  <input type="text" id="new-item-name" value="<%= this.model.get('name') %>">
+  <input type="text" class="u-full-width" id="new-item-name" value="<%= this.model.get('name') %>">
 </div>
-<div>
+<div class="row">
   <label for="new-item-title">Title:</label>
-  <input type="text" id="new-item-title" value="<%= this.model.get('title') %>">
+  <input type="text" class="u-full-width" id="new-item-title" value="<%= this.model.get('title') %>">
 </div>
-<div>
+<div class="row bottom-margin">
   <label for="new-item-heading">Heading:</label>
-  <input type="text" id="new-item-heading" value="<%= this.model.get('heading') %>">
+  <input type="text" class="u-full-width" id="new-item-heading" value="<%= this.model.get('heading') %>">
 </div>
 <section id="bullets"></section>
 <section id="paragraphs"></section>
-<div>
-  <ul>
-    <li><a href='#' id='save-item'>Save Item</a></li>
-    <li><a href='#' id='cancel-edit-item'>Cancel Edit Item</a></li>
-  </ul>
+<div class="row">
+  <button class="button-primary" id='save_item'>Save Item</button>
+  <button class="button" id='cancel_item'>Cancel</button>
 </div>

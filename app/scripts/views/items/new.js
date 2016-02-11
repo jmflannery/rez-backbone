@@ -14,13 +14,13 @@ define([
     id: 'new_item',
 
     initialize: function(options) {
-      this.auth = options.auth;
+      this.user = options.user;
       this.listenTo(this.collection, 'sync', this.itemSynced);
     },
 
     events: {
-      'click #save-item': 'saveItem',
-      'click #cancel-new-item': 'cancel'
+      'click #save_item': 'saveItem',
+      'click #cancel_item': 'cancel'
     },
 
     render: function() {
@@ -30,8 +30,8 @@ define([
 
     saveItem: function(e) {
       e.preventDefault();
-      if (this.auth) {
-        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+      if (this.user) {
+        var header = { headers: { 'X-Toke-Key': this.user.get('token').get('key') }};
         this.collection.create(this.newAttributes(), header);
       } else {
         console.log('Aint Authed');
