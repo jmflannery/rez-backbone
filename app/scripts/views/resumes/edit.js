@@ -188,7 +188,7 @@ define([
         });
 
         this.listenTo(this.editSectionView, 'section:edit:cancel', this.cancelEditSection);
-        this.listenTo(this.editSectionView, 'section:updated', this.sectionUpdated);
+        this.listenTo(this.editSectionView, 'section:updated', this.cancelEditSection);
 
         this.listenToOnce(this.editSectionView, 'section:edit:ready', function() {
           this.$('#edit-sections').html(this.editSectionView.render().el);
@@ -229,10 +229,6 @@ define([
       } else {
         console.log('Not Authorized');
       }
-    },
-
-    sectionUpdated: function() {
-      this.cancelEditSection();
     },
 
     resumeSaved: function() {

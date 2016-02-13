@@ -118,6 +118,7 @@ define([
         user: this.user
       });
       this.listenTo(this.editItemView, 'item:edit:cancel', this.cancelEditItem);
+      this.listenTo(this.editItemView, 'item:updated', this.cancelEditItem);
       this.listenTo(this.editItemView, 'item:edit:ready', function() {
         this.$('section#items').html(this.editItemView.render().el);
       });
@@ -141,6 +142,9 @@ define([
       delete this.bulletId;
       this.initSelectBulletsView();
       this.renderSelectBulletsView();
+    },
+
+    itemUpdated: function() {
     },
 
     cancelEditItem: function() {

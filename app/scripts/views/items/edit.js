@@ -45,7 +45,9 @@ define([
       this.user = options.user;
       this.vent = options.vent;
 
-      this.listenTo(this.model, 'sync', this.itemSynced);
+      this.listenTo(this.model, 'sync', function(model, response, options) {
+        this.trigger('item:updated');
+      });
 
       this.bullets = new BulletCollection();
       this.paragraphs = new ParagraphCollection();
@@ -135,8 +137,11 @@ define([
     },
 
     save: function(e) {
+      console.log('yolo');
       e.preventDefault();
+      console.log(this.newAttributes());
       this.model.set(this.newAttributes());
+      console.log(this.model);
 
       var bullets = _.map(this.getSelectedBulletIds(), function(bulletId) {
         return this.bullets.get(bulletId);
@@ -170,10 +175,6 @@ define([
 
     getSelectedParagraphIds: function() {
       return this.selectParagraphsView.getSelectedParagraphIds();
-    },
-
-    itemSynced: function(model, response, options) {
-      this.trigger('item:updated');
     },
 
     cancel: function(e) {

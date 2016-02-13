@@ -1,4 +1,4 @@
-<input type='checkbox' id='bullet_<%= this.model.id %>' <%= this.selected ? 'checked' : '' %>>
-<label for='bullet_<%= this.model.id %>'><%= this.model.get('text') %></label>
-<a href='#' id='edit_bullet'>Edit</a>
-<a href='#' id='delete_bullet'>Delete</a>
+<td><%= this.model.get('text') %></td>
+<td><input type='checkbox' <%= this.selected ? "checked" : "" %> ></td>
+<td><a href='#' id='edit_bullet'>Edit</a></td>
+<td><a href='#' id='delete_bullet'>Delete</a></td>

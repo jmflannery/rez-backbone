@@ -9,7 +9,11 @@ define([
   var SelectParagraphView = Backbone.View.extend({
     template: JST['app/scripts/templates/select_paragraph.ejs'],
 
-    tagName: 'li',
+    tagName: 'tr',
+
+    id: function() {
+      return 'bullet_' + this.model.id;
+    },
 
     events: {
       'click #edit_paragraph': 'editParagraph'

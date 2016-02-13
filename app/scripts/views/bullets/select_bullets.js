@@ -38,7 +38,7 @@ define([
           this.trigger('bullet:edit:show', bulletId);
         });
 
-        this.$('ul').append(view.render().el);
+        this.$('tbody').append(view.render().el);
 
         this.bulletViews.push(view);
       }, this);

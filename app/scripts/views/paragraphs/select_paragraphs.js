@@ -38,7 +38,7 @@ define([
           this.trigger('paragraph:edit:show', paragraphId);
         });
 
-        this.$('ul').append(view.render().el);
+        this.$('tbody').append(view.render().el);
 
         this.paragraphViews.push(view);
       }, this);

@@ -9,7 +9,11 @@ define([
   var SelectBulletView = Backbone.View.extend({
     template: JST['app/scripts/templates/bullet.ejs'],
 
-    tagName: 'li',
+    tagName: 'tr',
+
+    id: function() {
+      return 'bullet_' + this.model.id;
+    },
 
     events: {
       'click #edit_bullet': 'editBullet'
