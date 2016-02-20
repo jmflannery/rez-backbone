@@ -27,8 +27,7 @@ define([
     initialize: function(options) {
       this.section = options.section;
       this.resume = options.resume;
-      this.auth = options.auth;
-      this.vent = options.vent;
+      this.user = options.user;
     },
 
     render: function() {
@@ -44,8 +43,8 @@ define([
 
     destroy: function(e) {
       e.preventDefault();
-      if (this.auth) {
-        var header = { headers: {'X-Toke-Key': this.auth.token.get('key') }};
+      if (this.user) {
+        var header = { headers: {'X-Toke-Key': this.user.get('token').get('key') }};
         this.model.destroy(header);
       } else {
         console.log('Not Authorized');

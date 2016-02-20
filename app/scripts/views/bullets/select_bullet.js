@@ -16,11 +16,13 @@ define([
     },
 
     events: {
-      'click #edit_bullet': 'editBullet'
+      'click #edit_bullet': 'edit',
+      'click #delete_bullet': 'destroy'
     },
 
     initialize: function(options) {
       this.selected = options.selected;
+      this.user = options.user;
     },
 
     render: function() {
@@ -36,9 +38,19 @@ define([
       return this.model.id;
     },
 
-    editBullet: function(e) {
+    edit: function(e) {
       e.preventDefault();
       this.trigger('bullet:edit', this.model.id);
+    },
+
+    destroy: function(e) {
+      e.preventDefault();
+      if (this.user) {
+        var header = { headers: {'X-Toke-Key': this.user.get('token').get('key') }};
+        this.model.destroy(header);
+      } else {
+        console.log('Not Authorized');
+      }
     }
   });
 

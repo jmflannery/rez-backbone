@@ -19,8 +19,9 @@ define([
     },
 
     initialize: function(options) {
-      this.auth = options.auth;
+      this.user = options.user;
       this.selectedParagraphs = options.selectedParagraphs;
+      this.listenTo(this.collection, 'remove', this.render);
     },
 
     render: function() {
@@ -31,7 +32,8 @@ define([
         var selected = $.inArray(paragraph.id, this.selectedParagraphs) > -1;
         var view = new ParagraphView({
           model: paragraph,
-          selected: selected
+          selected: selected,
+          user: this.user
         });
 
         this.listenToOnce(view, 'paragraph:edit', function(paragraphId) {
@@ -44,6 +46,10 @@ define([
       }, this);
 
       return this;
+    },
+
+    setSelectedParagraphs: function(selectedParagraphs) {
+      this.selectedParagraphs = selectedParagraphs;
     },
 
     getSelectedParagraphIds: function() {

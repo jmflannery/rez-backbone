@@ -43,7 +43,6 @@ define([
       this.bulletId = options.bulletId;
       this.paragraphId = options.paragraphId;
       this.user = options.user;
-      this.vent = options.vent;
 
       this.listenTo(this.model, 'sync', function(model, response, options) {
         this.trigger('item:updated');
@@ -102,7 +101,10 @@ define([
       this.selectParagraphsView = new SelectParagraphsView({
         collection: this.paragraphs,
         user: this.user,
-        selectedParagraphs: this.model.paragraphIds()
+        selectedParagraphs: this.model.paragraphIds(),
+        resume: this.resume,
+        section: this.section,
+        item: this.model
       });
       this.listenTo(this.selectParagraphsView, 'paragraph:new', this.renderNewParagraph);
     },
@@ -215,6 +217,12 @@ define([
       this.listenTo(this.newParagraphView, 'paragraph:new:saved', this.newParagraphSaved);
       this.listenTo(this.newParagraphView, 'paragraph:new:cancel', this.cancelNewParagraph);
       this.$('section#paragraphs').html(this.newParagraphView.render().el);
+    },
+
+    newParagraphSaved: function(paragraph) {
+      this.paragraphs.add(paragraph);
+      this.selectParagraphsView.setSelectedParagraphs(this.model.get('paragraph_ids'));
+      this.renderSelectParagraphsView();
     },
 
     cancelNewParagraph: function() {

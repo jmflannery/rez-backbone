@@ -9,7 +9,7 @@ define([
   var NewBulletView = Backbone.View.extend({
 
     initialize: function(options) {
-      this.auth = options.auth;
+      this.user = options.user;
       this.listenTo(this.collection, 'sync', this.bulletSynced);
     },
 
@@ -17,7 +17,7 @@ define([
 
     events: {
       'click #save_bullet': 'saveBullet',
-      'click #cancel': 'cancel'
+      'click #cancel_bullet': 'cancel'
     },
 
     render: function() {
@@ -26,10 +26,9 @@ define([
     },
 
     saveBullet: function(e) {
-      console.log('saving bullet');
       e.preventDefault();
-      if (this.auth) {
-        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+      if (this.user) {
+        var header = { headers: { 'X-Toke-Key': this.user.get('token').get('key') }};
         this.collection.create(this.newAttributes(), header);
       } else {
         console.log('Aint Authed');

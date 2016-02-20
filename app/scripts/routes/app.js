@@ -116,11 +116,11 @@ define([
     },
 
     newResumeItemBullet: function(resumeId, itemId) {
-      this.vent.trigger('show:resume:item:bullet:new', resumeId, itemId, 'new', null);
+      this.editResume(resumeId, sectionId, itemId, 'new');
     },
 
     newResumeItemParagraph: function(resumeId, itemId) {
-      this.vent.trigger('show:resume:item:paragraph:new', resumeId, itemId, null, 'new');
+      this.editResume(resumeId, sectionId, itemId, null, 'new');
     },
 
     editResumeItemBullet: function(resumeId, itemId, bulletId) {

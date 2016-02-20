@@ -11,11 +11,11 @@ define([
 
     events: {
       'click #save_paragraph': 'saveParagraph',
-      'click #cancel': 'cancel'
+      'click #cancel_paragraph': 'cancel'
     },
 
     initialize: function(options) {
-      this.auth = options.auth;
+      this.user = options.user;
       this.listenTo(this.collection, 'sync', this.paragraphSynced);
     },
 
@@ -26,8 +26,8 @@ define([
 
     saveParagraph: function(e) {
       e.preventDefault();
-      if (this.auth) {
-        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+      if (this.user) {
+        var header = { headers: { 'X-Toke-Key': this.user.get('token').get('key') }};
         this.collection.create(this.newAttributes(), header);
       } else {
         console.log('Aint Authed');

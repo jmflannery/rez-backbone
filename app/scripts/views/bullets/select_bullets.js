@@ -19,8 +19,9 @@ define([
     },
 
     initialize: function(options) {
-      this.auth = options.auth;
+      this.user = options.user;
       this.selectedBullets = options.selectedBullets;
+      this.listenTo(this.collection, 'remove', this.render);
     },
 
     render: function() {
@@ -31,7 +32,8 @@ define([
         var selected = $.inArray(bullet.id, this.selectedBullets) > -1;
         var view = new BulletView({
           model: bullet,
-          selected: selected
+          selected: selected,
+          user: this.user
         });
 
         this.listenToOnce(view, 'bullet:edit', function(bulletId) {
