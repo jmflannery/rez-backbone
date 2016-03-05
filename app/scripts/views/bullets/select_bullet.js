@@ -21,9 +21,6 @@ define([
     },
 
     initialize: function(options) {
-      this.resume = options.resume;
-      this.section = options.section;
-      this.item = options.item;
       this.selected = options.selected;
       this.user = options.user;
     },
@@ -43,7 +40,6 @@ define([
 
     edit: function(e) {
       e.preventDefault();
-      Backbone.history.navigate(this.editBulletUrl());
       this.trigger('bullet:edit', this.model.id);
     },
 
@@ -55,14 +51,6 @@ define([
       } else {
         console.log('Not Authorized');
       }
-    },
-
-    editBulletUrl: function() {
-      return '/resumes/:resumeId/sections/:sectionId/items/:itemId/bullets/:bulletId/edit'
-        .replace(/:resumeId/, this.resume.id)
-        .replace(/:sectionId/, this.section.id)
-        .replace(/:itemId/, this.item.id)
-        .replace(/:bulletId/, this.model.id);
     }
   });
 
