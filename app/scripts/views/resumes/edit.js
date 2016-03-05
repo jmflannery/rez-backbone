@@ -184,6 +184,8 @@ define([
           model: section,
           resume: this.model,
           itemId: this.itemId,
+          bulletId: this.bulletId,
+          paragraphId: this.paragraphId,
           user: this.user
         });
 

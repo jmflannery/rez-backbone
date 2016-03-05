@@ -1,11 +1,9 @@
 <h4>Edit Bullet</h4>
-<div>
+<div class="row bottom-margin">
   <label for="edit_bullet_text">Text:</label>
-  <input type="text" id="edit_bullet_text" value="<%= this.model.get('text') %>">
+  <input type="text" class="u-full-width" id="edit_bullet_text" value="<%= this.model.get('text') %>">
 </div>
-<div>
-  <ul>
-    <li><a href='#' id='save_bullet'>Save Bullet</a></li>
-    <li><a href='#' id='cancel_bullet'>Cancel Edit Bullet</a></li>
-  </ul>
+<div class="row">
+  <button class="button-primary" id='save_bullet'>Save Bullet</button>
+  <button class="button" id='cancel_bullet'>Cancel Edit Bullet</button>
 </div>

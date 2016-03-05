@@ -34,9 +34,7 @@ define([
       'resumes/:id/edit': 'editResume',
       'resumes/:resume_id/sections/:section_id/edit': 'editResumeSection',
       'resumes/:resume_id/sections/:section_id/items/:item_id/edit': 'editResumeSectionItem',
-      'resumes/:resume_id/items/:item_id/bullets/new': 'newResumeItemBullet',
-      'resumes/:resume_id/items/:item_id/paragraphs/new': 'newResumeItemParagraph',
-      'resumes/:resume_id/items/:item_id/bullets/:bullet_id/edit': 'editResumeItemBullet'
+      'resumes/:resume_id/sections/:section_id/items/:item_id/bullets/:bullet_id/edit': 'editResumeSectionItemBullet'
     },
 
     activeResume: function() {
@@ -115,16 +113,8 @@ define([
       this.editResume(resumeId, sectionId, itemId);
     },
 
-    newResumeItemBullet: function(resumeId, itemId) {
-      this.editResume(resumeId, sectionId, itemId, 'new');
-    },
-
-    newResumeItemParagraph: function(resumeId, itemId) {
-      this.editResume(resumeId, sectionId, itemId, null, 'new');
-    },
-
-    editResumeItemBullet: function(resumeId, itemId, bulletId) {
-      this.vent.trigger('show:resume:item:bullet:edit', resumeId, itemId, bulletId);
+    editResumeSectionItemBullet: function(resumeId, sectionId, itemId, bulletId) {
+      this.editResume(resumeId, sectionId, itemId, bulletId);
     },
 
     _maybeFetchResumes: function(callback) {

@@ -34,6 +34,8 @@ define([
     initialize: function(options) {
       this.resume = options.resume;
       this.itemId = options.itemId;
+      this.bulletId = options.bulletId;
+      this.paragraphId = options.paragraphId;
       this.user = options.user;
 
       this.listenTo(this.model, 'sync', function(model, response, options) {
@@ -115,6 +117,8 @@ define([
         model: item,
         section: this.model,
         resume: this.resume,
+        bulletId: this.bulletId,
+        paragraphId: this.paragraphId,
         user: this.user
       });
       this.listenTo(this.editItemView, 'item:edit:cancel', this.cancelEditItem);

@@ -17,7 +17,7 @@ define([
     },
 
     initialize: function(options) {
-      this.auth = options.auth;
+      this.user = options.user;
       this.listenTo(this.model, 'sync', function() {
         this.trigger('bullet:saved');
       });
@@ -31,8 +31,8 @@ define([
     save: function(e) {
       e.preventDefault();
       this.model.set(this.newAttributes());
-      if (this.auth) {
-        var header = { headers: { 'X-Toke-Key': this.auth.token.get('key') }};
+      if (this.user) {
+        var header = { headers: { 'X-Toke-Key': this.user.get('token').get('key') }};
         this.model.save({}, header);
       } else {
         console.log('Not Authorized');

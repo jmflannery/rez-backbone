@@ -64,6 +64,8 @@ define([
 
       if (this.bulletId && this.bulletId !== 'new') {
         this.renderEditBulletView(this.bulletId);
+        this.initSelectParagraphsView();
+        this.renderSelectParagraphsView();
       } else {
         if (this.bulletId === 'new') {
           this.initSelectParagraphsView();
@@ -125,6 +127,7 @@ define([
       });
       this.listenTo(this.editBulletView, 'bullet:edit:cancel', this.cancelEditBullet);
       this.listenTo(this.editBulletView, 'bullet:saved', function() {
+        Backbone.history.navigate(this.editItemUrl());
         this.initSelectBulletsView();
         this.renderSelectBulletsView();
       });
@@ -132,6 +135,7 @@ define([
     },
 
     cancelEditBullet: function() {
+      Backbone.history.navigate(this.editItemUrl());
       this.editBulletView.remove();
       delete this.bulletId;
       this.initSelectBulletsView();
@@ -139,11 +143,8 @@ define([
     },
 
     save: function(e) {
-      console.log('yolo');
       e.preventDefault();
-      console.log(this.newAttributes());
       this.model.set(this.newAttributes());
-      console.log(this.model);
 
       var bullets = _.map(this.getSelectedBulletIds(), function(bulletId) {
         return this.bullets.get(bulletId);
@@ -229,6 +230,13 @@ define([
       this.newParagraphView.remove();
       this.initSelectParagraphsView();
       this.renderSelectParagraphsView();
+    },
+
+    editItemUrl: function() {
+      return '/resumes/:resumeId/sections/:sectionId/items/:itemId/edit'
+        .replace(/:resumeId/, this.resume.id)
+        .replace(/:sectionId/, this.section.id)
+        .replace(/:itemId/, this.model.id);
     },
 
     editSectionUrl: function() {
