@@ -34,7 +34,8 @@ define([
       'resumes/:id/edit': 'editResume',
       'resumes/:resume_id/sections/:section_id/edit': 'editResumeSection',
       'resumes/:resume_id/sections/:section_id/items/:item_id/edit': 'editResumeSectionItem',
-      'resumes/:resume_id/sections/:section_id/items/:item_id/bullets/:bullet_id/edit': 'editResumeSectionItemBullet'
+      'resumes/:resume_id/sections/:section_id/items/:item_id/bullets/:bullet_id/edit': 'editResumeSectionItemBullet',
+      'resumes/:resume_id/sections/:section_id/items/:item_id/paragraphs/:paragraph_id/edit': 'editResumeSectionItemParagraph'
     },
 
     activeResume: function() {
@@ -115,6 +116,10 @@ define([
 
     editResumeSectionItemBullet: function(resumeId, sectionId, itemId, bulletId) {
       this.editResume(resumeId, sectionId, itemId, bulletId);
+    },
+
+    editResumeSectionItemParagraph: function(resumeId, sectionId, itemId, paragraphId) {
+      this.editResume(resumeId, sectionId, itemId, null, paragraphId);
     },
 
     _maybeFetchResumes: function(callback) {

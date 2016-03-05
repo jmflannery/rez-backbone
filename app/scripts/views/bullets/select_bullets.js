@@ -35,6 +35,7 @@ define([
         var selected = $.inArray(bullet.id, this.selectedBullets) > -1;
         var view = new BulletView({
           model: bullet,
+          resume: this.resume,
           section: this.section,
           item: this.item,
           selected: selected,

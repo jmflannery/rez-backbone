@@ -9,7 +9,8 @@ define([
   'views/bullets/select_bullets',
   'views/bullets/edit',
   'views/paragraphs/new',
-  'views/paragraphs/select_paragraphs'
+  'views/paragraphs/select_paragraphs',
+  'views/paragraphs/edit'
 ], function ($,
              _,
              Backbone,
@@ -20,7 +21,8 @@ define([
              SelectBulletsView,
              EditBulletView,
              NewParagraphView,
-             SelectParagraphsView) {
+             SelectParagraphsView,
+             EditParagraphView) {
   'use strict';
 
   var EditItemView = Backbone.View.extend({
@@ -66,6 +68,10 @@ define([
         this.renderEditBulletView(this.bulletId);
         this.initSelectParagraphsView();
         this.renderSelectParagraphsView();
+      } else if (this.paragraphId && this.paragraphId !== 'new') {
+        this.renderEditParagraphView(this.paragraphId);
+        this.initSelectBulletsView();
+        this.renderSelectBulletsView();
       } else {
         if (this.bulletId === 'new') {
           this.initSelectParagraphsView();
@@ -104,11 +110,9 @@ define([
         collection: this.paragraphs,
         user: this.user,
         selectedParagraphs: this.model.paragraphIds(),
-        resume: this.resume,
-        section: this.section,
-        item: this.model
       });
       this.listenTo(this.selectParagraphsView, 'paragraph:new', this.renderNewParagraph);
+      this.listenTo(this.selectParagraphsView, 'paragraph:edit:show', this.renderEditParagraphView);
     },
 
     renderSelectBulletsView: function() {
@@ -140,6 +144,30 @@ define([
       delete this.bulletId;
       this.initSelectBulletsView();
       this.renderSelectBulletsView();
+    },
+
+    renderEditParagraphView: function(paragraphId) {
+      var paragraph = this.paragraphs.get(paragraphId);
+      this.editParagraphView = new EditParagraphView({
+        model: paragraph,
+        user: this.user
+      });
+      this.listenTo(this.editParagraphView, 'paragraph:edit:cancel', this.cancelEditParagraph);
+      this.listenTo(this.editParagraphView, 'paragraph:saved', function() {
+        Backbone.history.navigate(this.editItemUrl());
+        this.initSelectParagraphsView();
+        this.renderSelectParagraphsView();
+      });
+      this.$('section#paragraphs').html(this.editParagraphView.render().el);
+      Backbone.history.navigate(this.editParagraphUrl(paragraph));
+    },
+
+    cancelEditParagraph: function() {
+      Backbone.history.navigate(this.editItemUrl());
+      this.editParagraphView.remove();
+      delete this.paragraphId;
+      this.initSelectParagraphsView();
+      this.renderSelectParagraphsView();
     },
 
     save: function(e) {
@@ -237,6 +265,14 @@ define([
         .replace(/:resumeId/, this.resume.id)
         .replace(/:sectionId/, this.section.id)
         .replace(/:itemId/, this.model.id);
+    },
+
+    editParagraphUrl: function(paragraph) {
+      return '/resumes/:resumeId/sections/:sectionId/items/:itemId/paragraphs/:paragraphId/edit'
+        .replace(/:resumeId/, this.resume.id)
+        .replace(/:sectionId/, this.section.id)
+        .replace(/:itemId/, this.model.id)
+        .replace(/:paragraphId/, paragraph.id);
     },
 
     editSectionUrl: function() {
