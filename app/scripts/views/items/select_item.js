@@ -43,11 +43,12 @@ define([
 
     destroy: function(e) {
       e.preventDefault();
+      console.log(this.user);
       if (this.user) {
         var header = { headers: {'X-Toke-Key': this.user.get('token').get('key') }};
         this.model.destroy(header);
       } else {
-        console.log('Not Authorized');
+        console.log('Not Authorized, Sucka');
       }
     },
 
