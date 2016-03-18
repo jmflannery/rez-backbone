@@ -36,7 +36,7 @@ define([
     destroy: function(e) {
       e.preventDefault();
       if (this.user) {
-        var header = { headers: {'X-Toke-Key': this.user.token.get('key') }};
+        var header = { headers: {'X-Toke-Key': this.user.get('token').get('key') }};
         this.model.destroy(header);
       } else {
         console.log('Not Authorized');
