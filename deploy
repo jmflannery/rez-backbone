@@ -1,1 +1,1 @@
-rsync -av dist/ deployer@104.236.29.50:/var/www/rez-backbone
+rsync -av dist/ deployer@104.236.29.50:/var/www/rez_backbone
