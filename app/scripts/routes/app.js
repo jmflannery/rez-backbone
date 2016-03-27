@@ -3,14 +3,14 @@ define([
   'collections/resume',
   'collections/profile',
   'collections/address',
-  'collections/section',
+  'collections/item',
   'views/resumes/resume',
   'views/session',
   'lib/authenticate',
   'views/resumes/new',
   'views/resumes/list',
   'views/resumes/edit'
-], function (Backbone, ResumeCollection, ProfileCollection, AddressCollection, SectionCollection, ResumeView, SessionView, Auth, NewResumeView, ResumeListView, EditResumeView) {
+], function (Backbone, ResumeCollection, ProfileCollection, AddressCollection, ItemCollection, ResumeView, SessionView, Auth, NewResumeView, ResumeListView, EditResumeView) {
   'use strict';
 
   var AppRouter = Backbone.Router.extend({
@@ -21,7 +21,7 @@ define([
       this.resumes = new ResumeCollection();
       this.profiles = new ProfileCollection();
       this.addresses = new AddressCollection();
-      this.sections = new SectionCollection();
+      this.items = new ItemCollection();
       this.$page = $('#page');
     },
 
@@ -32,8 +32,7 @@ define([
       'resumes/new': 'newResume',
       'resumes/:id': 'resume',
       'resumes/:id/edit': 'editResume',
-      'resumes/:resume_id/sections/:section_id/edit': 'editResumeSection',
-      'resumes/:resume_id/sections/:section_id/items/:item_id/edit': 'editResumeSectionItem',
+      'resumes/:resume_id/items/:item_id/edit': 'editResumeItem',
       'resumes/:resume_id/sections/:section_id/items/:item_id/bullets/:bullet_id/edit': 'editResumeSectionItemBullet',
       'resumes/:resume_id/sections/:section_id/items/:item_id/paragraphs/:paragraph_id/edit': 'editResumeSectionItemParagraph'
     },
@@ -83,8 +82,8 @@ define([
       });
     },
 
-    editResume: function(resumeId, sectionId, itemId, bulletId, paragraphId) {
-      this._maybeFetchEditResumeData(function(resumes, profiles, addresses, sections) {
+    editResume: function(resumeId, itemId, bulletId, paragraphId) {
+      this._maybeFetchEditResumeData(function(resumes, profiles, addresses, items) {
         var resume = resumes.get(resumeId);
 
         if (resume) {
@@ -93,8 +92,7 @@ define([
             resumes: resumes,
             profiles: profiles,
             addresses: addresses,
-            sections: sections,
-            sectionId: sectionId,
+            items: items,
             itemId: itemId,
             bulletId: bulletId,
             paragraphId: paragraphId,
@@ -110,8 +108,8 @@ define([
       this.editResume(resumeId, sectionId);
     },
 
-    editResumeSectionItem: function(resumeId, sectionId, itemId) {
-      this.editResume(resumeId, sectionId, itemId);
+    editResumeItem: function(resumeId, itemId) {
+      this.editResume(resumeId, itemId);
     },
 
     editResumeSectionItemBullet: function(resumeId, sectionId, itemId, bulletId) {
@@ -138,13 +136,13 @@ define([
         this.resumes.fetched ? null : this.resumes.fetch(),
         this.profiles.fetched ? null : this.profiles.fetch(),
         this.addresses.fetched ? null : this.addresses.fetch(),
-        this.sections.fetched ? null : this.sections.fetch()
-      ).then(function(resumes, profiles, addresses, sections) {
+        this.items.fetched ? null : this.items.fetch()
+      ).then(function(resumes, profiles, addresses, items) {
         if (resumes) { this.resumes.reset(resumes[0].resumes) }
         if (profiles) { this.profiles.reset(profiles[0].profiles) }
         if (addresses) { this.addresses.reset(addresses[0].addresses) }
-        if (sections) { this.sections.reset(sections[0].sections) }
-        callback.call(this, this.resumes, this.profiles, this.addresses, this.sections);
+        if (items) { this.items.reset(items[0].items) }
+        callback.call(this, this.resumes, this.profiles, this.addresses, this.items);
       }.bind(this));
     }
   });

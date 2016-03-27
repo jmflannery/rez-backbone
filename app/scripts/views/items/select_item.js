@@ -15,17 +15,12 @@ define([
       return 'item_' + this.model.id;
     },
 
-    urls: {
-      editItem: '/resumes/:resumeId/sections/:sectionId/items/:itemId/edit'
-    },
-
     events: {
       'click #edit_item': 'edit',
       'click #delete_item': 'destroy'
     },
 
     initialize: function(options) {
-      this.section = options.section;
       this.resume = options.resume;
       this.user = options.user;
     },
@@ -43,12 +38,11 @@ define([
 
     destroy: function(e) {
       e.preventDefault();
-      console.log(this.user);
       if (this.user) {
         var header = { headers: {'X-Toke-Key': this.user.get('token').get('key') }};
         this.model.destroy(header);
       } else {
-        console.log('Not Authorized, Sucka');
+        console.log('Not Authorized');
       }
     },
 
@@ -61,9 +55,8 @@ define([
     },
 
     editItemUrl: function() {
-      return '/resumes/:resumeId/sections/:sectionId/items/:itemId/edit'
+      return '/resumes/:resumeId/items/:itemId/edit'
         .replace(/:resumeId/, this.resume.id)
-        .replace(/:sectionId/, this.section.id)
         .replace(/:itemId/, this.model.id);
     }
   });

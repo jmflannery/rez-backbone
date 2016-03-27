@@ -36,7 +36,8 @@ define([
 
     newAttributes: function() {
       return {
-        text: this.$('#new_paragraph_text').val()
+        text: this.$('#new_paragraph_text').val(),
+        point_type: 'paragraph'
       };
     },
 

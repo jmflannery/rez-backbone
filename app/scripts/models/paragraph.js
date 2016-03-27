@@ -12,9 +12,9 @@ define([
 
     url: function() {
       if (this.id) {
-        return config.domain + '/rez/points/' + this.id + '?type=paragraph';
+        return config.domain + '/rez/points/' + this.id
       } else {
-        return config.domain + '/rez/points?type=paragraph';
+        return config.domain + '/rez/points';
       }
     },
 

@@ -19,10 +19,14 @@ define([
 
     initialize: function(attributes, options) {
       this.set('bullets', new BulletCollection(
-        attributes.bullets
+        _.select(attributes.points, function(point) {
+          return point.point_type === 'bullet';
+        })
       ));
       this.set('paragraphs', new ParagraphCollection(
-        attributes.paragraphs
+        _.select(attributes.points, function(point) {
+          return point.point_type === 'paragraph';
+        })
       ));
     },
 

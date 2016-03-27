@@ -3,8 +3,8 @@ define([
   'models/resource',
   'models/profile',
   'models/address',
-  'collections/section'
-], function (_, Resource, Profile, Address, SectionCollection) {
+  'collections/item'
+], function (_, Resource, Profile, Address, ItemCollection) {
   'use strict';
 
   var ResumeModel = Resource.extend({
@@ -15,13 +15,19 @@ define([
 
     resource: 'resume',
     hasOne: ['profile', 'address'],
-    hasMany: ['sections'],
+    hasMany: ['items'],
 
     initialize: function(attributes, options) {
       var opts = { resume: this };
       this.set('profile', new Profile(attributes.profile, opts));
       this.set('address', new Address(attributes.address, opts))
-      this.set('sections', new SectionCollection(attributes.sections, opts));
+      this.set('items', new ItemCollection(attributes.items, opts));
+    },
+
+    itemIds: function() {
+      return this.get('items').map(function(item) {
+        return item.id;
+      });
     },
 
     parse: function(response, options) {
@@ -35,7 +41,7 @@ define([
         var opts = { resumeId: this.id };
         resp.profile = new Profile(resp.profile, opts);
         resp.address = new Address(resp.address, opts);
-        resp.sections = new SectionCollection(resp.sections, opts);
+        resp.items = new ItemCollection(resp.items, opts);
       }
 
       return resp;

@@ -3,8 +3,8 @@ define([
   'underscore',
   'backbone',
   'templates',
-  'views/sections/section'
-], function ($, _, Backbone, JST, SectionView) {
+  'views/items/items'
+], function ($, _, Backbone, JST, ItemsView) {
   'use strict';
 
   var ResumeView = Backbone.View.extend({
@@ -20,21 +20,15 @@ define([
 
     initialize: function(options) {
       this.user = options.user;
+      this.itemsView = new ItemsView({
+        collection: this.model.get('items')
+      });
     },
 
     render: function() {
       this.$el.html(this.template());
-      this.renderSectionsView();
+      this.$el.append(this.itemsView.render().el);
       return this;
-    },
-
-    renderSectionsView: function() {
-      if (this.model.get('sections')) {
-        this.model.get('sections').forEach(function(section) {
-          var div = new SectionView({ model: section });
-          this.$el.append(div.render().el);
-        }, this);
-      }
     },
 
     showNewResume: function(e) {

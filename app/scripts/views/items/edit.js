@@ -31,7 +31,7 @@ define([
     id: 'edit-item',
 
     urls: {
-      editSection: '/resumes/:resumeId/sections/:sectionId/edit'
+      editResume: '/resumes/:resumeId/edit'
     },
 
     events: {
@@ -282,7 +282,7 @@ define([
     },
 
     editSectionUrl: function() {
-      return this.urls['editSection'].replace(/:resumeId/, this.resume.id).replace(/:sectionId/, this.section.id);
+      return this.urls['editResume'].replace(/:resumeId/, this.resume.id);
     }
   });
 

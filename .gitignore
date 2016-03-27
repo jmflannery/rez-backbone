@@ -8,3 +8,4 @@ test/bower_components/
 *.swp
 *.swo
 *.log
+.DS_Store

@@ -9,8 +9,6 @@ define([
   var ParagraphsCollection = Backbone.Collection.extend({
     model: Paragraph,
 
-    url: config.domain + '/rez/points?type=paragraph',
-
     initialize: function(models, options) {
       if (options) {
         this.item = options.item;

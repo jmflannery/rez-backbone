@@ -7,7 +7,7 @@ define([
   'backbone',
   'templates',
   'views/items/select_item'
-], function ($, _, Backbone, JST, ItemView) {
+], function ($, _, Backbone, JST, SelectItemView) {
   'use strict';
 
   var SelectItemsView = Backbone.View.extend({
@@ -20,7 +20,6 @@ define([
     },
 
     initialize: function(options) {
-      this.section = options.section;
       this.resume = options.resume;
       this.user = options.user;
       this.listenTo(this.collection, 'remove', this.render);
@@ -32,9 +31,8 @@ define([
       this.itemViews = [];
 
       this.collection.each(function(item) {
-        var itemView = new ItemView({
+        var itemView = new SelectItemView({
           model: item,
-          section: this.section,
           resume: this.resume,
           user: this.user,
         });
@@ -54,7 +52,7 @@ define([
     },
 
     setItemsSelected: function() {
-      _.each(this.section.itemIds(), function(itemId) {
+      _.each(this.resume.itemIds(), function(itemId) {
         this.$('tr#item_' + itemId + ' input[type=checkbox]').prop('checked', true);
       }, this);
     },

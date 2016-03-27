@@ -13,11 +13,11 @@ define([
       text: ''
     },
 
-   url: function() {
+    url: function() {
       if (this.id) {
-        return config.domain + '/rez/points/' + this.id + '?type=bullet';
+        return config.domain + '/rez/points/' + this.id
       } else {
-        return config.domain + '/rez/points?type=bullet';
+        return config.domain + '/rez/points';
       }
     },
 

@@ -37,7 +37,8 @@ define([
 
     newAttributes: function() {
       return {
-        text: this.$('#new_bullet_text').val()
+        text: this.$('#new_bullet_text').val(),
+        point_type: 'bullet'
       };
     },
 
